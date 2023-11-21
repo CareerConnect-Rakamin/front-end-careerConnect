@@ -9,6 +9,7 @@ const Navbar = () => {
       p={2}
       fontFamily={'Lexend Deca'}
       position="fixed"
+      top={0}
       width="100%"
       zIndex="100"
     >
