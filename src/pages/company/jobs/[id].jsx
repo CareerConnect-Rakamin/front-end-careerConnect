@@ -55,13 +55,13 @@ export default function CompanyJobs() {
                   Menu Utama
                 </Text>
                 <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/dashboard.png">
                   Dashboard Perusahaan
                 </ImageAndTeksInline>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/info-jobs.png">
                   Data Lowongan Pekerjaan
                 </ImageAndTeksInline>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/add-jobs.png">
                   Tambah Data Lowongan
                 </ImageAndTeksInline>
               </Stack>
@@ -95,10 +95,10 @@ export default function CompanyJobs() {
                 <Box w="290px" bg="#0B1A2A" rounded="10" px="25px" py="20px">
                   <Flex gap={1}>
                     <Stack>
-                      <ContentMid image="https://placehold.co/600x400">
+                      <ContentMid image="/company-profile/job/lokasi.png">
                         Serang, Banten
                       </ContentMid>
-                      <ContentMid image="https://placehold.co/600x400">
+                      <ContentMid image="/company-profile/job/kuota.png">
                         5 orang
                       </ContentMid>
                       <Text fontSize="12px" fontWeight="normal" color="#C0C0C0">
@@ -109,10 +109,10 @@ export default function CompanyJobs() {
                       </Text>
                     </Stack>
                     <Stack>
-                      <ContentMid image="https://placehold.co/600x400">
+                      <ContentMid image="/company-profile/job/gaji.png">
                         2.500.000
                       </ContentMid>
-                      <ContentMid image="https://placehold.co/600x400">
+                      <ContentMid image="/company-profile/job/type.png">
                         WFO
                       </ContentMid>
                     </Stack>

@@ -57,13 +57,13 @@ export default function CompanyProfile() {
                   Menu Utama
                 </Text>
                 <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/dashboard.png">
                   Dashboard Perusahaan
                 </ImageAndTeksInline>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/info-jobs.png">
                   Data Lowongan Pekerjaan
                 </ImageAndTeksInline>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/add-jobs.png">
                   Tambah Data Lowongan
                 </ImageAndTeksInline>
               </Stack>
@@ -106,14 +106,14 @@ export default function CompanyProfile() {
                   reprehenderit accusantium explicabo quasi! Recusandae
                   laboriosam cumque accusamus.
                 </Text>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/phone-call.png">
                   0812 6544 4211
                 </ImageAndTeksInline>
-                <ImageAndTeksInline image="https://placehold.co/600x400">
+                <ImageAndTeksInline image="/company-profile/location.png">
                   Kemang, Jakarta Selatan
                 </ImageAndTeksInline>
                 <Flex justifyContent="space-between" alignItems="center">
-                  <ImageAndTeksInline image="https://placehold.co/600x400">
+                  <ImageAndTeksInline image="/company-profile/website.png">
                     <Link href="#">www.iamryangosling.co.id</Link>
                   </ImageAndTeksInline>
                   <Button bg="#FFBA79" color={'black'}>
@@ -147,11 +147,12 @@ const ImageAndTeksInline = (props) => {
     children,
     boxSize = '23px',
     fontSize = '18px',
-    textColor = 'black'
+    textColor = 'black',
+    alt = 'image.png'
   } = props;
   return (
     <Flex gap={2} alignItems="center">
-      <Image src={image} boxSize={boxSize} />
+      <Image src={image} boxSize={boxSize} alt={alt} />
       <Text fontSize={fontSize} fontWeight={'semibold'} textColor={textColor}>
         {children}
       </Text>
