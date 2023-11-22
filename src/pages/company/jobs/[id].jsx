@@ -56,13 +56,13 @@ export default function CompanyJobs() {
                 </Text>
                 <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
                 <ImageAndTeksInline image="/company-profile/dashboard.png">
-                  Dashboard Perusahaan
+                  <Link href={`/company/${id}`}>Dashboard Perusahaan</Link>
                 </ImageAndTeksInline>
                 <ImageAndTeksInline image="/company-profile/info-jobs.png">
-                  Data Lowongan Pekerjaan
+                  <Link href="#">Data Lowongan Pekerjaan</Link>
                 </ImageAndTeksInline>
                 <ImageAndTeksInline image="/company-profile/add-jobs.png">
-                  Tambah Data Lowongan
+                  <Link href="#">Tambah Data Lowongan</Link>
                 </ImageAndTeksInline>
               </Stack>
             </CardBody>
@@ -119,7 +119,7 @@ export default function CompanyJobs() {
                   </Flex>
                 </Box>
                 <Stack ml="50px">
-                  <ContentRight bg="#459B72" color="white">
+                  <ContentRight bg="#459B72" color="white" href={`/job/${id}`}>
                     Lihat Data Pelamar
                   </ContentRight>
                   <ContentRight bg="#FFBA79" color="black">

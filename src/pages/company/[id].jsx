@@ -58,13 +58,13 @@ export default function CompanyProfile() {
                 </Text>
                 <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
                 <ImageAndTeksInline image="/company-profile/dashboard.png">
-                  Dashboard Perusahaan
+                  <Link>Dashboard Perusahaan</Link>
                 </ImageAndTeksInline>
                 <ImageAndTeksInline image="/company-profile/info-jobs.png">
-                  Data Lowongan Pekerjaan
+                  <Link>Data Lowongan Pekerjaan</Link>
                 </ImageAndTeksInline>
                 <ImageAndTeksInline image="/company-profile/add-jobs.png">
-                  Tambah Data Lowongan
+                  <Link>Tambah Data Lowongan</Link>
                 </ImageAndTeksInline>
               </Stack>
             </CardBody>
