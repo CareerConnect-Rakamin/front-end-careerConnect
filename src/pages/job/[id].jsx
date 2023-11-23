@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import {
   Box,
@@ -145,6 +146,7 @@ export default function JobById() {
           {/* Table End */}
         </Card>
       </Box>
+      <Footer />
     </ChakraProvider>
   );
 }
