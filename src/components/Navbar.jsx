@@ -1,81 +1,152 @@
-import { Box, Link, Text, Flex, Stack, Button } from '@chakra-ui/react';
-import Image from 'next/image';
-import logo from '../../public/logo.png';
+import { useEffect, useState } from 'react';
+import {
+  Flex,
+  Button,
+  Image,
+  Link,
+  Text,
+  Stack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  Avatar
+} from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
+  const [isLogin, setIsLogin] = useState(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      setIsLogin(true);
+    }
+  }, []);
+
   return (
-    <Box
-      bg="#2A5C91"
-      p={2}
-      fontFamily={'Lexend Deca'}
-      position="fixed"
-      width="100%"
-      zIndex="100"
+    <Flex
+      width={'full'}
+      as={'nav'}
+      justify="space-between"
+      background={'custom.blue'}
+      p={'1rem'}
+      fontFamily={'lexendDeca'}
     >
-      <Flex
-        alignItems="center"
-        justifyContent="space-between"
-        mx="auto"
-        maxW="container"
-      >
-        <Flex gap={5}>
-          <Image
-            src={logo}
-            style={{ width: '45px', height: '38px', marginTop: '10px' }}
-          />
-          <Text color="white" fontSize="33px" fontWeight="bold" mt={'5px'}>
-            <Link href="#" color="white">
-              CareerConnect
-            </Link>
+      <Flex display={'flex'} alignItems={'center'} marginLeft={3}>
+        <Link href="/">
+          <Image src="/images/logo.png" alt="Logo" width="40px" />
+        </Link>
+        <Link href="/" _hover={{ textDecoration: 'none' }} marginLeft={2}>
+          <Text color={'white'} fontSize={'2xl'} fontWeight={'bold'}>
+            CareerConnect
           </Text>
-        </Flex>
-
-        {/* Navigasi (tengah) */}
-        <Flex
-          alignItems="center"
-          fontSize="20px"
-          fontWeight="semibold"
-          mr={'50px'}
-        >
-          <Link href="#" color="white" mx={2}>
-            Cari Lowongan
-          </Link>
-          <Link href="#" color="white" mx={2}>
-            Profile Perusahaan
-          </Link>
-          <Link to="#" color="white" mx={2}>
-            Tentang Kami
-          </Link>
-        </Flex>
-
-        {/* Tombol Login (sebelah kanan) */}
-        <Stack direction="row" spacing={0} alignItems="center">
-          <Link>
-            <Button
-              bg={'#2A5C91'}
-              p={'5px'}
-              width={'120px'}
-              textColor={'white'}
-              rounded={5}
-              _hover={{ transform: 'scale(1.05)' }}
-            >
-              Register
-            </Button>
-          </Link>
-          <Link>
-            <Button
-              bg={'white'}
-              p={'5px'}
-              width={'120px'}
-              rounded={5}
-              _hover={{ transform: 'scale(1.05)' }}
-            >
-              Login
-            </Button>
-          </Link>
-        </Stack>
+        </Link>
       </Flex>
-    </Box>
+      <Flex display={'flex'} alignItems={'center'}>
+        <Link
+          href="#"
+          color={'white'}
+          _hover={{ color: 'gray.300', paddingBottom: '5px' }}
+          transition={'0.2s'}
+          marginRight={3}
+          fontWeight={'semibold'}
+        >
+          Cari Lowongan
+        </Link>
+        <Link
+          href="/companys"
+          color={'white'}
+          _hover={{ color: 'gray.300', paddingBottom: '5px' }}
+          transition={'0.2s'}
+          marginRight={3}
+          fontWeight={'semibold'}
+        >
+          Profile Perusahaan
+        </Link>
+        <Link
+          href="/about"
+          color={'white'}
+          _hover={{ color: 'gray.300', paddingBottom: '5px' }}
+          transition={'0.2s'}
+          marginRight={3}
+          fontWeight={'semibold'}
+        >
+          <Text>Tentang Kami</Text>
+        </Link>
+      </Flex>
+      <Stack direction={'row'} marginRight={3}>
+        {isLogin ? (
+          <Menu>
+            <MenuButton
+              as={Button}
+              rounded={'full'}
+              variant={'link'}
+              cursor={'pointer'}
+              minW={0}
+            >
+              <Avatar
+                size={'sm'}
+                src={
+                  'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+                }
+              />
+            </MenuButton>
+            <MenuList>
+              <Link href="/user/profile" _hover={{ textDecoration: 'none' }}>
+                <MenuItem>Profile</MenuItem>
+              </Link>
+              <MenuDivider />
+              <MenuItem
+                onClick={() => {
+                  window.localStorage.removeItem('token');
+                  setIsLogin(false);
+                  router.push('/');
+                }}
+              >
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        ) : (
+          <>
+            <Link href="/auth/register">
+              <Button
+                bg={'custom.blue'}
+                width={'105px'}
+                textColor={'white'}
+                rounded={10}
+                marginRight={2}
+                _hover={{
+                  bg: 'orange.300',
+                  transform: 'scale(1.05)'
+                }}
+              >
+                Register
+              </Button>
+            </Link>
+            <Link href="/auth/login">
+              <Button
+                bg={'white'}
+                color={'custom.blue'}
+                width={'105px'}
+                fontWeight={'semibold'}
+                rounded={10}
+                _hover={{
+                  bg: 'blue.300',
+                  color: 'white',
+                  transform: 'scale(1.05)'
+                }}
+              >
+                Login
+              </Button>
+            </Link>
+          </>
+        )}
+      </Stack>
+    </Flex>
   );
 };
 
