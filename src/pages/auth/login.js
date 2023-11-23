@@ -1,5 +1,6 @@
 import {
   ArrowBackIcon,
+  CheckCircleIcon,
   EmailIcon,
   LockIcon,
   ViewIcon,

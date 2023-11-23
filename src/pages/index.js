@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 export default function Home() {
   const router = useRouter();
 
-  const handleClick = () => router.push('/login');
+  const handleClick = () => router.push('/auth/login');
 
   return (
     <Flex p={10} align={'center'} justify={'center'} direction={'column'}>
