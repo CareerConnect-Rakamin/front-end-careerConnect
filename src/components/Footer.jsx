@@ -202,7 +202,7 @@ const Footer = () => {
       as="footer"
       w="full"
       bg="custom.dark_blue"
-      position="fixed"
+      position="relative"
       bottom={0}
       fontFamily="lexendDeca"
       zIndex={1}
