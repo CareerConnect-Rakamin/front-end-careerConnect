@@ -10,133 +10,189 @@ import {
   GridItem,
   Image,
   Link,
+  Skeleton,
   Stack,
   Text
 } from '@chakra-ui/react';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { getCompanyById } from '@/modules/fetch';
 
 export default function CompanyProfile() {
+  const [company, setCompany] = useState();
+  const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
+  useEffect(() => {
+    const fetchCompanyById = async () => {
+      try {
+        if (id) {
+          const response = await getCompanyById(id);
+          setCompany(response.data);
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchCompanyById();
+    }
+  }, [id]);
+
+  if (!isLoading && !company) {
+    // Redirect to 404 page if company data is not found
+    router.push('/404');
+    return null;
+  }
+
   return (
     <ChakraProvider>
-      <Navbar />
-
-      <Grid
-        templateAreas={`
+      {isLoading ? (
+        <Skeleton height="300px" my="6" />
+      ) : (
+        <>
+          <Navbar />
+          <Grid
+            templateAreas={`
           "side profile"`}
-        gridTemplateRows={'full 1fr full'}
-        gridTemplateColumns={'350px 1fr'} // Mengatur lebar kolom "side" menjadi sekitar 300
-        h="100%"
-        gap="1"
-        color="blackAlpha.700"
-        fontWeight="bold"
-        mt={70}
-        mb={0}
-      >
-        {/* Side Nav Start */}
-        <GridItem p="5" pr={'2px'} area={'side'}>
-          <Card bg={'#F5F5F5'} boxShadow="md" mx="auto" my="auto" h="400px">
-            <CardHeader p={'10px'}>
-              <Flex flexDirection="column" alignItems="center">
-                <Image
-                  src="https://placehold.co/600x400"
-                  alt="photo.profile"
-                  boxSize="125px"
-                  borderRadius="10px"
-                  objectFit="cover"
-                />
-                <Text mt={2}>Company Name</Text>
-              </Flex>
-            </CardHeader>
-            <CardBody p={'10px'}>
-              <Stack>
-                <Text mt={2} textAlign="left">
-                  Menu Utama
-                </Text>
-                <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
-                <ImageAndTeksInline image="/company-profile/dashboard.png">
-                  <Link>Dashboard Perusahaan</Link>
-                </ImageAndTeksInline>
-                <ImageAndTeksInline image="/company-profile/info-jobs.png">
-                  <Link>Data Lowongan Pekerjaan</Link>
-                </ImageAndTeksInline>
-                <ImageAndTeksInline image="/company-profile/add-jobs.png">
-                  <Link>Tambah Data Lowongan</Link>
-                </ImageAndTeksInline>
-              </Stack>
-            </CardBody>
-          </Card>
-        </GridItem>
-        {/* Side Nav End */}
+            gridTemplateRows={'full 1fr full'}
+            gridTemplateColumns={'350px 1fr'} // Mengatur lebar kolom "side" menjadi sekitar 300
+            h="100%"
+            gap="1"
+            color="blackAlpha.700"
+            fontWeight="bold"
+            mt={70}
+            mb={0}
+          >
+            {/* Side Nav Start */}
+            <GridItem p="5" pr={'2px'} area={'side'}>
+              <Card bg={'#F5F5F5'} boxShadow="md" mx="auto" my="auto" h="400px">
+                <CardHeader p={'10px'}>
+                  <Flex flexDirection="column" alignItems="center">
+                    <Image
+                      src="https://placehold.co/600x400"
+                      boxSize="125px"
+                      borderRadius="10px"
+                      objectFit="cover"
+                      alt="photo.profile"
+                    />
+                    <Text mt={2}>{company.name}</Text>
+                  </Flex>
+                </CardHeader>
+                <CardBody p={'10px'}>
+                  <Stack>
+                    <Text mt={2} textAlign="left">
+                      Menu Utama
+                    </Text>
+                    <hr
+                      style={{ width: '75%', borderTop: '2px solid #2A5C91' }}
+                    />
+                    <ImageAndTeksInline
+                      image="/company-profile/dashboard.png"
+                      alt="dashboar.png"
+                    >
+                      <Link>Dashboard Perusahaan</Link>
+                    </ImageAndTeksInline>
+                    <ImageAndTeksInline
+                      image="/company-profile/info-jobs.png"
+                      alt="infojobs.png"
+                    >
+                      <Link>Data Lowongan Pekerjaan</Link>
+                    </ImageAndTeksInline>
+                    <ImageAndTeksInline
+                      image="/company-profile/add-jobs.png"
+                      alt="addjobs.png"
+                    >
+                      <Link>Tambah Data Lowongan</Link>
+                    </ImageAndTeksInline>
+                  </Stack>
+                </CardBody>
+              </Card>
+            </GridItem>
+            {/* Side Nav End */}
 
-        {/* Main Start */}
-        <GridItem p="5" area={'profile'}>
-          <Card bg={'#F5F5F5'} boxShadow="md" p="20px">
-            <CardHeader>
-              <Flex gap={4} alignItems="center">
-                <Image
-                  src="https://placehold.co/600x400"
-                  alt="photo.profile"
-                  boxSize="155px"
-                  borderRadius="full"
-                  objectFit="cover"
-                />
-                <Stack>
-                  <Text fontSize={'30px'}>Company Name</Text>
-                  <Text
-                    fontSize={'20px'}
-                    fontWeight="normal"
-                    textColor={'#9DA1A6'}
-                  >
-                    email@example.com
-                  </Text>
-                </Stack>
-              </Flex>
-            </CardHeader>
-            <CardBody>
-              <Stack>
-                <TitleTeks>Profil perushaan</TitleTeks>
-                <Text fontSize={'19px'} fontWeight={'normal'}>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Debitis ducimus voluptatem sed quae, vitae itaque, eius
-                  dignissimos, odit voluptatibus fugiat aspernatur error
-                  reprehenderit accusantium explicabo quasi! Recusandae
-                  laboriosam cumque accusamus.
-                </Text>
-                <ImageAndTeksInline image="/company-profile/phone-call.png">
-                  0812 6544 4211
-                </ImageAndTeksInline>
-                <ImageAndTeksInline image="/company-profile/location.png">
-                  Kemang, Jakarta Selatan
-                </ImageAndTeksInline>
-                <Flex justifyContent="space-between" alignItems="center">
-                  <ImageAndTeksInline image="/company-profile/website.png">
-                    <Link href="#">www.iamryangosling.co.id</Link>
-                  </ImageAndTeksInline>
-                  <Button bg="#FFBA79" color={'black'}>
-                    Edit Data Perusahaan
-                  </Button>
-                </Flex>
-                <TitleTeks>Data Lowongan Pekerjaan dan Pelamar</TitleTeks>
-                <BoxCountJobs
-                  image="https://placehold.co/600x400"
-                  count="12"
-                  href={`/company/jobs/${id}`}
-                >
-                  Jumlah Data Lowongan Pekerjaanyang diupload
-                </BoxCountJobs>
-                <BoxCountJobs image="https://placehold.co/600x400" count="250">
-                  Jumlah Data Pelamar Pekerjaan yang Mendaftar
-                </BoxCountJobs>
-              </Stack>
-            </CardBody>
-          </Card>
-        </GridItem>
-        {/* Main End */}
-      </Grid>
+            {/* Main Start */}
+            <GridItem p="5" area={'profile'}>
+              <Card bg={'#F5F5F5'} boxShadow="md" p="20px">
+                <CardHeader>
+                  <Flex gap={4} alignItems="center">
+                    <Image
+                      src="https://placehold.co/600x400"
+                      boxSize="155px"
+                      borderRadius="full"
+                      objectFit="cover"
+                      alt="photo.profile"
+                    />
+                    <Stack>
+                      <Text fontSize={'30px'}>{company.name}</Text>
+                      <Text
+                        fontSize={'20px'}
+                        fontWeight="normal"
+                        textColor={'#9DA1A6'}
+                      >
+                        {company.email}
+                      </Text>
+                    </Stack>
+                  </Flex>
+                </CardHeader>
+                <CardBody>
+                  <Stack>
+                    <TitleTeks>Profil perushaan</TitleTeks>
+                    <Text fontSize={'19px'} fontWeight={'normal'}>
+                      {company.description}
+                    </Text>
+                    <ImageAndTeksInline
+                      image="/company-profile/phone-call.png"
+                      alt="phonecall.png"
+                    >
+                      {company.phone_number}
+                    </ImageAndTeksInline>
+                    <ImageAndTeksInline
+                      image="/company-profile/location.png"
+                      alt="location.png"
+                    >
+                      {company.address}
+                    </ImageAndTeksInline>
+                    <Flex justifyContent="space-between" alignItems="center">
+                      <ImageAndTeksInline
+                        image="/company-profile/website.png"
+                        alt="website.png"
+                      >
+                        <Link href="#">{company.website}</Link>
+                      </ImageAndTeksInline>
+                      <Link href={`/company/update/${id}`}>
+                        <Button bg="#FFBA79" color={'black'}>
+                          Edit Data Perusahaan
+                        </Button>
+                      </Link>
+                    </Flex>
+                    <TitleTeks>Data Lowongan Pekerjaan dan Pelamar</TitleTeks>
+                    <BoxCountJobs
+                      image="https://placehold.co/600x400"
+                      count="12"
+                      href={`/company/jobs/${id}`}
+                    >
+                      Jumlah Data Lowongan Pekerjaanyang diupload
+                    </BoxCountJobs>
+                    <BoxCountJobs
+                      image="https://placehold.co/600x400"
+                      count="250"
+                    >
+                      Jumlah Data Pelamar Pekerjaan yang Mendaftar
+                    </BoxCountJobs>
+                  </Stack>
+                </CardBody>
+              </Card>
+            </GridItem>
+            {/* Main End */}
+          </Grid>
+        </>
+      )}
     </ChakraProvider>
   );
 }
@@ -184,6 +240,7 @@ const BoxCountJobs = (props) => {
           boxSize="70px"
           fontSize="69px"
           textColor="white"
+          alt={`Icon untuk menampilkan jumlah: ${count}`}
         >
           {count}
         </ImageAndTeksInline>
