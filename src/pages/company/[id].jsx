@@ -121,13 +121,27 @@ export default function CompanyProfile() {
               <Card bg={'#F5F5F5'} boxShadow="md" p="20px">
                 <CardHeader>
                   <Flex gap={4} alignItems="center">
-                    <Image
-                      src="https://placehold.co/600x400"
-                      boxSize="155px"
-                      borderRadius="full"
-                      objectFit="cover"
-                      alt="photo.profile"
-                    />
+                    <Box>
+                      <Image
+                        src={`http://localhost:3000/api/v1/${company.photo_profile}`}
+                        boxSize="155px"
+                        borderRadius="full"
+                        objectFit="cover"
+                        alt="photo.profile"
+                      />
+                      <Button
+                        position="absolute"
+                        bgColor="#2A5C91"
+                        color="white"
+                        borderRadius="100%"
+                        fontSize="sm"
+                        p="1"
+                        mt={'-2rem'}
+                        ml={'7rem'}
+                      >
+                        <Image src="/company-profile/camera.png" />
+                      </Button>
+                    </Box>
                     <Stack>
                       <Text fontSize={'30px'}>{company.name}</Text>
                       <Text
