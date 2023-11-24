@@ -15,10 +15,42 @@ import {
 } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
+import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
+import { useEffect, useState } from 'react';
 
 export default function CompanyJobs() {
   const router = useRouter();
+  const [jobs, setJobs] = useState([]);
+  const [company, setCompany] = useState();
+  const [isLoading, setLoading] = useState(true);
   const { id } = router.query;
+  useEffect(() => {
+    const fetchCompanyById = async () => {
+      try {
+        if (id) {
+          const responseCompany = await getCompanyById(id);
+          const response = await getCompanyJobs(id);
+          console.log(response);
+          setJobs(response.data);
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchCompanyById();
+    }
+  }, [id]);
+  console.log(jobs);
+  // if (!isLoading && !jobs) {
+  //   // Redirect to 404 page if company data is not found
+  //   router.push('/404');
+  //   return null;
+  // }
+
   return (
     <ChakraProvider>
       <Navbar />
@@ -76,61 +108,84 @@ export default function CompanyJobs() {
             <Text fontSize="30px" fontWeight="bold" mb="7">
               Data Lowongan Pekerjaan yang Terupload
             </Text>
-            <Card bg={'#2A5C91'} boxShadow="md" p="20px" my={3}>
-              <Flex>
-                <Stack w="280px">
-                  <Text fontSize="14px" fontWeight="normal" textColor="#C0C0C0">
-                    Nama Pekerjaan
-                  </Text>
-                  <Text fontSize="30px" fontWeight="bold" textColor="white">
-                    IT SUPPORT
-                  </Text>
-                  <Text fontSize="14px" fontWeight="normal" textColor="#C0C0C0">
-                    Kategori Pekerjaan
-                  </Text>
-                  <Text fontSize="17px" fontWeight="bold" textColor="white">
-                    IT, COMPUTER, SOFTWARE ENGINEER
-                  </Text>
-                </Stack>
-                <Box w="290px" bg="#0B1A2A" rounded="10" px="25px" py="20px">
-                  <Flex gap={1}>
-                    <Stack>
-                      <ContentMid image="/company-profile/job/lokasi.png">
-                        Serang, Banten
-                      </ContentMid>
-                      <ContentMid image="/company-profile/job/kuota.png">
-                        5 orang
-                      </ContentMid>
-                      <Text fontSize="12px" fontWeight="normal" color="#C0C0C0">
-                        Data Pelamar Pekerjaan
-                      </Text>
-                      <Text fontSize="20px" fontWeight="bold" color="white">
-                        5 Pelamar
-                      </Text>
-                    </Stack>
-                    <Stack>
-                      <ContentMid image="/company-profile/job/gaji.png">
-                        2.500.000
-                      </ContentMid>
-                      <ContentMid image="/company-profile/job/type.png">
-                        WFO
-                      </ContentMid>
-                    </Stack>
-                  </Flex>
-                </Box>
-                <Stack ml="50px">
-                  <ContentRight bg="#459B72" color="white" href={`/job/${id}`}>
-                    Lihat Data Pelamar
-                  </ContentRight>
-                  <ContentRight bg="#FFBA79" color="black">
-                    Ubah Data Lowongan
-                  </ContentRight>
-                  <ContentRight bg="#B72E2E" color="white">
-                    Tutup Lowongan
-                  </ContentRight>
-                </Stack>
-              </Flex>
-            </Card>
+            {jobs.map((job) => (
+              <Card key={job.id} bg={'#2A5C91'} boxShadow="md" p="20px" my={3}>
+                <Flex>
+                  <Stack w="280px">
+                    <Text
+                      fontSize="14px"
+                      fontWeight="normal"
+                      textColor="#C0C0C0"
+                    >
+                      Nama Pekerjaan
+                    </Text>
+                    <Text fontSize="30px" fontWeight="bold" textColor="white">
+                      {job.name}
+                    </Text>
+                    <Text
+                      fontSize="14px"
+                      fontWeight="normal"
+                      textColor="#C0C0C0"
+                    >
+                      Kategori Pekerjaan
+                    </Text>
+                    <Text fontSize="17px" fontWeight="bold" textColor="white">
+                      {job.category}
+                    </Text>
+                  </Stack>
+                  <Box w="290px" bg="#0B1A2A" rounded="10" px="25px" py="20px">
+                    <Flex gap={1}>
+                      <Stack>
+                        <ContentMid image="/company-profile/job/lokasi.png">
+                          {job.location}
+                        </ContentMid>
+                        <ContentMid image="/company-profile/job/kuota.png">
+                          {job.capacity} Orang
+                        </ContentMid>
+                        <Text
+                          fontSize="12px"
+                          fontWeight="normal"
+                          color="#C0C0C0"
+                        >
+                          Data Pelamar Pekerjaan
+                        </Text>
+                        <Text fontSize="20px" fontWeight="bold" color="white">
+                          5 Pelamar
+                        </Text>
+                      </Stack>
+                      <Stack mr={2}>
+                        <ContentMid image="/company-profile/job/gaji.png">
+                          {new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR'
+                          })
+                            .format(parseFloat(job.salary).toFixed(0))
+                            .replace(',00', '')}
+                        </ContentMid>
+                        <ContentMid image="/company-profile/job/type.png">
+                          {job.job_type}
+                        </ContentMid>
+                      </Stack>
+                    </Flex>
+                  </Box>
+                  <Stack ml="50px">
+                    <ContentRight
+                      bg="#459B72"
+                      color="white"
+                      href={`/job/${id}`}
+                    >
+                      Lihat Data Pelamar
+                    </ContentRight>
+                    <ContentRight bg="#FFBA79" color="black">
+                      Ubah Data Lowongan
+                    </ContentRight>
+                    <ContentRight bg="#B72E2E" color="white">
+                      Tutup Lowongan
+                    </ContentRight>
+                  </Stack>
+                </Flex>
+              </Card>
+            ))}
           </Card>
         </GridItem>
         {/* Main End */}
