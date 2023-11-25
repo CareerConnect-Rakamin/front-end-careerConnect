@@ -26,14 +26,22 @@ const Navbar = () => {
     }
   }, []);
 
+  const handleLogout = async () => {
+    window.localStorage.removeItem('token');
+    setIsLogin(false);
+    router.push('/');
+  };
+
   return (
     <Flex
+      position={'fixed'}
       width={'full'}
       as={'nav'}
       justify="space-between"
       background={'custom.blue'}
       p={'1rem'}
       fontFamily={'lexendDeca'}
+      zIndex={1}
     >
       <Flex display={'flex'} alignItems={'center'} marginLeft={3}>
         <Link href="/">
@@ -47,7 +55,7 @@ const Navbar = () => {
       </Flex>
       <Flex display={'flex'} alignItems={'center'}>
         <Link
-          href="#"
+          href="/search"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
@@ -99,15 +107,7 @@ const Navbar = () => {
                 <MenuItem>Profile</MenuItem>
               </Link>
               <MenuDivider />
-              <MenuItem
-                onClick={() => {
-                  window.localStorage.removeItem('token');
-                  setIsLogin(false);
-                  router.push('/');
-                }}
-              >
-                Logout
-              </MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>
         ) : (

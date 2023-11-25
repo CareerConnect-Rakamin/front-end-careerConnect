@@ -6,6 +6,7 @@ import {
   VStack,
   useBreakpoint
 } from '@chakra-ui/react';
+import SearchBar from './SearchBar';
 
 function Hero() {
   return (
@@ -20,12 +21,20 @@ function Hero() {
         w={'full'}
         justify={'center'}
         px={useBreakpoint({ base: 4, md: 8 })}
-        bgGradient={'linear(to-r, blackAlpha.500, transparent)'}
+        bgGradient={'linear(to-r, blackAlpha.600, transparent)'}
       >
-        <Stack maxW={'2xl'}>
-          <Text color={'white'} fontSize={'4xl'} textAlign={'center'}>
-            Menemukan Kesempatan, Membangun Karir yang Sukses
+        <Stack maxW={'3xl'}>
+          <Text
+            color={'white'}
+            fontSize={'3xl'}
+            fontWeight={'semibold'}
+            textAlign={'center'}
+            fontFamily={'lexendDeca'}
+          >
+            Peluang Karir Menanti, Jelajahi Dunia Pekerjaan dengan Lebih Mudah
+            Bersama Kami.
           </Text>
+          <SearchBar />
         </Stack>
       </VStack>
     </Flex>

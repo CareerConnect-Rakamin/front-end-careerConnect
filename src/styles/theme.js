@@ -1,5 +1,5 @@
 import { extendTheme } from '@chakra-ui/react';
-import { Lexend_Deca } from '@next/font/google';
+import { Lexend_Deca } from 'next/font/google';
 
 const lexendDeca = Lexend_Deca({
   subsets: ['latin'],
