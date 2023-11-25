@@ -1,6 +1,11 @@
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import {
+  getApllicants,
+  getJobById,
+  updateStatusApplicants
+} from '@/modules/fetch';
+import {
   Box,
   Button,
   Card,
@@ -20,10 +25,73 @@ import {
   Tr
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
+const token =
+  typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+console.log(token);
 export default function JobById() {
   const router = useRouter();
   const { id } = router.query;
+  const [job, setJob] = useState([]);
+  const [applicants, setApplicants] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [statusMap, setStatusMap] = useState({});
+
+  const handleSelectChange = async (event, applicantId) => {
+    const newStatusMap = { ...statusMap, [applicantId]: event.target.value };
+    const isConfirmed = window.confirm(
+      `Apakah Anda yakin mengubah status ini menjadi ${event.target.value} untuk aplikasi dengan ID ${applicantId}?`
+    );
+
+    setStatusMap(newStatusMap);
+    if (isConfirmed) {
+      try {
+        await updateStatusApplicants(id, event.target.value, applicantId);
+        setStatusMap(newStatusMap);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  };
+  console.log(statusMap);
+  const getGenderLabel = (gender) => {
+    return gender === 'M'
+      ? 'Pria'
+      : gender === 'F'
+        ? 'Wanita'
+        : 'Tidak Diketahui';
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (id) {
+          const companyJob = await getJobById(id);
+          const response = await getApllicants(id);
+          setJob(companyJob.data);
+          setApplicants(response.data);
+          const initialStatusMap = response.data.reduce((map, applicant) => {
+            map[applicant.jobseekers_id] = applicant.status;
+            return map;
+          }, {});
+
+          setStatusMap(initialStatusMap);
+          setLoading(false);
+        }
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  useEffect(() => {});
+
+  console.log(applicants);
   return (
     <ChakraProvider>
       <Navbar></Navbar>
@@ -44,26 +112,26 @@ export default function JobById() {
               <Flex p={2} alignItems="center" gap="8rem">
                 <Stack>
                   <Text fontSize="29px" fontWeight="bold">
-                    IT SUPPORT
+                    {job.name}
                   </Text>
                   <Text fontSize="17px" fontWeight="bold">
-                    IT, COMPUTER, SOFTWARE ENGINEER
+                    {job.category}
                   </Text>
                 </Stack>
                 <Stack>
                   <ImageAndTeksInline image="/company-profile/location.png">
-                    Serang, Banten
+                    {job.location}
                   </ImageAndTeksInline>
                   <ImageAndTeksInline image="/company-profile/job/detail/gaji.png">
-                    2.500.000
+                    {job.salary}
                   </ImageAndTeksInline>
                 </Stack>
                 <Stack>
                   <ImageAndTeksInline image="/company-profile/job/detail/type.png">
-                    WFO
+                    {job.job_type}
                   </ImageAndTeksInline>
                   <ImageAndTeksInline image="/company-profile/job/detail/kuota.png">
-                    5 Orang
+                    {job.capacity} orang
                   </ImageAndTeksInline>
                 </Stack>
               </Flex>
@@ -80,7 +148,7 @@ export default function JobById() {
                 Jumlah Pelamar Pekerjaan
               </Text>
               <Text color="white" fontSize="30px" fontWeight="bold">
-                5 Pelamar
+                {applicants.length} Pelamar
               </Text>
             </Flex>
           </Flex>
@@ -103,42 +171,97 @@ export default function JobById() {
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <TbodyData>Inal Mahpud</TbodyData>
-                  <TbodyData>20</TbodyData>
-                  <TbodyData>Pria</TbodyData>
-                  <TbodyData>perum srirahayu</TbodyData>
-                  <TbodyData>00907643231</TbodyData>
-                  <TbodyData>
-                    <Link color="#2A5C91">Link CV</Link>
-                  </TbodyData>
-                  <TbodyData>
-                    <Link color="#2A5C91" href="#">
-                      Link portofolio
-                    </Link>
-                  </TbodyData>
-                  <TbodyData>
-                    <Flex gap={3}>
-                      <Link href="#">
-                        <Button bg="#459B72" color="white">
-                          Chat
-                        </Button>
-                      </Link>
-                      <Select
-                        minWidth="100px"
-                        p="0"
-                        fontSize="12px"
-                        fontWeight="bold"
-                        color="black"
-                        placeholder="Move to"
-                      >
-                        <option value="option1">Option 1</option>
-                        <option value="option2">Option 2</option>
-                        <option value="option3">Option 3</option>
-                      </Select>
-                    </Flex>
-                  </TbodyData>
-                </Tr>
+                {applicants &&
+                  applicants.map((applicant) => (
+                    <Tr key={applicant.jobseekers_id}>
+                      <TbodyData>{applicant.jobseeker_name}</TbodyData>
+                      <TbodyData>{applicant.age}</TbodyData>
+                      <TbodyData>{getGenderLabel(applicant.gender)}</TbodyData>
+                      <TbodyData>{applicant.jobseeker_address}</TbodyData>
+                      <TbodyData>{applicant.phone_number}</TbodyData>
+                      <TbodyData>
+                        <Link
+                          color="#2A5C91"
+                          href={`http://localhost:3000/api/v1/${applicant.cv_jobseeker}`}
+                        >
+                          Link CV
+                        </Link>
+                      </TbodyData>
+                      <TbodyData>
+                        <Link color="#2A5C91" href="#">
+                          Link portofolio
+                        </Link>
+                      </TbodyData>
+                      <TbodyData>
+                        <Flex gap={3}>
+                          <Link href="#">
+                            <Button bg="#459B72" color="white">
+                              Chat
+                            </Button>
+                          </Link>
+
+                          <Select
+                            minWidth="100px"
+                            p="0"
+                            fontSize="12px"
+                            fontWeight="bold"
+                            color="black"
+                            placeholder="Move To"
+                            defaultValue={
+                              statusMap[applicant.jobseekers_id] || 'pending'
+                            }
+                            onChange={(event) =>
+                              handleSelectChange(event, applicant.jobseekers_id)
+                            }
+                            textColor="black"
+                            bg={
+                              statusMap[applicant.jobseekers_id] === 'rejected'
+                                ? 'red'
+                                : statusMap[applicant.jobseekers_id] ===
+                                    'accepted'
+                                  ? 'green'
+                                  : statusMap[applicant.jobseekers_id] ===
+                                      'interview'
+                                    ? 'blue'
+                                    : 'white'
+                            }
+                            isDisabled={
+                              statusMap[applicant.jobseekers_id] ===
+                                'rejected' ||
+                              statusMap[applicant.jobseekers_id] ===
+                                'accepted' ||
+                              statusMap[applicant.jobseekers_id] === 'cancel'
+                            }
+                          >
+                            <option
+                              value="interview"
+                              style={{
+                                backgroundColor: 'blue',
+                                color: 'white'
+                              }}
+                            >
+                              interview
+                            </option>
+                            <option
+                              value="accepted"
+                              style={{
+                                backgroundColor: 'green',
+                                color: 'white'
+                              }}
+                            >
+                              Accepted
+                            </option>
+                            <option
+                              value="rejected"
+                              style={{ backgroundColor: 'red', color: 'white' }}
+                            >
+                              rejected
+                            </option>
+                          </Select>
+                        </Flex>
+                      </TbodyData>
+                    </Tr>
+                  ))}
               </Tbody>
             </Table>
           </TableContainer>
@@ -146,7 +269,7 @@ export default function JobById() {
           {/* Table End */}
         </Card>
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </ChakraProvider>
   );
 }
