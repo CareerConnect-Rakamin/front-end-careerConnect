@@ -1,13 +1,20 @@
 import { Button, Flex, Heading } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
   const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
 
-  const handleClick = async () => {
+  useEffect(() => {
+    const token = window.localStorage.getItem('token');
+    if (!token) {
+      router.push('/');
+    }
+  }, []);
+
+  const logoutHandler = async () => {
     window.localStorage.removeItem('token');
     setIsLogin(false);
     router.push('/');
@@ -26,7 +33,7 @@ export default function Dashboard() {
         w={'10%'}
         h="2rem"
         size="md"
-        onClick={handleClick}
+        onClick={logoutHandler}
       >
         Logout
       </Button>

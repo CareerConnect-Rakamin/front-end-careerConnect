@@ -16,7 +16,7 @@ const customTheme = extendTheme({
       blue: '#2a5c91',
       grey: '#9da1a6',
       soft_grey: '#c0c0c0',
-      ligth_orange: '#ffba79'
+      light_orange: '#ffba79'
     }
   }
 });
