@@ -21,7 +21,7 @@ const SearchBar = () => {
       }
 
       setSearchParams({ keyword });
-      router.push({ pathname: `/search/${keyword}`, query: searchParams });
+      router.push({ pathname: `/search-jobs/${keyword}`, query: searchParams });
     }
   };
 
@@ -30,7 +30,7 @@ const SearchBar = () => {
       <Input
         bg={'white'}
         width={300}
-        placeholder="Cari Pekerjaan..."
+        placeholder="Kata Kunci: Posisi, Lokasi"
         ref={searchRef}
         onKeyDown={handleSearch}
       />
