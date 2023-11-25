@@ -1,6 +1,5 @@
 import {
   ArrowBackIcon,
-  CheckCircleIcon,
   EmailIcon,
   LockIcon,
   ViewIcon,
@@ -28,10 +27,9 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { loginUser } from '@/modules/fetch';
 
-export default function SplitScreen() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(false);
   const [show, setShow] = useState(false);
   const toast = useToast();
   const router = useRouter();
@@ -39,58 +37,65 @@ export default function SplitScreen() {
   useEffect(() => {
     const token = window.localStorage.getItem('token');
     if (token) {
-      setIsLogin(true);
+      router.push('/dashboard');
     }
   }, []);
 
   const handleClick = () => setShow(!show);
+
+  const successToast = () => {
+    toast({
+      title: 'Success',
+      description: 'You have successfully login.',
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      position: 'top-center',
+      render: () => (
+        <Box
+          textAlign={'center'}
+          borderRadius={20}
+          color="white"
+          p={3}
+          bg="green.500"
+        >
+          Berhasil Login.
+        </Box>
+      )
+    });
+  };
+
+  const errorToast = (err) => {
+    toast({
+      title: 'Failed',
+      description: 'Error',
+      status: 'failed',
+      duration: 3000,
+      isClosable: true,
+      position: 'top-center',
+      render: () => (
+        <Box
+          textAlign={'center'}
+          borderRadius={20}
+          color="white"
+          p={3}
+          bg="red.500"
+        >
+          {err.message}
+        </Box>
+      )
+    });
+  };
 
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
       const token = await loginUser(email, password);
       window.localStorage.setItem('token', token.token);
-      toast({
-        title: 'Success',
-        description: 'You have successfully login.',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-center',
-        render: () => (
-          <Box
-            textAlign={'center'}
-            borderRadius={20}
-            color="white"
-            p={3}
-            bg="green.500"
-          >
-            Berhasil login.
-          </Box>
-        )
-      });
-      setIsLogin(true);
+      successToast();
       router.push('/dashboard');
     } catch (err) {
-      toast({
-        title: 'Failed',
-        description: 'Error',
-        status: 'failed',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-center',
-        render: () => (
-          <Box
-            textAlign={'center'}
-            borderRadius={20}
-            color="white"
-            p={3}
-            bg="red.500"
-          >
-            {err.message}
-          </Box>
-        )
-      });
+      errorToast(err);
     }
   };
 
@@ -251,11 +256,11 @@ export default function SplitScreen() {
                   fontSize={{ base: '13px', md: '14px', lg: '15px' }}
                   align={'center'}
                 >
-                  Sudah punya akun?{' '}
+                  Belum punya akun?{' '}
                   <Link
                     style={{ textDecoration: 'none' }}
                     color={'blue.400'}
-                    href={'/'}
+                    href={'/auth/register'}
                   >
                     Register
                   </Link>
