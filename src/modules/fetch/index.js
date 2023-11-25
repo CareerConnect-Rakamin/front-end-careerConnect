@@ -32,4 +32,14 @@ async function getJobs(page) {
   }
 }
 
-export { loginUser, getJobs };
+async function searchJobs(keyword) {
+  try {
+    const response = await instance.get(`/jobs?keyword=${keyword}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export { loginUser, getJobs, searchJobs };
