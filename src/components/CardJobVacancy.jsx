@@ -7,6 +7,7 @@ const CardJobVacancy = ({ job }) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0
   })}`;
+
   return (
     <Box
       boxShadow={'xl'}
@@ -18,7 +19,12 @@ const CardJobVacancy = ({ job }) => {
     >
       <Flex display={'flex'} justifyContent={'flex-start'} padding={3}>
         <Box mr={5}>
-          <Image src="/images/rakamin_logo.png" alt="Rakamin" maxW={'50px'} />
+          <Image
+            src={`http://localhost:3000/api/v1/${job.company_photo}`}
+            alt="Company Logo"
+            maxW={'50px'}
+            noOfLines={2}
+          />
         </Box>
         <Box>
           <Text fontWeight={'thin'} fontSize={'xs'}>

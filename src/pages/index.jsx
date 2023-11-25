@@ -7,14 +7,6 @@ import { getJobs } from '@/modules/fetch';
 import { useEffect, useState } from 'react';
 import Pagination from '@/components/Pagination';
 
-const truncateString = (str, maxLength) => {
-  if (str.length <= maxLength) {
-    return str;
-  } else {
-    return str.slice(0, maxLength) + '...';
-  }
-};
-
 export default function Home() {
   const [page, setPage] = useState(1);
   const [jobs, setJobs] = useState([]);
@@ -42,15 +34,7 @@ export default function Home() {
       </Box>
       <SimpleGrid minChildWidth={'250px'} spacingY={8} padding={10} ml={5}>
         {jobs?.map((job) => (
-          <CardJobVacancy
-            key={job.id}
-            job={{
-              ...job,
-              name: truncateString(job.name, 20),
-              description: truncateString(job.description, 25),
-              location: truncateString(job.location, 20)
-            }}
-          />
+          <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}
       </SimpleGrid>
       <Pagination page={page} setPage={setPage} />
