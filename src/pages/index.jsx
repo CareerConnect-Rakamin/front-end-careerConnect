@@ -32,13 +32,7 @@ export default function Home() {
         <Heading color={'custom.dark_blue'}>Karir Terbaru Untuk Anda</Heading>
         <Text>Temukan Karir yang Sesuai Untuk Anda</Text>
       </Box>
-      <Flex
-        minChildWidth={'250px'}
-        justifyContent={'center'}
-        wrap={'wrap'}
-        padding={10}
-        gap={8}
-      >
+      <Flex justifyContent={'center'} wrap={'wrap'} padding={10} gap={8}>
         {jobs?.map((job) => (
           <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}

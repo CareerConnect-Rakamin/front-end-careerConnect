@@ -41,13 +41,7 @@ export default function SearchPage() {
           <SearchBar />
         </Stack>
       </Flex>
-      <Flex
-        minChildWidth={'250px'}
-        justifyContent={'center'}
-        wrap={'wrap'}
-        padding={10}
-        gap={8}
-      >
+      <Flex justifyContent={'center'} wrap={'wrap'} padding={10} gap={8}>
         {jobs?.map((job) => (
           <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}

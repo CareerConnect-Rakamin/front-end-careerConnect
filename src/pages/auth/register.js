@@ -62,7 +62,7 @@ export default function Register() {
   useEffect(() => {
     const token = window.localStorage.getItem('token');
     if (token) {
-      router.push('/dashboard');
+      router.push('/');
     }
   }, []);
 
@@ -154,12 +154,15 @@ export default function Register() {
   };
 
   return (
-    <Box pt={5} px={5} bg={'#2A5C91'} h={'100%'} w={'100%'}>
+    <Box pt={5} px={5} bg={'blue.600'} h={'100%'} w={'100%'}>
       <Link
         style={{ textDecoration: 'none' }}
-        fontSize={{ base: '14px', md: '18px', lg: '20px' }}
-        color={'#F5F5F5'}
-        href={'../'}
+        fontSize={{ base: '14px', md: '18', lg: '20px' }}
+        fontFamily={'lexendDeca'}
+        _hover={{ color: 'white', paddingLeft: '5px' }}
+        transition={'0.3s'}
+        color={'gray.300'}
+        href={'/'}
       >
         <ArrowBackIcon /> Kembali
       </Link>
@@ -178,6 +181,7 @@ export default function Register() {
             <Heading
               color={'#F5F5F5'}
               lineHeight={1}
+              fontFamily={'lexendDeca'}
               fontSize={{ base: '24px', md: '28px', lg: '30px' }}
             >
               Career Connect
@@ -199,7 +203,7 @@ export default function Register() {
             w={{ base: '97%', md: '90%', lg: '75%' }}
           >
             <Tabs align={'center'} isFitted variant="solid-rounded">
-              <TabList color={'#112941'}>
+              <TabList color={'#112941'} fontFamily={'lexendDeca'}>
                 <Tab>USER</Tab>
                 <Tab>COMPANY</Tab>
               </TabList>
@@ -208,6 +212,7 @@ export default function Register() {
                   <Stack mb={7} pt={3} align={'center'}>
                     <Heading
                       color={'#112941'}
+                      fontFamily={'lexendDeca'}
                       lineHeight={1}
                       fontSize={{ base: '22px', md: '28', lg: '30px' }}
                     >
@@ -215,7 +220,7 @@ export default function Register() {
                     </Heading>
                   </Stack>
                   <form onSubmit={userRegisterHandler}>
-                    <Box>
+                    <Box fontFamily={'lexendDeca'}>
                       <Stack spacing={5}>
                         <FormControl isRequired>
                           <InputGroup>
@@ -228,6 +233,7 @@ export default function Register() {
                               name="userName"
                               type="text"
                               placeholder="Nama Lengkap"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -248,6 +254,7 @@ export default function Register() {
                               name="userEmail"
                               type="email"
                               placeholder="Email"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -270,6 +277,7 @@ export default function Register() {
                               placeholder="Kata sandi"
                               bg={'#D9D9D9'}
                               border={10}
+                              fontWeight={'light'}
                               color={'gray.800'}
                               _placeholder={{
                                 color: 'gray.500'
@@ -302,6 +310,7 @@ export default function Register() {
                               name="userAddress"
                               type="text"
                               placeholder="Alamat"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -322,6 +331,7 @@ export default function Register() {
                                 onChange={(e) => setUserPhone(e.target.value)}
                                 name="userPhone"
                                 type="number"
+                                fontWeight={'light'}
                                 placeholder="Telepon"
                                 bg={'#D9D9D9'}
                                 border={10}
@@ -343,6 +353,7 @@ export default function Register() {
                                 name="birthPlace"
                                 type="text"
                                 placeholder="Tempat Lahir"
+                                fontWeight={'light'}
                                 bg={'#D9D9D9'}
                                 border={10}
                                 color={'gray.800'}
@@ -362,6 +373,7 @@ export default function Register() {
                                 variant={'filled'}
                                 placeholder="Jenis Kelamin"
                                 bgColor={'#D9D9D9'}
+                                fontWeight={'light'}
                                 border={10}
                                 color={'gray.800'}
                                 name="gender"
@@ -382,6 +394,7 @@ export default function Register() {
                                 name="birthDay"
                                 type="date"
                                 placeholder="Tanggal Lahir"
+                                fontWeight={'light'}
                                 bg={'#D9D9D9'}
                                 border={10}
                                 color={'gray.800'}
@@ -395,7 +408,8 @@ export default function Register() {
                       </Stack>
                       <Button
                         type="submit"
-                        fontFamily={'heading'}
+                        fontFamily={'lexendDeca'}
+                        fontWeight={'semibold'}
                         mt={10}
                         w={'full'}
                         bg={'#2A5C91'}
@@ -430,6 +444,7 @@ export default function Register() {
                   <Stack mb={7} pt={3} align={'center'}>
                     <Heading
                       color={'#112941'}
+                      fontFamily={'lexendDeca'}
                       lineHeight={1}
                       fontSize={{ base: '22px', md: '28', lg: '30px' }}
                     >
@@ -437,7 +452,7 @@ export default function Register() {
                     </Heading>
                   </Stack>
                   <form onSubmit={companyRegisterHandler}>
-                    <Box>
+                    <Box fontFamily={'lexendDeca'}>
                       <Stack spacing={5}>
                         <FormControl isRequired>
                           <InputGroup>
@@ -450,6 +465,7 @@ export default function Register() {
                               name="compName"
                               type="text"
                               placeholder="Nama Company"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -470,6 +486,7 @@ export default function Register() {
                               name="compEmail"
                               type="email"
                               placeholder="Email"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -490,6 +507,7 @@ export default function Register() {
                               name="compPassword"
                               type={show ? 'text' : 'password'}
                               placeholder="Kata sandi"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -524,6 +542,7 @@ export default function Register() {
                               name="compAddress"
                               type="text"
                               placeholder="Alamat"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -544,6 +563,7 @@ export default function Register() {
                               name="compPhone"
                               type="number"
                               placeholder="Telepon"
+                              fontWeight={'light'}
                               bg={'#D9D9D9'}
                               border={10}
                               color={'gray.800'}
@@ -561,6 +581,7 @@ export default function Register() {
                                 onChange={(e) => setCompType(e.target.value)}
                                 variant={'filled'}
                                 placeholder="Jenis Company"
+                                fontWeight={'light'}
                                 bgColor={'#D9D9D9'}
                                 border={10}
                                 color={'gray.800'}
@@ -593,6 +614,7 @@ export default function Register() {
                                 name="compWebsite"
                                 type="text"
                                 placeholder="Website"
+                                fontWeight={'light'}
                                 bg={'#D9D9D9'}
                                 border={10}
                                 color={'gray.800'}
@@ -606,7 +628,8 @@ export default function Register() {
                       </Stack>
                       <Button
                         type="submit"
-                        fontFamily={'heading'}
+                        fontFamily={'lexendDeca'}
+                        fontWeight={'semibold'}
                         mt={10}
                         w={'full'}
                         bg={'#2A5C91'}

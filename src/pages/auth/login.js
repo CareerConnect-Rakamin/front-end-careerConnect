@@ -92,7 +92,6 @@ export default function Login() {
     try {
       const token = await loginUser(email, password);
       window.localStorage.setItem('token', token.token);
-      setIsLogin(true);
       router.push('/');
       successToast();
     } catch (err) {
@@ -185,6 +184,7 @@ export default function Login() {
                       placeholder="Email"
                       bg={'#e7e7e7e7'}
                       border={10}
+                      fontWeight={'hairline'}
                       color={'gray.800'}
                       _placeholder={{
                         color: 'gray.500'
@@ -204,6 +204,7 @@ export default function Login() {
                       type={show ? 'text' : 'password'}
                       placeholder="Kata sandi"
                       bg={'#e7e7e7e7'}
+                      fontWeight={'hairline'}
                       border={10}
                       color={'gray.800'}
                       _placeholder={{
