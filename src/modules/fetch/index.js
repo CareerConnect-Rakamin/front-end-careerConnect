@@ -34,7 +34,7 @@ async function registerJobSeeker({
 }) {
   try {
     const response = await instance.post(
-      '/auth//register/jobseeker',
+      '/auth/register/jobseeker',
       {
         email,
         password,
