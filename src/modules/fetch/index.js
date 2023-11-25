@@ -1,6 +1,5 @@
 import { instance } from '@/modules/axios';
 
-// Function for login user endpoint
 async function loginUser(email, password) {
   try {
     const response = await instance.post(
@@ -103,4 +102,16 @@ async function registerCompany({
   }
 }
 
-export { loginUser, registerJobSeeker, registerCompany };
+
+async function getJobs(page) {
+  try {
+    const response = await instance.get(`/jobs?page=${page}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+export { loginUser, registerJobSeeker, registerCompany, getJobs };

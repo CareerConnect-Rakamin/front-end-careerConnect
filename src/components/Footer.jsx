@@ -6,13 +6,14 @@ import {
   Image,
   Link,
   SimpleGrid,
+  Stack,
   Text
 } from '@chakra-ui/react';
 import {
   FaLocationDot,
   FaInstagram,
   FaLinkedinIn,
-  FaTwitter,
+  FaXTwitter,
   FaFacebook
 } from 'react-icons/fa6';
 
@@ -46,7 +47,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Kontak
         </Text>
-        <Grid rowGap={3}>
+        <Grid rowGap={3} fontWeight={'hairline'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -89,7 +90,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Pencari Kerja
         </Text>
-        <Grid rowGap={2}>
+        <Grid rowGap={2} fontWeight={'hairline'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -129,7 +130,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Perusahaan
         </Text>
-        <Grid rowGap={2}>
+        <Grid rowGap={2} fontWeight={'hairline'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -170,14 +171,14 @@ const BodyFooter = () => {
           Sosial Media
         </Text>
         <Flex alignItems={'center'} gap={3}>
-          <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
+          <Link fontSize={'2xl'} _hover={{ color: '' }}>
             <FaInstagram />
           </Link>
           <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
             <FaLinkedinIn />
           </Link>
           <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
-            <FaTwitter />
+            <FaXTwitter />
           </Link>
           <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
             <FaFacebook />
@@ -198,20 +199,18 @@ const BottomFooter = () => {
 
 const Footer = () => {
   return (
-    <Box
+    <Stack
       as="footer"
       w="full"
       bg="custom.dark_blue"
-      position="fixed"
       bottom={0}
       fontFamily="lexendDeca"
-      zIndex={1}
       p={5}
     >
       <HeaderFooter />
       <BodyFooter />
       <BottomFooter />
-    </Box>
+    </Stack>
   );
 };
 

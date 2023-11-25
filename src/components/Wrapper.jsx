@@ -1,14 +1,14 @@
-import { VStack } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import Navbar from './Navbar';
 import Footer from './Footer';
 
 function Wrapper(props) {
   return (
-    <VStack minH="100vh" minW="100vw">
+    <Stack>
       <Navbar />
-      {props.children}
+      <Box marginTop={'64px'}>{props.children}</Box>
       <Footer />
-    </VStack>
+    </Stack>
   );
 }
 
