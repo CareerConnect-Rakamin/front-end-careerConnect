@@ -75,7 +75,7 @@ async function registerCompany({
 }) {
   try {
     const response = await instance.post(
-      '/auth//register/company',
+      '/auth/register/company',
       {
         email,
         password,
