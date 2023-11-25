@@ -1,10 +1,10 @@
 import Head from 'next/head';
-import Wrapper from '@/components/Wrapper';
-import { Box, Heading, SimpleGrid, Text } from '@chakra-ui/react';
-import CardJobVacancy from '@/components/CardJobVacancy';
-import Hero from '@/components/Hero';
-import { getJobs } from '@/modules/fetch';
 import { useEffect, useState } from 'react';
+import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { getJobs } from '@/modules/fetch';
+import CardJobVacancy from '@/components/CardJobVacancy';
+import Wrapper from '@/components/Wrapper';
+import Hero from '@/components/Hero';
 import Pagination from '@/components/Pagination';
 
 export default function Home() {
@@ -32,11 +32,17 @@ export default function Home() {
         <Heading color={'custom.dark_blue'}>Karir Terbaru Untuk Anda</Heading>
         <Text>Temukan Karir yang Sesuai Untuk Anda</Text>
       </Box>
-      <SimpleGrid minChildWidth={'250px'} spacingY={8} padding={10} ml={5}>
+      <Flex
+        minChildWidth={'250px'}
+        justifyContent={'center'}
+        wrap={'wrap'}
+        padding={10}
+        gap={8}
+      >
         {jobs?.map((job) => (
           <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}
-      </SimpleGrid>
+      </Flex>
       <Pagination page={page} setPage={setPage} />
     </Wrapper>
   );
