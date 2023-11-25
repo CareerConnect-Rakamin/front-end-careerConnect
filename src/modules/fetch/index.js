@@ -102,7 +102,6 @@ async function registerCompany({
   }
 }
 
-
 async function getJobs(page) {
   try {
     const response = await instance.get(`/jobs?page=${page}`);
@@ -112,7 +111,6 @@ async function getJobs(page) {
     console.log(error);
   }
 }
-
 
 async function searchJobs(keyword) {
   try {
