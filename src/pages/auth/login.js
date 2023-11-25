@@ -70,7 +70,7 @@ export default function SplitScreen() {
         )
       });
       setIsLogin(true);
-      router.push('/dashboard');
+      router.push('/');
     } catch (err) {
       toast({
         title: 'Failed',
@@ -97,28 +97,36 @@ export default function SplitScreen() {
   return (
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
       <Head>
-        <title>Login</title>
+        <title>Login - CareerConnect</title>
       </Head>
       <Flex flex={4} align={'center'} justify={'center'} direction={'column'}>
-        <Box p={5} bg={'#2A5C91'} h={'100%'} w={'100%'}>
+        <Box
+          p={5}
+          bgImage={'/images/login-sidephoto.jpg'}
+          backgroundSize={'cover'}
+          h={'100%'}
+          w={'100%'}
+        >
           <Link
             style={{ textDecoration: 'none' }}
             fontSize={{ base: '14px', md: '18', lg: '20px' }}
-            color={'#F5F5F5'}
-            href={'../'}
+            fontFamily={'lexendDeca'}
+            _hover={{ color: 'custom.blue', paddingLeft: '5px' }}
+            transition={'0.3s'}
+            color={'gray.500'}
+            href={'/'}
           >
             <ArrowBackIcon /> Kembali
           </Link>
-          <Flex pt={10} align={'center'} direction={'column'}>
-            <Image
-              src={'/homepage-no_background.png'}
-              alt={'homepage-no_background.png'}
-              w={'75%'}
-            />
-          </Flex>
         </Box>
       </Flex>
-      <Flex py={5} flex={3} align={'center'} direction={'column'}>
+      <Flex
+        py={3}
+        flex={3}
+        align={'center'}
+        direction={'column'}
+        fontFamily={'lexendDeca'}
+      >
         <Image
           src={'/CareerConnect-1.png'}
           alt={'CareerConnect-1.png'}
@@ -126,15 +134,16 @@ export default function SplitScreen() {
           w={'16%'}
         />
         <Heading
-          color={'#112941'}
+          color={'custom.dark_blue'}
           lineHeight={1}
-          mb={10}
+          mb={8}
           fontSize={{ base: '24px', md: '30', lg: '32px' }}
+          fontFamily={'lexendDeca'}
         >
           Career Connect
         </Heading>
         <Stack
-          boxShadow={'xl'}
+          boxShadow={'2xl'}
           bg={'#F5F5F5'}
           rounded={'xl'}
           mx={10}
@@ -144,11 +153,12 @@ export default function SplitScreen() {
           spacing={{ base: 8 }}
           minW={'65%'}
         >
-          <Stack mb={5} align={'center'}>
+          <Stack mb={2} align={'center'}>
             <Heading
-              color={'#112941'}
+              color={'custom.dark_blue'}
               lineHeight={1}
               fontSize={{ base: '22px', md: '28', lg: '30px' }}
+              fontFamily={'lexendDeca'}
             >
               Login
             </Heading>
@@ -167,7 +177,7 @@ export default function SplitScreen() {
                       name="email"
                       type="email"
                       placeholder="Email"
-                      bg={'#D9D9D9'}
+                      bg={'#e7e7e7e7'}
                       border={10}
                       color={'gray.800'}
                       _placeholder={{
@@ -187,7 +197,7 @@ export default function SplitScreen() {
                       name="password"
                       type={show ? 'text' : 'password'}
                       placeholder="Kata sandi"
-                      bg={'#D9D9D9'}
+                      bg={'#e7e7e7e7'}
                       border={10}
                       color={'gray.800'}
                       _placeholder={{
@@ -214,7 +224,7 @@ export default function SplitScreen() {
               <Button
                 type="submit"
                 fontFamily={'heading'}
-                mt={10}
+                mt={8}
                 w={'full'}
                 bg={'#2A5C91'}
                 color={'white'}
@@ -242,6 +252,7 @@ export default function SplitScreen() {
                   fontSize={{ base: '12px', md: '13px', lg: '14px' }}
                   color={'blue.400'}
                   href={'/'}
+                  _hover={{ color: 'gray.500' }}
                 >
                   Lupa sandi?
                 </Link>
@@ -256,6 +267,7 @@ export default function SplitScreen() {
                     style={{ textDecoration: 'none' }}
                     color={'blue.400'}
                     href={'/'}
+                    _hover={{ color: 'red.500' }}
                   >
                     Register
                   </Link>
