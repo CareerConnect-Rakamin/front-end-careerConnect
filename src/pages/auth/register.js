@@ -127,7 +127,7 @@ export default function Register() {
         date_of_birth: String(birthDay)
       });
       successToast();
-      router.push('/');
+      router.push('/auth/login');
     } catch (err) {
       errorToast(err);
     }
