@@ -1,7 +1,7 @@
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Button, Flex, Stack, Text } from '@chakra-ui/react';
 
-const Pagination = ({ page, setPage }) => {
+const Pagination = ({ page, setPage, lastPage }) => {
   const scrollTop = () => {
     scrollTo({
       top: 550,
@@ -31,8 +31,15 @@ const Pagination = ({ page, setPage }) => {
         >
           <ArrowBackIcon fontSize={'md'} />
         </Button>
-        <Text fontSize={'md'}>{page}</Text>
-        <Button onClick={handleNextPage} bg={'custom.blue'} color={'white'}>
+        <Text fontSize={'md'}>
+          {page} of {lastPage}
+        </Text>
+        <Button
+          onClick={handleNextPage}
+          isDisabled={page >= lastPage}
+          bg={'custom.blue'}
+          color={'white'}
+        >
           <ArrowForwardIcon fontSize={'md'} />
         </Button>
       </Flex>

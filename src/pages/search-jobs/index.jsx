@@ -10,12 +10,15 @@ import { useEffect, useState } from 'react';
 export default function SearchPage() {
   const [page, setPage] = useState(1);
   const [jobs, setJobs] = useState([]);
+  const [lastPage, setLastPage] = useState(0);
 
   const fetchData = async () => {
     const response = await getJobs(page);
     const newJobs = response.data;
+    const lastPage = response.pagination;
 
     setJobs(newJobs);
+    setLastPage(lastPage);
   };
 
   useEffect(() => {
@@ -46,7 +49,11 @@ export default function SearchPage() {
           <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}
       </Flex>
-      <Pagination page={page} setPage={setPage} />
+      <Pagination
+        page={page}
+        setPage={setPage}
+        lastPage={lastPage.totalPages}
+      />
     </Wrapper>
   );
 }
