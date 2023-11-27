@@ -74,7 +74,13 @@ const Navbar = () => {
           <Image src="/images/logo.png" alt="Logo" width="40px" />
         </Link>
         <Link href="/" _hover={{ textDecoration: 'none' }} marginLeft={2}>
-          <Text color={'white'} fontSize={'2xl'} fontWeight={'bold'}>
+          <Text
+            color={'white'}
+            fontSize={'2xl'}
+            fontWeight={'bold'}
+            _hover={{ color: 'gray.300' }}
+            transition={'0.2s'}
+          >
             CareerConnect
           </Text>
         </Link>

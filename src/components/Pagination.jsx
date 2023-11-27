@@ -22,7 +22,12 @@ const Pagination = ({ page, setPage, lastPage }) => {
 
   return (
     <Stack px={5} pb={5} mr={'3rem'}>
-      <Flex justifyContent={'Flex-end'} gap={3} alignItems={'center'}>
+      <Flex
+        justifyContent={'Flex-end'}
+        gap={3}
+        alignItems={'center'}
+        fontFamily={'lexendDeca'}
+      >
         <Button
           onClick={handlePrevPage}
           isDisabled={page <= 1}
@@ -31,7 +36,7 @@ const Pagination = ({ page, setPage, lastPage }) => {
         >
           <ArrowBackIcon fontSize={'md'} />
         </Button>
-        <Text fontSize={'md'}>
+        <Text fontSize={'md'} fontWeight={'light'}>
           {page} of {lastPage}
         </Text>
         <Button

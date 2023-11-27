@@ -47,7 +47,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Kontak
         </Text>
-        <Grid rowGap={3} fontWeight={'hairline'} fontSize={'sm'}>
+        <Grid rowGap={3} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -90,7 +90,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Pencari Kerja
         </Text>
-        <Grid rowGap={2} fontWeight={'hairline'} fontSize={'sm'}>
+        <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -130,7 +130,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Perusahaan
         </Text>
-        <Grid rowGap={2} fontWeight={'hairline'} fontSize={'sm'}>
+        <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
