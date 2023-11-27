@@ -1,4 +1,5 @@
 import { instance } from '@/modules/axios';
+import { jwtDecode } from 'jwt-decode';
 
 async function loginUser(email, password) {
   try {
@@ -122,4 +123,22 @@ async function searchJobs(keyword) {
   }
 }
 
-export { loginUser, registerJobSeeker, registerCompany, getJobs, searchJobs };
+async function getPhotoProfile(token) {
+  try {
+    const decode = jwtDecode(token);
+    const id = decode.id;
+    const response = await instance.get(`/jobseekers/${id}`);
+    return response.data.data.dataProfile.photo_profile;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export {
+  loginUser,
+  registerJobSeeker,
+  registerCompany,
+  getJobs,
+  searchJobs,
+  getPhotoProfile
+};

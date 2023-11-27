@@ -14,15 +14,24 @@ import {
   Avatar
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import { getPhotoProfile } from '@/modules/fetch';
 
 const Navbar = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const [photoProfile, setPhotoPofile] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
     if (token) {
       setIsLogin(true);
+      getPhotoProfile(token)
+        .then((data) => {
+          setPhotoPofile(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
 
@@ -98,6 +107,7 @@ const Navbar = () => {
               <Avatar
                 size={'sm'}
                 src={
+                  `http://localhost:3000/api/v1/${photoProfile}` ||
                   'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
                 }
               />
