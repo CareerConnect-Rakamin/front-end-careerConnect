@@ -45,23 +45,11 @@ export default function Login() {
 
   const successToast = () => {
     toast({
-      title: 'Success',
-      description: 'You have successfully login.',
+      title: 'Berhasil Login',
       status: 'success',
       duration: 3000,
       isClosable: true,
-      position: 'top-center',
-      render: () => (
-        <Box
-          textAlign={'center'}
-          borderRadius={20}
-          color="white"
-          p={3}
-          bg="green.500"
-        >
-          Berhasil Login.
-        </Box>
-      )
+      position: 'top'
     });
   };
 
@@ -184,7 +172,8 @@ export default function Login() {
                       placeholder="Email"
                       bg={'#e7e7e7e7'}
                       border={10}
-                      fontWeight={'hairline'}
+                      fontWeight={'light'}
+                      fontSize={'sm'}
                       color={'gray.800'}
                       _placeholder={{
                         color: 'gray.500'
@@ -204,7 +193,8 @@ export default function Login() {
                       type={show ? 'text' : 'password'}
                       placeholder="Kata sandi"
                       bg={'#e7e7e7e7'}
-                      fontWeight={'hairline'}
+                      fontWeight={'light'}
+                      fontSize={'sm'}
                       border={10}
                       color={'gray.800'}
                       _placeholder={{
