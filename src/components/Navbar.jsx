@@ -11,15 +11,26 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Avatar
+  Avatar,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+  useToast
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { getPhotoProfile } from '@/modules/fetch';
 
 const Navbar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [isLogin, setIsLogin] = useState(false);
   const [photoProfile, setPhotoPofile] = useState(null);
   const router = useRouter();
+  const toast = useToast();
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
@@ -39,6 +50,12 @@ const Navbar = () => {
     window.localStorage.removeItem('token');
     setIsLogin(false);
     router.push('/');
+    toast({
+      title: 'Berhasil Logout',
+      status: 'success',
+      duration: 3000,
+      position: 'top'
+    });
   };
 
   return (
@@ -117,8 +134,23 @@ const Navbar = () => {
                 <MenuItem>Profile</MenuItem>
               </Link>
               <MenuDivider />
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={onOpen}>Logout</MenuItem>
             </MenuList>
+            <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent alignItems={'center'}>
+                <ModalHeader>Apakah anda yakin ingin keluar?</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text>Tekan &quot;Logout&quot; jika ingin keluar</Text>
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={handleLogout} colorScheme={'red'}>
+                    Logout
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Menu>
         ) : (
           <>
