@@ -1,5 +1,6 @@
 import { instance } from '@/modules/axios';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 async function loginUser(email, password) {
   try {
@@ -134,11 +135,66 @@ async function getPhotoProfile(token) {
   }
 }
 
+async function createApply(id) {
+  try {
+    const response = await instance.post(`/apply/job/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getJobById(id) {
+  try {
+    const response = await axios.get(`http://localhost:3000/api/v1/jobs/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getUserById() {
+  try {
+    const response = await instance.get(`/users`);
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      throw new Error(error.response.status);
+    }
+    throw new Error('Internal server error!');
+  }
+}
+
+async function getApply(id) {
+  try {
+    const response = await instance.get(`/apply/seeker/job/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Internal server error!');
+  }
+}
+
+async function cancelApply(id) {
+  try {
+    const response = await instance.put(`/apply/seeker/job/${id}`, {
+      status: 'cancel'
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Internal server error!');
+  }
+}
+
 export {
   loginUser,
   registerJobSeeker,
   registerCompany,
   getJobs,
   searchJobs,
-  getPhotoProfile
+  getPhotoProfile,
+  createApply,
+  getJobById,
+  getUserById,
+  getApply,
+  cancelApply
 };
