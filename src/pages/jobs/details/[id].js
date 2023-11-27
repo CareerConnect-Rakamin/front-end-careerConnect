@@ -544,42 +544,75 @@ export default function DetailsJob() {
                 ;
               </Stack>
             </Stack>
-            <Stack w={'100%'} align={'end'} justify={'right'} direction={'row'}>
-              {isApply ? (
-                isCancel ? (
-                  <Button
-                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                    borderRadius={10}
-                    fontFamily={'lexendDeca'}
-                    m={2}
-                    bg={'gray.300'}
-                    color={'white'}
-                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                  >
-                    Lamaran Dibatalkan
-                  </Button>
-                ) : isProcess ? (
-                  <Button
-                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                    borderRadius={10}
-                    fontFamily={'lexendDeca'}
-                    m={2}
-                    bg={
-                      isInterview
-                        ? 'orange.300'
+            {isCompany ? (
+              <Stack
+                w={'100%'}
+                align={'end'}
+                justify={'right'}
+                direction={'row'}
+              ></Stack>
+            ) : (
+              <Stack
+                w={'100%'}
+                align={'end'}
+                justify={'right'}
+                direction={'row'}
+              >
+                {isApply ? (
+                  isCancel ? (
+                    <Button
+                      size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                      borderRadius={10}
+                      fontFamily={'lexendDeca'}
+                      m={2}
+                      bg={'gray.300'}
+                      color={'white'}
+                      fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                    >
+                      Lamaran Dibatalkan
+                    </Button>
+                  ) : isProcess ? (
+                    <Button
+                      size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                      borderRadius={10}
+                      fontFamily={'lexendDeca'}
+                      m={2}
+                      bg={
+                        isInterview
+                          ? 'orange.300'
+                          : isAccepted
+                            ? 'green.300'
+                            : 'red.300'
+                      }
+                      color={'white'}
+                      fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                    >
+                      {isInterview
+                        ? 'Interview'
                         : isAccepted
-                          ? 'green.300'
-                          : 'red.300'
-                    }
-                    color={'white'}
-                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                  >
-                    {isInterview
-                      ? 'Interview'
-                      : isAccepted
-                        ? 'Diterima'
-                        : 'Ditolak'}
-                  </Button>
+                          ? 'Diterima'
+                          : 'Ditolak'}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={() => {
+                        isAuthenticated ? onOpen() : directHandler();
+                      }}
+                      size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                      borderRadius={10}
+                      fontFamily={'lexendDeca'}
+                      m={2}
+                      bg={'red.300'}
+                      color={'white'}
+                      fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                      _hover={{
+                        bg: '#2a5c91',
+                        transform: 'scale(1.05)'
+                      }}
+                    >
+                      Batalkan Lamaran
+                    </Button>
+                  )
                 ) : (
                   <Button
                     onClick={() => {
@@ -589,7 +622,7 @@ export default function DetailsJob() {
                     borderRadius={10}
                     fontFamily={'lexendDeca'}
                     m={2}
-                    bg={'red.300'}
+                    bg={'orange.300'}
                     color={'white'}
                     fontSize={{ base: '16px', md: '16px', lg: '18px' }}
                     _hover={{
@@ -597,30 +630,11 @@ export default function DetailsJob() {
                       transform: 'scale(1.05)'
                     }}
                   >
-                    Batalkan Lamaran
+                    Lamar Sekarang
                   </Button>
-                )
-              ) : (
-                <Button
-                  onClick={() => {
-                    isAuthenticated ? onOpen() : directHandler();
-                  }}
-                  size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                  borderRadius={10}
-                  fontFamily={'lexendDeca'}
-                  m={2}
-                  bg={'orange.300'}
-                  color={'white'}
-                  fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                  _hover={{
-                    bg: '#2a5c91',
-                    transform: 'scale(1.05)'
-                  }}
-                >
-                  Lamar Sekarang
-                </Button>
-              )}
-            </Stack>
+                )}
+              </Stack>
+            )}
           </Stack>
         </Flex>
         <Flex
