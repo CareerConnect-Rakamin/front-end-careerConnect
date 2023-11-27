@@ -3,7 +3,7 @@ import { Lexend_Deca } from 'next/font/google';
 
 const lexendDeca = Lexend_Deca({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800']
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800']
 });
 
 const customTheme = extendTheme({

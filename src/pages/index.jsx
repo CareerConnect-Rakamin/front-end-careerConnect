@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useEffect, useState } from 'react';
-import { Box, Flex, Heading, SimpleGrid, Text } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text } from '@chakra-ui/react';
 import { getJobs } from '@/modules/fetch';
 import CardJobVacancy from '@/components/CardJobVacancy';
 import Wrapper from '@/components/Wrapper';
@@ -13,12 +13,13 @@ export default function Home() {
   const [lastPage, setLastPage] = useState(0);
 
   const fetchData = async () => {
-    const response = await getJobs(page);
-    const newJobs = response.data;
-    const lastPage = response.pagination;
-
-    setJobs(newJobs);
-    setLastPage(lastPage);
+    try {
+      const response = await getJobs(page);
+      setJobs(response.data);
+      setLastPage(response.pagination);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+    }
   };
 
   useEffect(() => {
