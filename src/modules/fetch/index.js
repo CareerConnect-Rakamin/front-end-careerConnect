@@ -93,8 +93,7 @@ async function updateStatusApplicants(id, status, seekerId) {
   }
 }
 
-async function editCompany(
-  id,
+async function editCompany({
   email,
   password,
   name,
@@ -104,9 +103,9 @@ async function editCompany(
   email_company,
   phone_number,
   address
-) {
+}) {
   try {
-    const response = await instance.put(`/companies/${id}`, {
+    const response = await instance.put(`/companies`, {
       email,
       password,
       name,

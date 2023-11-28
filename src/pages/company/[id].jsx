@@ -193,7 +193,7 @@ export default function CompanyProfile() {
                         image="/company-profile/website.png"
                         alt="website.png"
                       >
-                        <Link href="#">{company.website}</Link>
+                        <Link href={company.website}>{company.website}</Link>
                       </ImageAndTeksInline>
                       <Link href={`/company/update/${id}`}>
                         <Button bg="#FFBA79" color={'black'}>
@@ -201,6 +201,11 @@ export default function CompanyProfile() {
                         </Button>
                       </Link>
                     </Flex>
+                    <Link href={`/company/update/account/${id}`}>
+                      <Button bg="#FFBA79" color={'black'}>
+                        Edit Account
+                      </Button>
+                    </Link>
                     <TitleTeks>Data Lowongan Pekerjaan dan Pelamar</TitleTeks>
                     <BoxCountJobs
                       image="/company-profile/cont-jobs.png"
