@@ -52,10 +52,8 @@ async function registerJobSeeker({
         }
       }
     );
-    console.log('RESPONSE IN FETCH ==>', response);
     return response.data;
   } catch (error) {
-    console.log('ERROR IN FETCH ==>', error);
     if (error.response.status === 401) {
       throw new Error('Email atau kata sandi salah!');
     }
@@ -93,10 +91,8 @@ async function registerCompany({
         }
       }
     );
-    console.log('RESPONSE IN FETCH ==>', response);
     return response.data;
   } catch (error) {
-    console.log('ERROR IN FETCH ==>', error);
     if (error.response.status === 401) {
       throw new Error('Email atau kata sandi salah!');
     }
@@ -193,6 +189,9 @@ async function getApply(id) {
     const response = await instance.get(`/apply/seeker/job/${id}`);
     return response.data;
   } catch (error) {
+    if (error.response.status === 404) {
+      throw 'Belum ada apply di job ini';
+    }
     throw new Error('Internal server error!');
   }
 }

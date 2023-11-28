@@ -31,6 +31,8 @@ import Navbar from '@/components/Navbar';
 
 export default function DetailsJob() {
   const [job, setJob] = useState('');
+  const [descriptions, setDescriptions] = useState();
+  const [requirements, setRequirements] = useState();
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isApply, setApply] = useState(false);
   const [isCancel, setCancel] = useState(false);
@@ -53,9 +55,12 @@ export default function DetailsJob() {
   })}`;
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const authUser = async () => {
       try {
         const user = await getUserById();
+        if (user) {
+          setAuthenticated(true);
+        }
         const response = await getJobById(id);
         if (user.data.role === 'company') {
           setCompany(true);
@@ -66,10 +71,13 @@ export default function DetailsJob() {
         ) {
           setOwner(true);
         }
+        if (user.data.role === 'jobseeker') {
+          fetchApply();
+        }
       } catch (e) {
         if (e.message == 401) {
-          window.localStorage.removeItem('token');
           setAuthenticated(false);
+          window.localStorage.removeItem('token');
         }
         console.log(e);
       }
@@ -78,10 +86,11 @@ export default function DetailsJob() {
     const fetchJob = async () => {
       try {
         const response = await getJobById(id);
-        const token = localStorage.getItem('token');
-        if (token) {
-          setAuthenticated(true);
-        }
+        const dataDesc = JSON.parse(response.data.what_will_you_do);
+        setDescriptions(dataDesc);
+        const dataReq = JSON.parse(response.data.what_will_you_need);
+        setRequirements(dataReq);
+        // console.log('JOB ===> ',data[0]);
         setJob(response.data);
         setLoading(false);
       } catch (e) {
@@ -114,13 +123,15 @@ export default function DetailsJob() {
           setProcess(true);
         }
       } catch (e) {
-        console.log('Lowongan Pekerjaan belum diApply!');
+        console.log(e);
       }
     };
 
-    fetchUser();
+    const token = localStorage.getItem('token');
+    if (token) {
+      authUser();
+    }
     fetchJob();
-    fetchApply();
   }, [id]);
 
   const successToast = () => {
@@ -312,14 +323,22 @@ export default function DetailsJob() {
           </AlertDialogOverlay>
         )}
       </AlertDialog>
-      <Stack
-        pt={'5%'}
-        w={'100%'}
+      <Flex
+        mt={{ base: '30%', md: '12%', lg: '8%' }}
+        px={'10'}
+        py={{ base: '10%', md: '0%', lg: '0%' }}
+        borderRadius={7}
+        w={'94%'}
         bgColor={'white'}
-        minH={'40vh'}
+        minH={'30vh'}
         direction={{ base: 'column', md: 'row' }}
       >
-        <Flex flex={4} align={'center'} justify={'center'} direction={'row'}>
+        <Flex
+          flex={4}
+          align={'center'}
+          justify={{ base: 'center', md: 'left', lg: 'left' }}
+          direction={'row'}
+        >
           {isLoading ? (
             <Skeleton height="300px" my="6" />
           ) : (
@@ -360,14 +379,9 @@ export default function DetailsJob() {
             </Stack>
           )}
         </Flex>
-        {isCompany ? (
-          isOwner ? (
-            <Flex
-              flex={4}
-              align={'center'}
-              justify={'center'}
-              direction={'column'}
-            >
+        <Flex flex={4} align={'center'} justify={'right'} direction={'row'}>
+          {isCompany ? (
+            isOwner ? (
               <Button
                 onClick={() => {
                   isAuthenticated ? onOpen() : directHandler();
@@ -386,57 +400,76 @@ export default function DetailsJob() {
               >
                 Edit Pekerjaan
               </Button>
-            </Flex>
+            ) : (
+              <Flex
+                flex={4}
+                align={'center'}
+                justify={'center'}
+                direction={'column'}
+              ></Flex>
+            )
           ) : (
             <Flex
               flex={4}
-              align={'center'}
+              align={'end'}
               justify={'center'}
               direction={'column'}
-            ></Flex>
-          )
-        ) : (
-          <Flex
-            flex={4}
-            align={'center'}
-            justify={'center'}
-            direction={'column'}
-          >
-            {isApply ? (
-              isCancel ? (
-                <Button
-                  size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                  borderRadius={10}
-                  fontFamily={'lexendDeca'}
-                  m={2}
-                  bg={'gray.300'}
-                  color={'white'}
-                  fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                >
-                  Lamaran Dibatalkan
-                </Button>
-              ) : isProcess ? (
-                <Button
-                  size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                  borderRadius={10}
-                  fontFamily={'lexendDeca'}
-                  m={2}
-                  bg={
-                    isInterview
-                      ? 'orange.300'
+            >
+              {isApply ? (
+                isCancel ? (
+                  <Button
+                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                    borderRadius={10}
+                    fontFamily={'lexendDeca'}
+                    m={2}
+                    bg={'gray.300'}
+                    color={'white'}
+                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                  >
+                    Lamaran Dibatalkan
+                  </Button>
+                ) : isProcess ? (
+                  <Button
+                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                    borderRadius={10}
+                    fontFamily={'lexendDeca'}
+                    m={2}
+                    bg={
+                      isInterview
+                        ? 'orange.300'
+                        : isAccepted
+                          ? 'green.300'
+                          : 'red.300'
+                    }
+                    color={'white'}
+                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                  >
+                    {isInterview
+                      ? 'Interview'
                       : isAccepted
-                        ? 'green.300'
-                        : 'red.300'
-                  }
-                  color={'white'}
-                  fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                >
-                  {isInterview
-                    ? 'Interview'
-                    : isAccepted
-                      ? 'Diterima'
-                      : 'Ditolak'}
-                </Button>
+                        ? 'Diterima'
+                        : 'Ditolak'}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      isAuthenticated ? onOpen() : directHandler();
+                    }}
+                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                    borderRadius={10}
+                    fontFamily={'lexendDeca'}
+                    m={2}
+                    bg={'red.300'}
+                    color={'white'}
+                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                    _hover={{
+                      bg: '#2a5c91',
+                      transform: 'scale(1.05)'
+                    }}
+                  >
+                    Batalkan Lamaran
+                  </Button>
+                )
               ) : (
                 <Button
                   onClick={() => {
@@ -446,7 +479,7 @@ export default function DetailsJob() {
                   borderRadius={10}
                   fontFamily={'lexendDeca'}
                   m={2}
-                  bg={'red.300'}
+                  bg={'orange.300'}
                   color={'white'}
                   fontSize={{ base: '16px', md: '16px', lg: '18px' }}
                   _hover={{
@@ -454,39 +487,21 @@ export default function DetailsJob() {
                     transform: 'scale(1.05)'
                   }}
                 >
-                  Batalkan Lamaran
+                  Lamar Sekarang
                 </Button>
-              )
-            ) : (
-              <Button
-                onClick={() => {
-                  isAuthenticated ? onOpen() : directHandler();
-                }}
-                size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                borderRadius={10}
-                fontFamily={'lexendDeca'}
-                m={2}
-                bg={'orange.300'}
-                color={'white'}
-                fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                _hover={{
-                  bg: '#2a5c91',
-                  transform: 'scale(1.05)'
-                }}
+              )}
+              <Text
+                pr={'3%'}
+                color={'custom.blue'}
+                fontWeight={500}
+                fontSize={{ base: '12px', md: '13px', lg: '14px' }}
               >
-                Lamar Sekarang
-              </Button>
-            )}
-            <Text
-              color={'custom.blue'}
-              fontWeight={500}
-              fontSize={{ base: '12px', md: '13px', lg: '14px' }}
-            >
-              Batas 12 desember 2023
-            </Text>
-          </Flex>
-        )}
-      </Stack>
+                Batas 12 desember 2023
+              </Text>
+            </Flex>
+          )}
+        </Flex>
+      </Flex>
       <Stack
         align={'start'}
         justify={'space-evenly'}
@@ -506,9 +521,10 @@ export default function DetailsJob() {
           justify={'center'}
           direction={'column'}
         >
-          <Stack spacing={8}>
+          <Stack w={'100%'} spacing={8}>
             <Stack
-              gap={5}
+              w={'100%'}
+              gap={4}
               spacing={1}
               textAlign={'start'}
               fontFamily={'lexendDeca'}
@@ -517,31 +533,65 @@ export default function DetailsJob() {
                 color={'custom.blue'}
                 fontSize={{ base: '20px', md: '22px', lg: '24px' }}
               >
-                Job Description
-              </Heading>
-              <Text
-                fontWeight={500}
-                fontSize={{ base: '13px', md: '14px', lg: '15px' }}
-              >
-                {job.what_will_you_do}
-              </Text>
-              ;
-            </Stack>
-            <Stack spacing={1} textAlign={'start'} fontFamily={'lexendDeca'}>
-              <Heading
-                color={'custom.blue'}
-                fontSize={{ base: '20px', md: '22px', lg: '24px' }}
-              >
-                Job Requirements
+                Deskripsi Pekerjaan
               </Heading>
               <Stack spacing={1}>
                 <Text
                   fontWeight={500}
                   fontSize={{ base: '13px', md: '14px', lg: '15px' }}
                 >
-                  {job.what_will_you_need}
+                  {job.description}
                 </Text>
-                ;
+              </Stack>
+            </Stack>
+            <Stack
+              w={'100%'}
+              gap={4}
+              spacing={1}
+              textAlign={'start'}
+              fontFamily={'lexendDeca'}
+            >
+              <Heading
+                color={'custom.blue'}
+                fontSize={{ base: '20px', md: '22px', lg: '24px' }}
+              >
+                Hal yang dikerjakan
+              </Heading>
+              <Stack spacing={1}>
+                {descriptions?.map((item, index) => (
+                  <Text
+                    key={index}
+                    fontWeight={500}
+                    fontSize={{ base: '13px', md: '14px', lg: '15px' }}
+                  >
+                    {' - ' + item}
+                  </Text>
+                ))}
+              </Stack>
+            </Stack>
+            <Stack
+              w={'100%'}
+              gap={4}
+              spacing={1}
+              textAlign={'start'}
+              fontFamily={'lexendDeca'}
+            >
+              <Heading
+                color={'custom.blue'}
+                fontSize={{ base: '20px', md: '22px', lg: '24px' }}
+              >
+                Persyaratan
+              </Heading>
+              <Stack spacing={1}>
+                {requirements?.map((item, index) => (
+                  <Text
+                    key={index}
+                    fontWeight={500}
+                    fontSize={{ base: '13px', md: '14px', lg: '15px' }}
+                  >
+                    {' - ' + item}
+                  </Text>
+                ))}
               </Stack>
             </Stack>
             {isCompany ? (
@@ -752,46 +802,52 @@ export default function DetailsJob() {
                 </Flex>
               </Stack>
               <Stack
-                px={'10%'}
                 w={'100%'}
-                align={'start'}
-                spacing={1}
-                fontFamily={'lexendDeca'}
+                align={'center'}
+                justify={'space-around'}
+                spacing={{ base: '30px' }}
+                direction={{ base: 'row' }}
               >
-                <Heading
-                  color={'custom.dark_blue'}
-                  fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+                <Flex
+                  direction={'column'}
+                  spacing={1}
+                  textAlign={'start'}
+                  fontFamily={'lexendDeca'}
                 >
-                  Batas Pendaftaran
-                </Heading>
-                <Text
-                  color={'custom.blue'}
-                  fontWeight={500}
-                  fontSize={{ base: '12px', md: '13px', lg: '14px' }}
+                  <Heading
+                    color={'custom.dark_blue'}
+                    fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+                  >
+                    Batas Pendaftaran :
+                  </Heading>
+                  <Text
+                    color={'custom.blue'}
+                    fontWeight={500}
+                    fontSize={{ base: '12px', md: '13px', lg: '14px' }}
+                  >
+                    12 Desember 2023
+                  </Text>
+                </Flex>
+                <Flex
+                  direction={'column'}
+                  spacing={1}
+                  textAlign={'start'}
+                  fontFamily={'lexendDeca'}
                 >
-                  12 desember 2023
-                </Text>
-              </Stack>
-              <Stack
-                px={'10%'}
-                w={'100%'}
-                align={'start'}
-                spacing={1}
-                fontFamily={'lexendDeca'}
-              >
-                <Heading
-                  color={'custom.dark_blue'}
-                  fontSize={{ base: '14px', md: '16px', lg: '18px' }}
-                >
-                  Deskripsi Perusahaan
-                </Heading>
-                <Text
-                  color={'custom.blue'}
-                  fontWeight={500}
-                  fontSize={{ base: '12px', md: '13px', lg: '14px' }}
-                >
-                  {job.description}
-                </Text>
+                  <Heading
+                    color={'custom.dark_blue'}
+                    fontSize={{ base: '14px', md: '16px', lg: '18px' }}
+                  >
+                    Kapasitas :
+                  </Heading>
+                  <Text
+                    color={'custom.blue'}
+                    fontWeight={500}
+                    fontSize={{ base: '12px', md: '13px', lg: '14px' }}
+                  >
+                    {job.capacity + ' Lowongan'}
+                  </Text>
+                </Flex>
               </Stack>
             </Stack>
           )}
