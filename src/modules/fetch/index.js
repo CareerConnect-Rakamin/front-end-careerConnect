@@ -123,12 +123,35 @@ async function searchJobs(keyword) {
   }
 }
 
+async function getPhotoProfileJobSeeker(id) {
+  try {
+    const response = await instance.get(`/jobseekers/${id}`);
+    return response.data.data.dataProfile.photo_profile;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function getPhotoProfileCompany(id) {
+  try {
+    const response = await instance.get(`/companies/${id}`);
+    return response.data.data.photo_profile;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 async function getPhotoProfile(token) {
   try {
     const decode = jwtDecode(token);
     const id = decode.id;
-    const response = await instance.get(`/jobseekers/${id}`);
-    return response.data.data.dataProfile.photo_profile;
+    if (decode.role == 'jobseeker') {
+      const photo = await getPhotoProfileJobSeeker(id);
+      return photo;
+    } else {
+      const photo = await getPhotoProfileCompany(id);
+      return photo;
+    }
   } catch (err) {
     console.log(err);
   }
