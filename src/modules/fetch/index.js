@@ -163,7 +163,7 @@ async function createApply(id) {
 
 async function getJobById(id) {
   try {
-    const response = await axios.get(`http://localhost:3000/api/v1/jobs/${id}`);
+    const response = await instance.get(`/jobs/${id}`);
     return response.data;
   } catch (error) {
     console.log(error);
