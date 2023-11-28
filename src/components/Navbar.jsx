@@ -30,14 +30,17 @@ const Navbar = () => {
   const [isTokenValid, setIsTokenValid] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [photoProfile, setPhotoPofile] = useState(null);
+  const [routeProfile, setRouteProfile] = useState();
   const router = useRouter();
   const toast = useToast();
 
-  const checkToken = (token) => {
-    const isValid = validateToken();
-    if (isValid) {
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
       setIsTokenValid(true);
-      getPhotoProfile(token)
+      setRouteProfile(`${role}/${id}`);
+      getPhotoProfile(id, role)
         .then((data) => {
           setPhotoPofile(data);
         })
@@ -53,7 +56,7 @@ const Navbar = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      checkToken(token);
+      checkToken();
     }
   }, []);
 
@@ -147,7 +150,10 @@ const Navbar = () => {
               />
             </MenuButton>
             <MenuList>
-              <Link href="/user/profile" _hover={{ textDecoration: 'none' }}>
+              <Link
+                href={`/profile/${routeProfile}`}
+                _hover={{ textDecoration: 'none' }}
+              >
                 <MenuItem>Profile</MenuItem>
               </Link>
               <MenuDivider />
