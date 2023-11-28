@@ -147,7 +147,7 @@ const Form1 = () => {
           Form
         </Text>
         <Text fontSize="30px" fontWeight="bold">
-          Update Comapany
+          Update Account Company
         </Text>
       </Flex>
       <form onSubmit={handleSubmit}>
