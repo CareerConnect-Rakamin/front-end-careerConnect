@@ -14,11 +14,9 @@ export default function SearchPage() {
 
   const fetchData = async () => {
     const response = await getJobs(page);
-    const newJobs = response.data;
-    const lastPage = response.pagination;
 
-    setJobs(newJobs);
-    setLastPage(lastPage);
+    setJobs(response.data);
+    setLastPage(response.pagination);
   };
 
   useEffect(() => {

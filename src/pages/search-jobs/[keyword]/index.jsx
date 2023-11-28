@@ -1,14 +1,17 @@
 import CardJobVacancy from '@/components/CardJobVacancy';
+import Pagination from '@/components/Pagination';
 import SearchBar from '@/components/SearchBar';
 import Wrapper from '@/components/Wrapper';
 import { searchJobs } from '@/modules/fetch';
-import { Box, Flex, Heading, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { Box, Flex, Stack, Text } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function SearchPage() {
+  const [page, setPage] = useState(1);
   const [jobs, setJobs] = useState([]);
+  const [lastPage, setLastPage] = useState(0);
   const router = useRouter();
   const { keyword } = router.query;
 
@@ -16,8 +19,10 @@ export default function SearchPage() {
     const fetchData = async () => {
       if (keyword) {
         try {
-          const response = await searchJobs(keyword);
+          const response = await searchJobs(page, keyword);
+          const lastPage = response.pagination;
           setJobs(response.data);
+          setLastPage(lastPage);
         } catch (error) {
           console.error('Error fetching jobs:', error);
         }
@@ -25,7 +30,7 @@ export default function SearchPage() {
     };
 
     fetchData();
-  }, [keyword]);
+  }, [page, keyword]);
 
   return (
     <Wrapper>
@@ -54,6 +59,11 @@ export default function SearchPage() {
           <CardJobVacancy key={job.id} job={{ ...job }} />
         ))}
       </Flex>
+      <Pagination
+        page={page}
+        setPage={setPage}
+        lastPage={lastPage.totalPages}
+      />
     </Wrapper>
   );
 }

@@ -11,7 +11,16 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Avatar
+  Avatar,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalHeader,
+  ModalCloseButton,
+  ModalContent,
+  ModalBody,
+  ModalFooter,
+  useToast
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { getPhotoProfile } from '@/modules/fetch';
@@ -19,8 +28,10 @@ import { validateToken } from '@/hooks/tokenValidation';
 
 const Navbar = () => {
   const [isTokenValid, setIsTokenValid] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [photoProfile, setPhotoPofile] = useState(null);
   const router = useRouter();
+  const toast = useToast();
 
   const checkToken = (token) => {
     const isValid = validateToken();
@@ -49,7 +60,13 @@ const Navbar = () => {
   const handleLogout = async () => {
     window.localStorage.removeItem('token');
     setIsTokenValid(false);
-    window.location.reload();
+    router.push('/');
+    toast({
+      title: 'Berhasil Logout',
+      status: 'success',
+      duration: 3000,
+      position: 'top'
+    });
   };
 
   return (
@@ -68,7 +85,13 @@ const Navbar = () => {
           <Image src="/images/logo.png" alt="Logo" width="40px" />
         </Link>
         <Link href="/" _hover={{ textDecoration: 'none' }} marginLeft={2}>
-          <Text color={'white'} fontSize={'2xl'} fontWeight={'bold'}>
+          <Text
+            color={'white'}
+            fontSize={'2xl'}
+            fontWeight={'bold'}
+            _hover={{ color: 'gray.300' }}
+            transition={'0.2s'}
+          >
             CareerConnect
           </Text>
         </Link>
@@ -128,8 +151,23 @@ const Navbar = () => {
                 <MenuItem>Profile</MenuItem>
               </Link>
               <MenuDivider />
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              <MenuItem onClick={onOpen}>Logout</MenuItem>
             </MenuList>
+            <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
+              <ModalOverlay />
+              <ModalContent alignItems={'center'}>
+                <ModalHeader>Apakah anda yakin ingin keluar?</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody>
+                  <Text>Tekan &quot;Logout&quot; jika ingin keluar</Text>
+                </ModalBody>
+                <ModalFooter>
+                  <Button onClick={handleLogout} colorScheme={'red'}>
+                    Logout
+                  </Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
           </Menu>
         ) : (
           <>

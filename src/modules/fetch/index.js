@@ -113,9 +113,9 @@ async function getJobs(page) {
   }
 }
 
-async function searchJobs(keyword) {
+async function searchJobs(page, keyword) {
   try {
-    const response = await instance.get(`/jobs?keyword=${keyword}`);
+    const response = await instance.get(`jobs?page=${page}&keyword=${keyword}`);
     console.log(response.data);
     return response.data;
   } catch (error) {
