@@ -18,10 +18,11 @@ import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import { getCompanyById } from '@/modules/fetch';
+import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
+  const [jobs, setJobs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
@@ -39,8 +40,21 @@ export default function CompanyProfile() {
       }
     };
 
+    const fetchCompanyJobs = async () => {
+      try {
+        if (id) {
+          const response = await getCompanyJobs(id);
+          setJobs(response.data);
+        }
+      } catch (e) {
+        console.error(e);
+        setLoading(false);
+      }
+    };
+
     if (id) {
       fetchCompanyById();
+      fetchCompanyJobs();
     }
   }, [id]);
 
@@ -75,7 +89,7 @@ export default function CompanyProfile() {
                 <CardHeader p={'10px'}>
                   <Flex flexDirection="column" alignItems="center">
                     <Image
-                      src="https://placehold.co/600x400"
+                      src={`http://localhost:3000/api/v1/${company.photo_profile}`}
                       boxSize="125px"
                       borderRadius="10px"
                       objectFit="cover"
@@ -129,18 +143,20 @@ export default function CompanyProfile() {
                         objectFit="cover"
                         alt="photo.profile"
                       />
-                      <Button
-                        position="absolute"
-                        bgColor="#2A5C91"
-                        color="white"
-                        borderRadius="100%"
-                        fontSize="sm"
-                        p="1"
-                        mt={'-2rem'}
-                        ml={'7rem'}
-                      >
-                        <Image src="/company-profile/camera.png" />
-                      </Button>
+                      <Link href={`update/photo/${id}`}>
+                        <Button
+                          position="absolute"
+                          bgColor="#2A5C91"
+                          color="white"
+                          borderRadius="100%"
+                          fontSize="sm"
+                          p="1"
+                          mt={'-2rem'}
+                          ml={'7rem'}
+                        >
+                          <Image src="/company-profile/camera.png" />
+                        </Button>
+                      </Link>
                     </Box>
                     <Stack>
                       <Text fontSize={'30px'}>{company.name}</Text>
@@ -187,14 +203,14 @@ export default function CompanyProfile() {
                     </Flex>
                     <TitleTeks>Data Lowongan Pekerjaan dan Pelamar</TitleTeks>
                     <BoxCountJobs
-                      image="https://placehold.co/600x400"
-                      count="12"
+                      image="/company-profile/cont-jobs.png"
+                      count={jobs.length}
                       href={`/company/jobs/${id}`}
                     >
                       Jumlah Data Lowongan Pekerjaanyang diupload
                     </BoxCountJobs>
                     <BoxCountJobs
-                      image="https://placehold.co/600x400"
+                      image="/company-profile/count-applicants.png"
                       count="250"
                     >
                       Jumlah Data Pelamar Pekerjaan yang Mendaftar
@@ -258,14 +274,16 @@ const BoxCountJobs = (props) => {
         >
           {count}
         </ImageAndTeksInline>
-        <Button
-          bg="#557C55"
-          rounded="10"
-          textColor="white"
-          _hover={{ bg: 'white', textColor: 'black' }}
-        >
-          <Link href={href}>Lihat Data</Link>
-        </Button>
+        <Link href={href}>
+          <Button
+            bg="#557C55"
+            rounded="10"
+            textColor="white"
+            _hover={{ bg: 'white', textColor: 'black' }}
+          >
+            Lihat Data
+          </Button>
+        </Link>
       </Flex>
     </Box>
   );
