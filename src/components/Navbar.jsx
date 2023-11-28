@@ -15,16 +15,17 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { getPhotoProfile } from '@/modules/fetch';
+import { validateToken } from '@/hooks/tokenValidation';
 
 const Navbar = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const [photoProfile, setPhotoPofile] = useState(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      setIsLogin(true);
+  const checkToken = (token) => {
+    const isValid = validateToken();
+    if (isValid) {
+      setIsTokenValid(true);
       getPhotoProfile(token)
         .then((data) => {
           setPhotoPofile(data);
@@ -32,13 +33,23 @@ const Navbar = () => {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken(token);
     }
   }, []);
 
   const handleLogout = async () => {
     window.localStorage.removeItem('token');
-    setIsLogin(false);
-    router.push('/');
+    setIsTokenValid(false);
+    window.location.reload();
   };
 
   return (
@@ -95,7 +106,7 @@ const Navbar = () => {
         </Link>
       </Flex>
       <Stack direction={'row'} marginRight={3}>
-        {isLogin ? (
+        {isTokenValid ? (
           <Menu>
             <MenuButton
               as={Button}
