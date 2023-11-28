@@ -28,6 +28,7 @@ import {
   getUserById
 } from '@/modules/fetch';
 import Navbar from '@/components/Navbar';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function DetailsJob() {
   const [job, setJob] = useState('');
@@ -57,21 +58,18 @@ export default function DetailsJob() {
   useEffect(() => {
     const authUser = async () => {
       try {
-        const user = await getUserById();
+        const user = await validateToken();
         if (user) {
           setAuthenticated(true);
         }
         const response = await getJobById(id);
-        if (user.data.role === 'company') {
+        if (user.role === 'company') {
           setCompany(true);
         }
-        if (
-          user.data.role === 'company' &&
-          response.data.companies_id === user.data.id
-        ) {
+        if (user.role === 'company' && response.data.companies_id === user.id) {
           setOwner(true);
         }
-        if (user.data.role === 'jobseeker') {
+        if (user.role === 'jobseeker') {
           fetchApply();
         }
       } catch (e) {
