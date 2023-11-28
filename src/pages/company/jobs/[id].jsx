@@ -11,27 +11,45 @@ import {
   Image,
   Link,
   Stack,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
-import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
+import {
+  getApllicants,
+  getCompanyById,
+  getCompanyJobs,
+  updateJob
+} from '@/modules/fetch';
 import { useEffect, useState } from 'react';
 
 export default function CompanyJobs() {
   const router = useRouter();
   const [jobs, setJobs] = useState([]);
-  const [company, setCompany] = useState();
+  const [company, setCompany] = useState([]);
+  const [applicants, setApplicants] = useState();
   const [isLoading, setLoading] = useState(true);
+  const [statusJob, setStatusJob] = useState({});
+  const toast = useToast();
   const { id } = router.query;
+
   useEffect(() => {
-    const fetchCompanyById = async () => {
+    const fetchDataCompany = async () => {
+      const response = await getCompanyById(id);
+      setCompany(response.data);
+    };
+    const fetchData = async () => {
       try {
         if (id) {
-          const responseCompany = await getCompanyById(id);
           const response = await getCompanyJobs(id);
-          console.log(response);
           setJobs(response.data);
+          const newStatusMap = response.data.reduce((acc, job) => {
+            acc[job.id] = job.is_open; // Ini asumsi bahwa job.id dapat digunakan sebagai kunci unik
+            return acc;
+          }, {});
+
+          setStatusJob(newStatusMap);
           setLoading(false);
         }
       } catch (e) {
@@ -39,17 +57,79 @@ export default function CompanyJobs() {
         setLoading(false);
       }
     };
-
     if (id) {
-      fetchCompanyById();
+      fetchDataCompany();
+      fetchData();
     }
   }, [id]);
-  console.log(jobs);
-  // if (!isLoading && !jobs) {
-  //   // Redirect to 404 page if company data is not found
-  //   router.push('/404');
-  //   return null;
-  // }
+
+  // ...
+  useEffect(() => {
+    const fetchDataApplicants = async () => {
+      try {
+        if (jobs && jobs.length > 0) {
+          const applicantsData = await Promise.all(
+            jobs.map(async (job) => {
+              try {
+                const response = await getApllicants(job.id);
+                return response.data;
+              } catch (error) {
+                return [];
+              }
+            })
+          );
+
+          setApplicants(
+            applicantsData.reduce((acc, cur, idx) => {
+              acc[jobs[idx].id] = cur;
+              return acc;
+            }, {})
+          );
+        }
+      } catch (e) {
+        setLoading(false);
+      }
+    };
+
+    if (jobs && jobs.length > 0) {
+      fetchDataApplicants();
+    }
+  }, [jobs]);
+
+  async function closeJob(jobId) {
+    try {
+      const updatedJob = await updateJob(jobId, { is_open: false });
+      const newStatusMap = { ...statusJob, [jobId]: false };
+      setStatusJob(newStatusMap);
+
+      toast({
+        title: 'Success Close Job',
+        description: 'Close Job successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  async function openJob(jobId) {
+    try {
+      const updatedJob = await updateJob(jobId, { is_open: true });
+      const newStatusMap = { ...statusJob, [jobId]: true };
+      setStatusJob(newStatusMap);
+      toast({
+        title: 'Success Open Job',
+        description: 'Open Job successfully',
+        status: 'success',
+        duration: 5000,
+        isClosable: true
+      });
+    } catch (error) {
+      // Handle error jika terjadi kesalahan saat menutup lowongan
+      console.error(error);
+    }
+  }
 
   return (
     <ChakraProvider>
@@ -72,7 +152,7 @@ export default function CompanyJobs() {
             <CardHeader p={'10px'}>
               <Flex flexDirection="column" alignItems="center">
                 <Image
-                  src="https://placehold.co/600x400"
+                  src={`http://localhost:3000/api/v1/${company.photo_profile}`}
                   alt="photo.profile"
                   boxSize="125px"
                   borderRadius="10px"
@@ -108,84 +188,117 @@ export default function CompanyJobs() {
             <Text fontSize="30px" fontWeight="bold" mb="7">
               Data Lowongan Pekerjaan yang Terupload
             </Text>
-            {jobs.map((job) => (
-              <Card key={job.id} bg={'#2A5C91'} boxShadow="md" p="20px" my={3}>
-                <Flex>
-                  <Stack w="280px">
-                    <Text
-                      fontSize="14px"
-                      fontWeight="normal"
-                      textColor="#C0C0C0"
+            {jobs &&
+              jobs.map((job) => (
+                <Card
+                  key={job.id}
+                  bg={'#2A5C91'}
+                  boxShadow="md"
+                  p="20px"
+                  my={3}
+                >
+                  <Flex>
+                    <Stack w="280px">
+                      <Text
+                        fontSize="14px"
+                        fontWeight="normal"
+                        textColor="#C0C0C0"
+                      >
+                        Nama Pekerjaan
+                      </Text>
+                      <Text fontSize="30px" fontWeight="bold" textColor="white">
+                        {job.name}
+                      </Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="normal"
+                        textColor="#C0C0C0"
+                      >
+                        Kategori Pekerjaan
+                      </Text>
+                      <Text fontSize="17px" fontWeight="bold" textColor="white">
+                        {job.category}
+                      </Text>
+                    </Stack>
+                    <Box
+                      w="290px"
+                      bg="#0B1A2A"
+                      rounded="10"
+                      px="25px"
+                      py="20px"
                     >
-                      Nama Pekerjaan
-                    </Text>
-                    <Text fontSize="30px" fontWeight="bold" textColor="white">
-                      {job.name}
-                    </Text>
-                    <Text
-                      fontSize="14px"
-                      fontWeight="normal"
-                      textColor="#C0C0C0"
-                    >
-                      Kategori Pekerjaan
-                    </Text>
-                    <Text fontSize="17px" fontWeight="bold" textColor="white">
-                      {job.category}
-                    </Text>
-                  </Stack>
-                  <Box w="290px" bg="#0B1A2A" rounded="10" px="25px" py="20px">
-                    <Flex gap={1}>
-                      <Stack>
-                        <ContentMid image="/company-profile/job/lokasi.png">
-                          {job.location}
-                        </ContentMid>
-                        <ContentMid image="/company-profile/job/kuota.png">
-                          {job.capacity} Orang
-                        </ContentMid>
-                        <Text
-                          fontSize="12px"
-                          fontWeight="normal"
-                          color="#C0C0C0"
+                      <Flex gap={1}>
+                        <Stack>
+                          <ContentMid image="/company-profile/job/lokasi.png">
+                            {job.location}
+                          </ContentMid>
+                          <ContentMid image="/company-profile/job/kuota.png">
+                            {job.capacity} Orang
+                          </ContentMid>
+                          <Text
+                            fontSize="12px"
+                            fontWeight="normal"
+                            color="#C0C0C0"
+                          >
+                            Data Pelamar Pekerjaan
+                          </Text>
+                          <Text fontSize="20px" fontWeight="bold" color="white">
+                            {applicants &&
+                              applicants[job.id] &&
+                              applicants[job.id].length}
+                          </Text>
+                        </Stack>
+                        <Stack mr={2}>
+                          <ContentMid image="/company-profile/job/gaji.png">
+                            {new Intl.NumberFormat('id-ID', {
+                              style: 'currency',
+                              currency: 'IDR'
+                            })
+                              .format(parseFloat(job.salary).toFixed(0))
+                              .replace(',00', '')}
+                          </ContentMid>
+                          <ContentMid image="/company-profile/job/type.png">
+                            {job.job_type}
+                          </ContentMid>
+                        </Stack>
+                      </Flex>
+                    </Box>
+                    <Stack ml="50px">
+                      <ContentRight
+                        bg="#459B72"
+                        color="white"
+                        href={`/company/jobs/applicants/${job.id}`}
+                      >
+                        Lihat Data Pelamar
+                      </ContentRight>
+                      <ContentRight
+                        bg="#FFBA79"
+                        color="black"
+                        href={`update/${job.id}`}
+                      >
+                        Ubah Data Lowongan
+                      </ContentRight>
+                      {statusJob[job.id] === true ? (
+                        <Button
+                          bg="#B72E2E"
+                          color="white"
+                          onClick={() => closeJob(job.id)}
                         >
-                          Data Pelamar Pekerjaan
-                        </Text>
-                        <Text fontSize="20px" fontWeight="bold" color="white">
-                          5 Pelamar
-                        </Text>
-                      </Stack>
-                      <Stack mr={2}>
-                        <ContentMid image="/company-profile/job/gaji.png">
-                          {new Intl.NumberFormat('id-ID', {
-                            style: 'currency',
-                            currency: 'IDR'
-                          })
-                            .format(parseFloat(job.salary).toFixed(0))
-                            .replace(',00', '')}
-                        </ContentMid>
-                        <ContentMid image="/company-profile/job/type.png">
-                          {job.job_type}
-                        </ContentMid>
-                      </Stack>
-                    </Flex>
-                  </Box>
-                  <Stack ml="50px">
-                    <ContentRight
-                      bg="#459B72"
-                      color="white"
-                      href={`/job/${id}`}
-                    >
-                      Lihat Data Pelamar
-                    </ContentRight>
-                    <ContentRight bg="#FFBA79" color="black">
-                      Ubah Data Lowongan
-                    </ContentRight>
-                    <ContentRight bg="#B72E2E" color="white">
-                      Tutup Lowongan
-                    </ContentRight>
-                  </Stack>
-                </Flex>
-              </Card>
-            ))}
+                          Tutup Lowongan
+                        </Button>
+                      ) : (
+                        <Button
+                          bg="blue"
+                          color="white"
+                          onClick={() => openJob(job.id)}
+                        >
+                          Buka kembali lowongan
+                        </Button>
+                      )}
+                    </Stack>
+                  </Flex>
+                </Card>
+              ))}
           </Card>
         </GridItem>
         {/* Main End */}
