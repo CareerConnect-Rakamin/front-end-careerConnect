@@ -141,11 +141,9 @@ async function getPhotoProfileCompany(id) {
   }
 }
 
-async function getPhotoProfile(token) {
+async function getPhotoProfile(id, role) {
   try {
-    const decode = jwtDecode(token);
-    const id = decode.id;
-    if (decode.role == 'jobseeker') {
+    if (role == 'jobseeker') {
       const photo = await getPhotoProfileJobSeeker(id);
       return photo;
     } else {
