@@ -1,5 +1,6 @@
 import { instance } from '@/modules/axios';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 
 async function loginUser(email, password) {
   try {
@@ -51,10 +52,8 @@ async function registerJobSeeker({
         }
       }
     );
-    console.log('RESPONSE IN FETCH ==>', response);
     return response.data;
   } catch (error) {
-    console.log('ERROR IN FETCH ==>', error);
     if (error.response.status === 401) {
       throw new Error('Email atau kata sandi salah!');
     }
@@ -92,10 +91,8 @@ async function registerCompany({
         }
       }
     );
-    console.log('RESPONSE IN FETCH ==>', response);
     return response.data;
   } catch (error) {
-    console.log('ERROR IN FETCH ==>', error);
     if (error.response.status === 401) {
       throw new Error('Email atau kata sandi salah!');
     }
@@ -155,11 +152,69 @@ async function getPhotoProfile(id, role) {
   }
 }
 
+async function createApply(id) {
+  try {
+    const response = await instance.post(`/apply/job/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getJobById(id) {
+  try {
+    const response = await instance.get(`/jobs/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function getUserById() {
+  try {
+    const response = await instance.get(`/users`);
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      throw new Error(error.response.status);
+    }
+    throw new Error('Internal server error!');
+  }
+}
+
+async function getApply(id) {
+  try {
+    const response = await instance.get(`/apply/seeker/job/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 404) {
+      throw 'Belum ada apply di job ini';
+    }
+    throw new Error('Internal server error!');
+  }
+}
+
+async function cancelApply(id) {
+  try {
+    const response = await instance.put(`/apply/seeker/job/${id}`, {
+      status: 'cancel'
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error('Internal server error!');
+  }
+}
+
 export {
   loginUser,
   registerJobSeeker,
   registerCompany,
   getJobs,
   searchJobs,
-  getPhotoProfile
+  getPhotoProfile,
+  createApply,
+  getJobById,
+  getUserById,
+  getApply,
+  cancelApply
 };
