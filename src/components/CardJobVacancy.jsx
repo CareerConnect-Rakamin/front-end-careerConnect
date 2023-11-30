@@ -29,7 +29,7 @@ const CardJobVacancy = ({ job }) => {
             />
           </Box>
           <Box>
-            <Text fontWeight={'thin'} fontSize={'xs'}>
+            <Text fontWeight={'normal'} fontSize={'xs'}>
               {job.company_name}
             </Text>
             <Text fontWeight={'semibold'} fontSize={'md'} noOfLines={1}>
@@ -45,13 +45,13 @@ const CardJobVacancy = ({ job }) => {
         <Flex p={3} justifyContent={'space-between'}>
           <Box width={'50%'}>
             <Text fontSize={'md'}>Lokasi:</Text>
-            <Text fontSize={'xs'} fontWeight={'thin'} noOfLines={2}>
+            <Text fontSize={'xs'} fontWeight={'light'} noOfLines={1}>
               {job.location}
             </Text>
           </Box>
           <Box width={'50%'} ml={1}>
             <Text fontSize={'md'}>Gaji:</Text>
-            <Text fontSize={'xs'} fontWeight={'thin'}>
+            <Text fontSize={'xs'} fontWeight={'light'}>
               {formattedSalary}
             </Text>
           </Box>
@@ -59,7 +59,7 @@ const CardJobVacancy = ({ job }) => {
         <Flex px={3}>
           <Box>
             <Text fontSize={'md'}>Kapasitas:</Text>
-            <Text fontSize={'xs'} fontWeight={'thin'}>
+            <Text fontSize={'xs'} fontWeight={'light'}>
               {job.capacity} Lowongan
             </Text>
           </Box>

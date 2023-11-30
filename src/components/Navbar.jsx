@@ -101,7 +101,7 @@ const Navbar = () => {
       </Flex>
       <Flex display={'flex'} alignItems={'center'}>
         <Link
-          href="/search-jobs"
+          href="/search/jobs"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
