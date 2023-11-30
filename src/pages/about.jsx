@@ -350,6 +350,8 @@ export default function about() {
                 src="/images/team/inal.jpg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
@@ -379,6 +381,8 @@ export default function about() {
                 src="/images/team/bagus.jpeg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
@@ -408,6 +412,8 @@ export default function about() {
                 src="/images/team/erza.jpg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
@@ -438,6 +444,8 @@ export default function about() {
                 src="/images/team/bhanu.jpeg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
@@ -467,6 +475,8 @@ export default function about() {
                 src="/images/team/juna.jpg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
@@ -496,6 +506,8 @@ export default function about() {
                 src="/images/team/nicho.JPG"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
