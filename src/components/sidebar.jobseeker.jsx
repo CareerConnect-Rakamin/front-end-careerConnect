@@ -1,19 +1,18 @@
 import { Box, VStack, Text, Image, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
 
-const baseURL = process.env.API_URL || 'http://localhost:8000/api/v1';
+const baseURL = process.env.API_URL || 'http://localhost:3001/api/v1';
 
 const Sidebar = ({ dataUser }) => {
   const image = dataUser?.photo_profile;
-  const id = dataUser?.id
+  const id = dataUser?.id;
   if (!dataUser) {
     return <div>Loading...</div>;
   }
 
-  const photoProfileParts = image.split('/');
-  const pathAfterUploads = photoProfileParts
-    .slice(photoProfileParts.indexOf('uploads') + 1)
-    .join('/');
+  console.log(dataUser)
+  console.log(dataUser.photo_profile)
+
   return (
     <Box
       fontFamily={'lexendDeca'}
@@ -32,7 +31,7 @@ const Sidebar = ({ dataUser }) => {
         {dataUser && (
           <>
             <Image
-              src={`${baseURL}/photo/${pathAfterUploads}`}
+              src={`${baseURL}/${dataUser.photo_profile}`}
               alt={dataUser?.full_name}
               borderRadius="20px"
               w={125}
@@ -58,35 +57,37 @@ const Sidebar = ({ dataUser }) => {
           width="18em"
         />
       </VStack>
-      <Link href={`/profile/${id}`}>
-        <HStack
-          align={'left'}
-          mt="8px"
-          mb={0}
-          gap={0}
-          w={'auto'}
-          pl={'12px'}
-          cursor={'pointer'}
-          _hover={{
-            bgColor: '#2A5C91',
-            color: '#F5F5F5',
-            '& img': {
-              filter: 'invert(100%)'
-            }
-          }}
-          pt={'11px'}
-          pb={'11px'}
-        >
-          <Image
-            src="/images/dashboard2.png"
-            w="22px"
-            h="22px"
-            color="blue.500"
-          />
-          <Text pl={'9px'}>Dashboard Pengguna</Text>
-        </HStack>
-      </Link>
-      <Link href={`/profile/jobs/${id}`}>
+      {dataUser && (
+        <Link href={`/user/profile/${dataUser.jobseekers_id}`}>
+          <HStack
+            align={'left'}
+            mt="8px"
+            mb={0}
+            gap={0}
+            w={'auto'}
+            pl={'12px'}
+            cursor={'pointer'}
+            _hover={{
+              bgColor: '#2A5C91',
+              color: '#F5F5F5',
+              '& img': {
+                filter: 'invert(100%)'
+              }
+            }}
+            pt={'11px'}
+            pb={'11px'}
+          >
+            <Image
+              src="/images/dashboard2.png"
+              w="22px"
+              h="22px"
+              color="blue.500"
+            />
+            <Text pl={'9px'}>Dashboard Pengguna</Text>
+          </HStack>
+        </Link>
+      )}
+      <Link href={`/user/profile/jobs/${dataUser.jobseekers_id}`}>
         <HStack
           align={'left'}
           mb={0}
