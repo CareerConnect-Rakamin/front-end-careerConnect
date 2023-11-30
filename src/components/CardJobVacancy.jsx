@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Image, Text, Tooltip } from '@chakra-ui/react';
 import Link from 'next/link';
 
 const CardJobVacancy = ({ job }) => {
@@ -32,22 +32,43 @@ const CardJobVacancy = ({ job }) => {
             <Text fontWeight={'normal'} fontSize={'xs'}>
               {job.company_name}
             </Text>
-            <Text fontWeight={'semibold'} fontSize={'md'} noOfLines={1}>
-              {job.description}
-            </Text>
+            <Tooltip
+              label={job.description}
+              placement="bottom"
+              bg={'custom.blue'}
+              rounded={'lg'}
+            >
+              <Text fontWeight={'semibold'} fontSize={'md'} noOfLines={1}>
+                {job.description}
+              </Text>
+            </Tooltip>
           </Box>
         </Flex>
         <Flex px={3} mt={1}>
-          <Text fontWeight={'bold'} fontSize={'xl'} noOfLines={1}>
-            {job.name}
-          </Text>
+          <Tooltip
+            label={job.name}
+            placement="bottom"
+            bg={'custom.blue'}
+            rounded={'lg'}
+          >
+            <Text fontWeight={'bold'} fontSize={'xl'} noOfLines={1}>
+              {job.name}
+            </Text>
+          </Tooltip>
         </Flex>
         <Flex p={3} justifyContent={'space-between'}>
           <Box width={'50%'}>
             <Text fontSize={'md'}>Lokasi:</Text>
-            <Text fontSize={'xs'} fontWeight={'light'} noOfLines={1}>
-              {job.location}
-            </Text>
+            <Tooltip
+              label={job.location}
+              placement="bottom"
+              bg={'custom.blue'}
+              rounded={'lg'}
+            >
+              <Text fontSize={'xs'} fontWeight={'light'} noOfLines={1}>
+                {job.location}
+              </Text>
+            </Tooltip>
           </Box>
           <Box width={'50%'} ml={1}>
             <Text fontSize={'md'}>Gaji:</Text>
