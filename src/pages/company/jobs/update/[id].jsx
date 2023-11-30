@@ -333,12 +333,17 @@ const Form2 = ({ updateFormData }) => {
     const formData = new FormData(event.target);
     if (job) {
       try {
-        updateFormData({
-          what_will_you_do: formData.get('what_will_you_do'),
-          what_will_you_need: formData.get('what_will_you_need')
-        });
+        const whatWillYouDo = formData.get('what_will_you_do');
+        const whatWillYouNeed = formData.get('what_will_you_need');
 
-        // Tidak perlu onNext() karena ini adalah langkah terakhir
+        updateFormData({
+          what_will_you_do: whatWillYouDo
+            .split('\n')
+            .filter((line) => line.trim() !== ''),
+          what_will_you_need: whatWillYouNeed
+            .split('\n')
+            .filter((line) => line.trim() !== '')
+        });
       } catch (error) {
         console.error(error);
         // Tambahkan penanganan kesalahan jika diperlukan
