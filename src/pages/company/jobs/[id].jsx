@@ -23,6 +23,7 @@ import {
   updateJob
 } from '@/modules/fetch';
 import { useEffect, useState } from 'react';
+import customTheme from '@/styles/theme';
 
 export default function CompanyJobs() {
   const router = useRouter();
@@ -132,7 +133,7 @@ export default function CompanyJobs() {
   }
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Navbar />
 
       <Grid

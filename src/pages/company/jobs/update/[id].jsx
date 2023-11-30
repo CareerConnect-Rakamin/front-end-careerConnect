@@ -17,6 +17,7 @@ import {
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
+import customTheme from '@/styles/theme';
 
 export default function UpdateJobCompanyForm() {
   const [formData, setFormData] = useState({});
@@ -67,7 +68,7 @@ export default function UpdateJobCompanyForm() {
   }, [formData]);
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Flex>
         {currentStep === 1 && (
           <Form1

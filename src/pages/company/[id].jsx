@@ -19,6 +19,7 @@ import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
+import customTheme from '@/styles/theme';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
@@ -65,7 +66,7 @@ export default function CompanyProfile() {
   }
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       {isLoading ? (
         <Skeleton height="300px" my="6" />
       ) : (

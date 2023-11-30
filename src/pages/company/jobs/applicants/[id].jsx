@@ -28,6 +28,7 @@ import {
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
+import customTheme from '@/styles/theme';
 
 export default function JobById() {
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function JobById() {
   }, [id]);
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       {isLoading ? (
         <Skeleton height="300px" my="6" />
       ) : (
@@ -229,7 +230,10 @@ export default function JobById() {
                           </TbodyData>
                           <TbodyData>
                             <Flex gap={3}>
-                              <Link href="#">
+                              <Link
+                                href={`https://wa.me/${applicant.phone_number}`}
+                                target="_blank"
+                              >
                                 <Button bg="#459B72" color="white">
                                   Chat
                                 </Button>
@@ -316,7 +320,7 @@ export default function JobById() {
               {/* Table End */}
             </Card>
           </Box>
-          {/* <Footer /> */}
+          <Footer />
         </>
       )}
     </ChakraProvider>
