@@ -24,8 +24,7 @@ import {
   cancelApply,
   createApply,
   getApply,
-  getJobById,
-  getUserById
+  getJobById
 } from '@/modules/fetch';
 import Navbar from '@/components/Navbar';
 import { validateToken } from '@/hooks/tokenValidation';
@@ -246,7 +245,7 @@ export default function DetailsJob() {
   };
 
   return (
-    <VStack spacing={0} bgColor={'custom.soft_grey'} minH="100vh" w="100%">
+    <VStack spacing={0} bgColor={'gray.200'} minH="100vh" w="100%">
       <Head>
         <title>Details</title>
       </Head>
@@ -322,6 +321,7 @@ export default function DetailsJob() {
         )}
       </AlertDialog>
       <Flex
+        boxShadow={'xl'}
         mt={{ base: '30%', md: '12%', lg: '8%' }}
         px={'10'}
         py={{ base: '10%', md: '0%', lg: '0%' }}
@@ -365,13 +365,6 @@ export default function DetailsJob() {
                   fontSize={{ base: '14px', md: '15px', lg: '16px' }}
                 >
                   {job.company_name}
-                </Text>
-                <Text
-                  color={'custom.blue'}
-                  fontWeight={500}
-                  fontSize={{ base: '14px', md: '15px', lg: '16px' }}
-                >
-                  {job.name}
                 </Text>
               </Stack>
             </Stack>
@@ -518,6 +511,7 @@ export default function DetailsJob() {
           align={'start'}
           justify={'center'}
           direction={'column'}
+          boxShadow={'xl'}
         >
           <Stack w={'100%'} spacing={8}>
             <Stack
@@ -694,6 +688,7 @@ export default function DetailsJob() {
           align={'center'}
           justify={'space-evenly'}
           direction={'column'}
+          boxShadow={'xl'}
         >
           {isLoading ? (
             <Skeleton height="300px" my="6" />
@@ -733,7 +728,7 @@ export default function DetailsJob() {
                     color={'custom.dark_blue'}
                     fontSize={{ base: '16px', md: '18px', lg: '20px' }}
                   >
-                    Magang
+                    {job.job_type}
                   </Heading>
                 </Stack>
               </Stack>
