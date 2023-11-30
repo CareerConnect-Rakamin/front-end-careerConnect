@@ -82,6 +82,7 @@ const Navbar = () => {
       p={'1rem'}
       fontFamily={'lexendDeca'}
       zIndex={1}
+      top={0}
     >
       <Flex display={'flex'} alignItems={'center'} marginLeft={3}>
         <Link href="/">
