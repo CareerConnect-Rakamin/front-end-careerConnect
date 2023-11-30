@@ -194,7 +194,12 @@ export default function CompanyProfile() {
                         image="/company-profile/website.png"
                         alt="website.png"
                       >
-                        <Link href={company.website}>{company.website}</Link>
+                        <Link
+                          href={`https://${company.website}`}
+                          target="_blank"
+                        >
+                          {company.website}
+                        </Link>
                       </ImageAndTeksInline>
                       <Link href={`/company/update/${id}`}>
                         <Button bg="#FFBA79" color={'black'}>
