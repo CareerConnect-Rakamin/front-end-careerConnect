@@ -298,14 +298,22 @@ const MainCard = (props) => {
                     <ContentMid image="/company-profile/job/kuota.png">
                       {job.capacity} Orang
                     </ContentMid>
-                    <Text fontSize="12px" fontWeight="normal" color="#C0C0C0">
-                      Data Pelamar Pekerjaan
-                    </Text>
-                    <Text fontSize="20px" fontWeight="bold" color="white">
-                      {applicants &&
-                        applicants[job.id] &&
-                        applicants[job.id].length}
-                    </Text>
+                    {id == userId && (
+                      <>
+                        <Text
+                          fontSize="12px"
+                          fontWeight="normal"
+                          color="#C0C0C0"
+                        >
+                          Data Pelamar Pekerjaan
+                        </Text>
+                        <Text fontSize="20px" fontWeight="bold" color="white">
+                          {applicants &&
+                            applicants[job.id] &&
+                            applicants[job.id].length}
+                        </Text>
+                      </>
+                    )}
                   </Stack>
                   <Stack mr={2}>
                     <ContentMid image="/company-profile/job/gaji.png">
