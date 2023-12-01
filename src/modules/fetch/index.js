@@ -1,6 +1,4 @@
 import { instance } from '@/modules/axios';
-import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
 
 async function loginUser(email, password) {
   try {
@@ -100,13 +98,18 @@ async function registerCompany({
   }
 }
 
-async function getJobs(page) {
+async function getJobs(page, jobType) {
   try {
-    const response = await instance.get(`/jobs?page=${page}`);
-    console.log(response.data);
+    let url = `/jobs?page=${page}`;
+
+    if (jobType) {
+      url += `&job_type=${jobType}`;
+    }
+
+    const response = await instance.get(url);
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching jobs:', error);
   }
 }
 
@@ -129,6 +132,16 @@ async function getPhotoProfileJobSeeker(id) {
   }
 }
 
+async function getCompanies(page) {
+  try {
+    const response = await instance.get(`/companies?page=${page}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+    
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -155,6 +168,18 @@ async function getPhotoProfile(id, role) {
 async function createApply(id) {
   try {
     const response = await instance.post(`/apply/job/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+    
+async function searchCompanies(page, keyword) {
+  try {
+    const response = await instance.get(
+      `companies?page=${page}&keyword=${keyword}`
+    );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -321,6 +346,8 @@ export {
   getJobs,
   searchJobs,
   getPhotoProfile,
+  getCompanies,
+  searchCompanies,
   createApply,
   getJobById,
   getUserById,
