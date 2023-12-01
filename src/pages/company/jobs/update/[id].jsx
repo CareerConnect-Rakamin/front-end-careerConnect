@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import customTheme from '@/styles/theme';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function UpdateJobCompanyForm() {
   const [formData, setFormData] = useState({});
@@ -25,16 +26,31 @@ export default function UpdateJobCompanyForm() {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const decodeToken = jwt.decode(token);
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
+      setUserId(id);
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchJobById = async () => {
       if (formData.name && formData.what_will_you_do) {
-        console.log('ini terpanggil');
         try {
           await updateJob(id, formData);
 
@@ -58,10 +74,6 @@ export default function UpdateJobCompanyForm() {
         }
       }
     };
-
-    if (decodeToken) {
-      setUserId(decodeToken.id);
-    }
     if (id) {
       fetchJobById();
     }
@@ -138,11 +150,27 @@ const Form1 = ({ onNext, updateFormData }) => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const decodeToken = jwt.decode(token);
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
+      setUserId(id);
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchJobById = async () => {
@@ -155,11 +183,6 @@ const Form1 = ({ onNext, updateFormData }) => {
         console.error(e);
       }
     };
-
-    if (decodeToken) {
-      setUserId(decodeToken.id);
-    }
-
     if (id) {
       fetchJobById();
     }
@@ -177,7 +200,8 @@ const Form1 = ({ onNext, updateFormData }) => {
           location: formData.get('location'),
           job_type: formData.get('job_type'),
           salary: formData.get('salary'),
-          capacity: formData.get('capacity')
+          capacity: formData.get('capacity'),
+          closing_date: formData.get('closing_date')
         });
 
         onNext(); // Pindah ke langkah berikutnya
@@ -295,6 +319,15 @@ const Form1 = ({ onNext, updateFormData }) => {
           required={true}
         >
           Capacity
+        </FormInput>
+        <FormInput
+          type="date"
+          placeholder="Tanggal di Tutup"
+          name="closing_date"
+          defaulValue={job.capacity}
+          required={true}
+        >
+          Closing Date
         </FormInput>
         <Flex mt={5} mb={10} justifyContent="center">
           <Button type="submit" bg="#2A5C91" color="white" minW="55%">

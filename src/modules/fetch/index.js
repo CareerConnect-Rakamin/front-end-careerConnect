@@ -251,22 +251,10 @@ async function updateJob(
     job_type,
     salary,
     capacity,
-    is_open
+    is_open,
+    closing_date
   }
 ) {
-  console.log(
-    id,
-    name,
-    description,
-    what_will_you_do,
-    what_will_you_need,
-    location,
-    category,
-    job_type,
-    salary,
-    capacity,
-    is_open
-  );
   try {
     const response = await instance.put(`/jobs/${id}`, {
       name,
@@ -278,7 +266,8 @@ async function updateJob(
       job_type,
       salary,
       capacity,
-      is_open
+      is_open,
+      closing_date
     });
     return response.data;
   } catch (error) {
