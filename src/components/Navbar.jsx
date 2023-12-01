@@ -82,7 +82,7 @@ const Navbar = () => {
       background={'custom.blue'}
       p={'1rem'}
       fontFamily={'lexendDeca'}
-      zIndex={1}
+      zIndex={5}
     >
       <Flex display={'flex'} alignItems={'center'} marginLeft={3}>
         <Link href="/">
@@ -102,7 +102,7 @@ const Navbar = () => {
       </Flex>
       <Flex display={'flex'} alignItems={'center'}>
         <Link
-          href="/search/jobs"
+          href="/"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
@@ -112,7 +112,7 @@ const Navbar = () => {
           Cari Lowongan
         </Link>
         <Link
-          href="/search/companys"
+          href="/companies"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
