@@ -111,14 +111,14 @@ const Navbar = () => {
           Cari Lowongan
         </Link>
         <Link
-          href="/companys"
+          href="/search/companys"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
           marginRight={3}
           fontWeight={'semibold'}
         >
-          Profile Perusahaan
+          Lihat Perusahaan
         </Link>
         <Link
           href="/about"
