@@ -115,7 +115,7 @@ const Form1 = () => {
         await editCompany(formData.get('email'), formData.get('password'));
         toast({
           title: 'Success',
-          description: 'Book edited successfully',
+          description: 'Account edited successfully',
           status: 'success',
           duration: 5000,
           isClosable: true
@@ -135,7 +135,7 @@ const Form1 = () => {
   }
   return (
     <Flex minW="50%" flexDirection="column" px="40px" my="10px" minH="100vh">
-      <Link href={`profile/company/${id}`}>
+      <Link href={`/profile/company/${id}`}>
         <Image
           src="/company-profile/job/detail/back.png"
           _hover={{ transform: 'scale(1.2)' }}
