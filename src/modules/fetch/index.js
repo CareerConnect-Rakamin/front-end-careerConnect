@@ -52,9 +52,6 @@ async function registerJobSeeker({
     );
     return response.data;
   } catch (error) {
-    if (error.response.status === 401) {
-      throw new Error('Email atau kata sandi salah!');
-    }
     throw new Error('Internal server error!');
   }
 }
@@ -141,7 +138,7 @@ async function getCompanies(page) {
     console.log(error);
   }
 }
-    
+
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -173,7 +170,7 @@ async function createApply(id) {
     console.log(error);
   }
 }
-    
+
 async function searchCompanies(page, keyword) {
   try {
     const response = await instance.get(
@@ -230,6 +227,46 @@ async function cancelApply(id) {
   }
 }
 
+async function createJob({
+  name,
+  description,
+  what_will_you_do,
+  what_will_you_need,
+  location,
+  category,
+  job_type,
+  salary,
+  capacity,
+  closing_date
+}) {
+  try {
+    console.log('Data', what_will_you_need);
+    const response = await instance.post(
+      '/jobs',
+      {
+        name,
+        description,
+        what_will_you_do,
+        what_will_you_need,
+        location,
+        category,
+        job_type,
+        salary,
+        capacity,
+        closing_date
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Internal server error!');
+  }
+}
+
 export {
   loginUser,
   registerJobSeeker,
@@ -243,5 +280,6 @@ export {
   getJobById,
   getUserById,
   getApply,
-  cancelApply
+  cancelApply,
+  createJob
 };
