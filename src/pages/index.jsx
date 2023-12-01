@@ -6,15 +6,18 @@ import CardJobVacancy from '@/components/CardJobVacancy';
 import Wrapper from '@/components/Wrapper';
 import Hero from '@/components/Hero';
 import Pagination from '@/components/Pagination';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [jobs, setJobs] = useState([]);
   const [lastPage, setLastPage] = useState(0);
 
   const fetchData = async () => {
     try {
-      const response = await getJobs(page);
+      const job_type = router.query.job_type;
+      const response = await getJobs(page, job_type);
       setJobs(response.data);
       setLastPage(response.pagination);
     } catch (error) {
@@ -24,7 +27,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, router.query.job_type]);
 
   return (
     <Wrapper>
