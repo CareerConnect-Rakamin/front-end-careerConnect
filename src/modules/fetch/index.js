@@ -141,7 +141,7 @@ async function getCompanies(page) {
     console.log(error);
   }
 }
-    
+
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -173,7 +173,7 @@ async function createApply(id) {
     console.log(error);
   }
 }
-    
+
 async function searchCompanies(page, keyword) {
   try {
     const response = await instance.get(
