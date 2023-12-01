@@ -24,31 +24,45 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { getPhotoProfile } from '@/modules/fetch';
+import { validateToken } from '@/hooks/tokenValidation';
 
 const Navbar = () => {
+  const [isTokenValid, setIsTokenValid] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [isLogin, setIsLogin] = useState(false);
   const [photoProfile, setPhotoPofile] = useState(null);
+  const [routeProfile, setRouteProfile] = useState();
   const router = useRouter();
   const toast = useToast();
 
-  useEffect(() => {
-    const token = window.localStorage.getItem('token');
-    if (token) {
-      setIsLogin(true);
-      getPhotoProfile(token)
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
+      setIsTokenValid(true);
+      setRouteProfile(`${role}/${id}`);
+      getPhotoProfile(id, role)
         .then((data) => {
           setPhotoPofile(data);
         })
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken();
     }
   }, []);
 
   const handleLogout = async () => {
     window.localStorage.removeItem('token');
-    setIsLogin(false);
+    setIsTokenValid(false);
     router.push('/');
     toast({
       title: 'Berhasil Logout',
@@ -87,7 +101,7 @@ const Navbar = () => {
       </Flex>
       <Flex display={'flex'} alignItems={'center'}>
         <Link
-          href="/search-jobs"
+          href="/search/jobs"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
@@ -97,14 +111,14 @@ const Navbar = () => {
           Cari Lowongan
         </Link>
         <Link
-          href="/companys"
+          href="/search/companys"
           color={'white'}
           _hover={{ color: 'gray.300', paddingBottom: '5px' }}
           transition={'0.2s'}
           marginRight={3}
           fontWeight={'semibold'}
         >
-          Profile Perusahaan
+          Lihat Perusahaan
         </Link>
         <Link
           href="/about"
@@ -118,7 +132,7 @@ const Navbar = () => {
         </Link>
       </Flex>
       <Stack direction={'row'} marginRight={3}>
-        {isLogin ? (
+        {isTokenValid ? (
           <Menu>
             <MenuButton
               as={Button}
@@ -136,7 +150,10 @@ const Navbar = () => {
               />
             </MenuButton>
             <MenuList>
-              <Link href="/user/profile" _hover={{ textDecoration: 'none' }}>
+              <Link
+                href={`/profile/${routeProfile}`}
+                _hover={{ textDecoration: 'none' }}
+              >
                 <MenuItem>Profile</MenuItem>
               </Link>
               <MenuDivider />

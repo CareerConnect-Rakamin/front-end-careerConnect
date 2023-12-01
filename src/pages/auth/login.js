@@ -121,7 +121,7 @@ export default function Login() {
         fontFamily={'lexendDeca'}
       >
         <Image
-          src={'/CareerConnect-1.png'}
+          src={'/images/CareerConnect-1.png'}
           alt={'CareerConnect-1.png'}
           my={5}
           w={'16%'}
