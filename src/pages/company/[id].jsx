@@ -20,7 +20,6 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
 import customTheme from '@/styles/theme';
-import jwt from 'jsonwebtoken';
 import { validateToken } from '@/hooks/tokenValidation';
 import SideBar from '@/components/company/Sidebar';
 
@@ -273,7 +272,7 @@ const MainCard = (props) => {
       </CardHeader>
       <CardBody>
         <Stack>
-          <TitleTeks>Profil perushaan</TitleTeks>
+          <TitleTeks>Profil Perusahaan</TitleTeks>
           <Text fontSize={'19px'} fontWeight={'normal'}>
             {description}
           </Text>
@@ -320,7 +319,7 @@ const MainCard = (props) => {
             href={`/company/jobs/${id}`}
           >
             {userId == id
-              ? 'Jumlah Data Lowongan Pekerjaanyang diupload'
+              ? 'Jumlah Data Lowongan Pekerjaan yang diupload'
               : 'jumlah pekerjaan yang ada di Company ini'}
           </BoxCountJobs>
           {id == userId && (
