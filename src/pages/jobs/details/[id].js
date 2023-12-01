@@ -33,6 +33,7 @@ export default function DetailsJob() {
   const [job, setJob] = useState('');
   const [descriptions, setDescriptions] = useState();
   const [requirements, setRequirements] = useState();
+  const [tanggal, setTanggal] = useState();
   const [isAuthenticated, setAuthenticated] = useState(false);
   const [isApply, setApply] = useState(false);
   const [isCancel, setCancel] = useState(false);
@@ -42,6 +43,7 @@ export default function DetailsJob() {
   const [isLoading, setLoading] = useState(true);
   const [isCompany, setCompany] = useState(false);
   const [isOwner, setOwner] = useState(false);
+  const [openJob, setOpenJob] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const toast = useToast();
@@ -87,7 +89,32 @@ export default function DetailsJob() {
         setDescriptions(dataDesc);
         const dataReq = JSON.parse(response.data.what_will_you_need);
         setRequirements(dataReq);
-        // console.log('JOB ===> ',data[0]);
+
+        const dataDate = new Date(response.data.closing_date);
+        const month = [
+          'Januari',
+          'Februari',
+          'Maret',
+          'April',
+          'Mei',
+          'Juni',
+          'Juli',
+          'Agustus',
+          'September',
+          'Oktober',
+          'November',
+          'Desember'
+        ];
+        const dataTanggal = dataDate.getUTCDate();
+        const dataBulan = month[dataDate.getUTCMonth()];
+        const dataTahun = dataDate.getUTCFullYear();
+        const fullDate = dataTanggal + ' ' + dataBulan + ' ' + dataTahun;
+        setTanggal(fullDate);
+
+        if (response.data.is_open) {
+          setOpenJob(true);
+        }
+
         setJob(response.data);
         setLoading(false);
       } catch (e) {
@@ -461,7 +488,7 @@ export default function DetailsJob() {
                     Batalkan Lamaran
                   </Button>
                 )
-              ) : (
+              ) : openJob ? (
                 <Button
                   onClick={() => {
                     isAuthenticated ? onOpen() : directHandler();
@@ -480,15 +507,19 @@ export default function DetailsJob() {
                 >
                   Lamar Sekarang
                 </Button>
+              ) : (
+                <Button
+                  size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                  borderRadius={10}
+                  fontFamily={'lexendDeca'}
+                  m={2}
+                  bg={'red.300'}
+                  color={'white'}
+                  fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                >
+                  Tutup
+                </Button>
               )}
-              <Text
-                pr={'3%'}
-                color={'custom.blue'}
-                fontWeight={500}
-                fontSize={{ base: '12px', md: '13px', lg: '14px' }}
-              >
-                Batas 12 desember 2023
-              </Text>
             </Flex>
           )}
         </Flex>
@@ -655,7 +686,7 @@ export default function DetailsJob() {
                       Batalkan Lamaran
                     </Button>
                   )
-                ) : (
+                ) : openJob ? (
                   <Button
                     onClick={() => {
                       isAuthenticated ? onOpen() : directHandler();
@@ -674,6 +705,18 @@ export default function DetailsJob() {
                   >
                     Lamar Sekarang
                   </Button>
+                ) : (
+                  <Button
+                    size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                    borderRadius={10}
+                    fontFamily={'lexendDeca'}
+                    m={2}
+                    bg={'red.300'}
+                    color={'white'}
+                    fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                  >
+                    Tutup
+                  </Button>
                 )}
               </Stack>
             )}
@@ -681,7 +724,7 @@ export default function DetailsJob() {
         </Flex>
         <Flex
           p={8}
-          minH={'50vh'}
+          minH={'60vh'}
           flex={2}
           borderRadius={7}
           bgColor={'white'}
@@ -749,17 +792,18 @@ export default function DetailsJob() {
               <Stack
                 w={'100%'}
                 align={'center'}
-                justify={'space-around'}
+                px={'5%'}
+                justify={'space-between'}
                 spacing={{ base: '30px' }}
                 direction={{ base: 'row' }}
               >
                 <Flex
                   direction={'column'}
-                  spacing={1}
                   textAlign={'start'}
                   fontFamily={'lexendDeca'}
                 >
                   <Heading
+                    py={'5px'}
                     color={'custom.dark_blue'}
                     fontSize={{ base: '14px', md: '16px', lg: '18px' }}
                   >
@@ -775,11 +819,11 @@ export default function DetailsJob() {
                 </Flex>
                 <Flex
                   direction={'column'}
-                  spacing={1}
                   textAlign={'start'}
                   fontFamily={'lexendDeca'}
                 >
                   <Heading
+                    py={'5px'}
                     color={'custom.dark_blue'}
                     fontSize={{ base: '14px', md: '16px', lg: '18px' }}
                   >
@@ -797,17 +841,18 @@ export default function DetailsJob() {
               <Stack
                 w={'100%'}
                 align={'center'}
-                justify={'space-around'}
+                px={'5%'}
+                justify={'space-between'}
                 spacing={{ base: '30px' }}
                 direction={{ base: 'row' }}
               >
                 <Flex
                   direction={'column'}
-                  spacing={1}
                   textAlign={'start'}
                   fontFamily={'lexendDeca'}
                 >
                   <Heading
+                    py={'5px'}
                     color={'custom.dark_blue'}
                     fontSize={{ base: '14px', md: '16px', lg: '18px' }}
                   >
@@ -818,16 +863,16 @@ export default function DetailsJob() {
                     fontWeight={500}
                     fontSize={{ base: '12px', md: '13px', lg: '14px' }}
                   >
-                    12 Desember 2023
+                    {tanggal}
                   </Text>
                 </Flex>
                 <Flex
                   direction={'column'}
-                  spacing={1}
                   textAlign={'start'}
                   fontFamily={'lexendDeca'}
                 >
                   <Heading
+                    py={'5px'}
                     color={'custom.dark_blue'}
                     fontSize={{ base: '14px', md: '16px', lg: '18px' }}
                   >
