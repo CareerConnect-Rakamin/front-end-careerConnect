@@ -21,18 +21,35 @@ import { useEffect, useState } from 'react';
 import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
 import customTheme from '@/styles/theme';
 import jwt from 'jsonwebtoken';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
   const [jobs, setJobs] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const router = useRouter();
-  const [userId, setUserId] = useState();
   const { id } = router.query;
+  const [userId, setUserId] = useState();
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const decodeToken = jwt.decode(token);
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
+      setUserId(id);
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCompanyById = async () => {
@@ -60,10 +77,6 @@ export default function CompanyProfile() {
       }
     };
 
-    if (decodeToken) {
-      setUserId(decodeToken.id);
-    }
-
     if (id) {
       fetchCompanyById();
       fetchCompanyJobs();
@@ -76,7 +89,6 @@ export default function CompanyProfile() {
     return null;
   }
 
-  console.log(userId, id);
   return (
     <ChakraProvider theme={customTheme}>
       {isLoading ? (
@@ -85,7 +97,7 @@ export default function CompanyProfile() {
         <>
           <Navbar />
 
-          {userId != id ? (
+          {userId != id || validateToken === false ? (
             <MainCard
               id={id}
               photoProfile={company.photo_profile}

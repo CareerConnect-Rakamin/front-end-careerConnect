@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import jwt from 'jsonwebtoken';
 import customTheme from '@/styles/theme';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function JobById() {
   const router = useRouter();
@@ -37,11 +38,27 @@ export default function JobById() {
   const [applicants, setApplicants] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [statusMap, setStatusMap] = useState({});
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState();
+  const [isTokenValid, setIsTokenValid] = useState(false);
 
-  const token =
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  const decodeToken = jwt.decode(token);
+  const checkToken = async () => {
+    const result = await validateToken();
+    const { id, role } = result;
+    if (result) {
+      setUserId(id);
+      setIsTokenValid(true);
+    } else {
+      setIsTokenValid(false);
+      localStorage.removeItem('token');
+    }
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      checkToken();
+    }
+  }, []);
 
   const handleSelectChange = async (event, applicantId) => {
     const newStatusMap = { ...statusMap, [applicantId]: event.target.value };
@@ -93,9 +110,6 @@ export default function JobById() {
       }
     };
 
-    if (decodeToken) {
-      setUserId(decodeToken.id);
-    }
     if (id) {
       fetchDataJob();
       fetchDataAplicants();

@@ -1,4 +1,5 @@
 import { editCompany, getCompanyById } from '@/modules/fetch';
+import customTheme from '@/styles/theme';
 import {
   Button,
   ChakraProvider,
@@ -18,7 +19,7 @@ import { useEffect, useState } from 'react';
 
 export default function UpdateCompanyForm() {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={customTheme}>
       <Flex>
         <Form1 />
         <Flex
