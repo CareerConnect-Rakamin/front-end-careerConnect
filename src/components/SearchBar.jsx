@@ -21,7 +21,7 @@ const SearchBar = () => {
       }
 
       setSearchParams({ keyword });
-      router.push({ pathname: `/search-jobs/${keyword}`, query: searchParams });
+      router.push({ pathname: `/search/jobs/${keyword}`, query: searchParams });
     }
   };
 

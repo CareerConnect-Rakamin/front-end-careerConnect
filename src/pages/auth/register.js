@@ -154,7 +154,7 @@ export default function Register() {
   };
 
   return (
-    <Box pt={5} px={5} bg={'blue.600'} h={'100%'} w={'100%'}>
+    <Box pt={5} px={5} bg={'blue.500'} h={'100%'} w={'100%'}>
       <Link
         style={{ textDecoration: 'none' }}
         fontSize={{ base: '14px', md: '18', lg: '20px' }}
@@ -173,7 +173,7 @@ export default function Register() {
         <Flex flex={4} align={'center'} justify={'center'} direction={'column'}>
           <Flex align={'center'} direction={'column'}>
             <Image
-              src={'/CareerConnect-2.png'}
+              src={'/images/CareerConnect-2.png'}
               alt={'CareerConnect-2.png'}
               mb={5}
               w={'12%'}
@@ -187,7 +187,7 @@ export default function Register() {
               Career Connect
             </Heading>
             <Image
-              src={'/homepage-no_background.png'}
+              src={'/images/homepage-no_background.png'}
               alt={'homepage-no_background.png'}
               w={'80%'}
             />

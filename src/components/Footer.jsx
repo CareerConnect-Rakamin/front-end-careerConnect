@@ -1,3 +1,4 @@
+import { validateToken } from '@/hooks/tokenValidation';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -7,8 +8,11 @@ import {
   Link,
   SimpleGrid,
   Stack,
-  Text
+  Text,
+  useToast
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import {
   FaLocationDot,
   FaInstagram,
@@ -41,6 +45,53 @@ const HeaderFooter = () => {
 };
 
 const BodyFooter = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isJobseeker, setIsJobseeker] = useState(false);
+  const [isCompany, setIsCompany] = useState(false);
+  const toast = useToast();
+  const router = useRouter();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const user = await validateToken();
+      if (user) {
+        setIsAuthenticated(true);
+        if (user.role === 'jobseeker') {
+          setIsJobseeker(true);
+        }
+        if (user.role === 'company') {
+          setIsCompany(true);
+        }
+      }
+    };
+    const token = window.localStorage.getItem('token');
+    if (token) {
+      checkUser();
+    }
+  }, []);
+
+  const toastFailed = (role) => {
+    toast({
+      title: 'Failed',
+      description: `Anda Sudah Masuk Sebagai ${role}!`,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+      position: 'top'
+    });
+  };
+
+  const toastDeniedJobseeker = () => {
+    toast({
+      title: 'Failed',
+      description: 'Anda Harus Masuk Sebagai Company',
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+      position: 'top'
+    });
+  };
+
   return (
     <SimpleGrid templateColumns={'repeat(4, 1fr)'} gap={10}>
       <Box color={'white'}>
@@ -92,6 +143,13 @@ const BodyFooter = () => {
         </Text>
         <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
+            onClick={() => {
+              isAuthenticated
+                ? isJobseeker
+                  ? toastFailed('Jobseeker')
+                  : toastFailed('Company')
+                : router.push('/auth/register');
+            }}
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
@@ -100,6 +158,7 @@ const BodyFooter = () => {
             <Text>Registrasi Pencari Kerja</Text>
           </Link>
           <Link
+            href="/search/jobs"
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
@@ -108,6 +167,7 @@ const BodyFooter = () => {
             <Text>Cari Lowongan Kerja</Text>
           </Link>
           <Link
+            href="/?job_type=WFH"
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
@@ -116,6 +176,7 @@ const BodyFooter = () => {
             <Text>Kerja Dari Rumah</Text>
           </Link>
           <Link
+            href="/?job_type=WFO"
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
@@ -132,6 +193,13 @@ const BodyFooter = () => {
         </Text>
         <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
+            onClick={() => {
+              isAuthenticated
+                ? isCompany
+                  ? toastFailed('Company')
+                  : toastFailed('Jobseeker')
+                : router.push('/auth/register');
+            }}
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
@@ -140,28 +208,19 @@ const BodyFooter = () => {
             <Text>Registrasi Perusahaan</Text>
           </Link>
           <Link
+            onClick={() => {
+              isAuthenticated
+                ? isCompany
+                  ? router.push('/profile/company/add-jobs')
+                  : toastDeniedJobseeker()
+                : router.push('/auth/login');
+            }}
             _hover={{
               color: 'gray.300',
               textDecoration: 'none'
             }}
           >
             <Text>Pasang Lowongan Pekerjaan</Text>
-          </Link>
-          <Link
-            _hover={{
-              color: 'gray.300',
-              textDecoration: 'none'
-            }}
-          >
-            <Text>Temukan Kandidat Terbaik</Text>
-          </Link>
-          <Link
-            _hover={{
-              color: 'gray.300',
-              textDecoration: 'none'
-            }}
-          >
-            <Text>Harga Upload Lowongan</Text>
           </Link>
         </Grid>
       </Box>
