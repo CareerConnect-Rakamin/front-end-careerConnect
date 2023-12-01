@@ -134,11 +134,35 @@ async function getPhotoProfile(token) {
   }
 }
 
+// Function for get companies
+async function getCompanies(page) {
+  try {
+    const response = await instance.get(`/companies?page=${page}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function searchCompanies(page, keyword) {
+  try {
+    const response = await instance.get(
+      `companies?page=${page}&keyword=${keyword}`
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export {
   loginUser,
   registerJobSeeker,
   registerCompany,
   getJobs,
   searchJobs,
-  getPhotoProfile
+  getPhotoProfile,
+  getCompanies,
+  searchCompanies
 };
