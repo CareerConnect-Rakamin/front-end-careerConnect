@@ -1,6 +1,4 @@
 import { instance } from '@/modules/axios';
-import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
 
 async function loginUser(email, password) {
   try {
@@ -100,13 +98,18 @@ async function registerCompany({
   }
 }
 
-async function getJobs(page) {
+async function getJobs(page, jobType) {
   try {
-    const response = await instance.get(`/jobs?page=${page}`);
-    console.log(response.data);
+    let url = `/jobs?page=${page}`;
+
+    if (jobType) {
+      url += `&job_type=${jobType}`;
+    }
+
+    const response = await instance.get(url);
     return response.data;
   } catch (error) {
-    console.log(error);
+    console.error('Error fetching jobs:', error);
   }
 }
 
