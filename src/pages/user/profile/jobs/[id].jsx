@@ -19,7 +19,7 @@ import Link from 'next/link';
 import { GetApplyJobs, GetProfileById } from '@/modules/fetch';
 import Sidebar from '@/components/sidebar.jobseeker';
 
-const baseURL = process.env.API_URL || 'http://localhost:3001/api/v1';
+const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
 const JobsStatus = () => {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import { Box, VStack, Text, Image, HStack } from '@chakra-ui/react';
 import Link from 'next/link';
 
-const baseURL = process.env.API_URL || 'http://localhost:3001/api/v1';
+const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
 const Sidebar = ({ dataUser }) => {
   const image = dataUser?.photo_profile;
