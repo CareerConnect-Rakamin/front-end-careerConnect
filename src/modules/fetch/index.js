@@ -20,7 +20,6 @@ async function loginUser(email, password) {
   }
 }
 
-// Function for register user endpoint
 async function registerJobSeeker({
   email,
   password,
@@ -59,7 +58,6 @@ async function registerJobSeeker({
   }
 }
 
-// Function for register user endpoint
 async function registerCompany({
   email,
   password,
@@ -98,12 +96,16 @@ async function registerCompany({
   }
 }
 
-async function getJobs(page, jobType) {
+async function getJobs(page, search, jobType) {
   try {
     let url = `/jobs?page=${page}`;
 
     if (jobType) {
       url += `&job_type=${jobType}`;
+    }
+
+    if (search) {
+      url += `&keyword=${search}`;
     }
 
     const response = await instance.get(url);
@@ -132,16 +134,6 @@ async function getPhotoProfileJobSeeker(id) {
   }
 }
 
-async function getCompanies(page) {
-  try {
-    const response = await instance.get(`/companies?page=${page}`);
-    console.log(response.data);
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-}
-    
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -173,12 +165,16 @@ async function createApply(id) {
     console.log(error);
   }
 }
-    
-async function searchCompanies(page, keyword) {
+
+async function getCompanies(page, search) {
   try {
-    const response = await instance.get(
-      `companies?page=${page}&keyword=${keyword}`
-    );
+    let url = `/companies?page=${page}`;
+
+    if (search) {
+      url += `&keyword=${search}`;
+    }
+
+    const response = await instance.get(url);
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -238,7 +234,6 @@ export {
   searchJobs,
   getPhotoProfile,
   getCompanies,
-  searchCompanies,
   createApply,
   getJobById,
   getUserById,
