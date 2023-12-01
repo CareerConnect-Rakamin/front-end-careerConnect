@@ -70,6 +70,7 @@ const Navbar = () => {
       duration: 3000,
       position: 'top'
     });
+    router.reload();
   };
 
   return (
