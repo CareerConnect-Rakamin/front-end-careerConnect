@@ -134,7 +134,7 @@ const Form1 = () => {
   }
   return (
     <Flex minW="50%" flexDirection="column" px="40px" my="10px" minH="100vh">
-      <Link href={`/company/${id}`}>
+      <Link href={`profile/company/${id}`}>
         <Image
           src="/company-profile/job/detail/back.png"
           _hover={{ transform: 'scale(1.2)' }}

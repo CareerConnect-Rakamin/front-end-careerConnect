@@ -48,13 +48,13 @@ export default function SideBar(props) {
               image="/company-profile/dashboard.png"
               alt="dashboar.png"
             >
-              <Link href={`/company/${id}`}>Dashboard Perusahaan</Link>
+              <Link href={`profile/company/${id}`}>Dashboard Perusahaan</Link>
             </ImageAndTeksInline>
             <ImageAndTeksInline
               image="/company-profile/info-jobs.png"
               alt="infojobs.png"
             >
-              <Link href={`/search-jobs`}>Data Lowongan Pekerjaan</Link>
+              <Link href={`/company/jobs/${id}`}>Data Lowongan Pekerjaan</Link>
             </ImageAndTeksInline>
             <ImageAndTeksInline
               image="/company-profile/add-jobs.png"
