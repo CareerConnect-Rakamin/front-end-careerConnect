@@ -129,6 +129,16 @@ async function getPhotoProfileJobSeeker(id) {
   }
 }
 
+async function getCompanies(page) {
+  try {
+    const response = await instance.get(`/companies?page=${page}`);
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+    
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -155,6 +165,18 @@ async function getPhotoProfile(id, role) {
 async function createApply(id) {
   try {
     const response = await instance.post(`/apply/job/${id}`);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+    
+async function searchCompanies(page, keyword) {
+  try {
+    const response = await instance.get(
+      `companies?page=${page}&keyword=${keyword}`
+    );
+    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -212,6 +234,8 @@ export {
   getJobs,
   searchJobs,
   getPhotoProfile,
+  getCompanies,
+  searchCompanies,
   createApply,
   getJobById,
   getUserById,
