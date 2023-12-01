@@ -22,6 +22,7 @@ import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
 import customTheme from '@/styles/theme';
 import jwt from 'jsonwebtoken';
 import { validateToken } from '@/hooks/tokenValidation';
+import SideBar from '@/components/company/Sidebar';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
@@ -214,64 +215,6 @@ const BoxCountJobs = (props) => {
         </Link>
       </Flex>
     </Box>
-  );
-};
-
-const SideBar = (props) => {
-  const { photoProfile, companyName } = props;
-  return (
-    <>
-      {/* Side Nav Start */}
-      <Card
-        bg={'#F5F5F5'}
-        boxShadow="md"
-        mx="auto"
-        my="auto"
-        h="400px"
-        position="fixed"
-        minW="330px"
-      >
-        <CardHeader p={'10px'}>
-          <Flex flexDirection="column" alignItems="center">
-            <Image
-              src={`http://localhost:3000/api/v1/${photoProfile}`}
-              boxSize="125px"
-              borderRadius="10px"
-              objectFit="cover"
-              alt="photo.profile"
-            />
-            <Text mt={2}>{companyName}</Text>
-          </Flex>
-        </CardHeader>
-        <CardBody p={'10px'}>
-          <Stack>
-            <Text mt={2} textAlign="left">
-              Menu Utama
-            </Text>
-            <hr style={{ width: '75%', borderTop: '2px solid #2A5C91' }} />
-            <ImageAndTeksInline
-              image="/company-profile/dashboard.png"
-              alt="dashboar.png"
-            >
-              <Link>Dashboard Perusahaan</Link>
-            </ImageAndTeksInline>
-            <ImageAndTeksInline
-              image="/company-profile/info-jobs.png"
-              alt="infojobs.png"
-            >
-              <Link>Data Lowongan Pekerjaan</Link>
-            </ImageAndTeksInline>
-            <ImageAndTeksInline
-              image="/company-profile/add-jobs.png"
-              alt="addjobs.png"
-            >
-              <Link>Tambah Data Lowongan</Link>
-            </ImageAndTeksInline>
-          </Stack>
-        </CardBody>
-      </Card>
-      {/* Side Nav End */}
-    </>
   );
 };
 
