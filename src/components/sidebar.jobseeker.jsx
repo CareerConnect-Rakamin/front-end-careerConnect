@@ -58,7 +58,7 @@ const Sidebar = ({ dataUser }) => {
         />
       </VStack>
       {dataUser && (
-        <Link href={`/user/profile/${dataUser.jobseekers_id}`}>
+        <Link href={`/profile/jobseeker/${dataUser.jobseekers_id}`}>
           <HStack
             align={'left'}
             mt="8px"
@@ -87,7 +87,7 @@ const Sidebar = ({ dataUser }) => {
           </HStack>
         </Link>
       )}
-      <Link href={`/user/profile/jobs/${dataUser.jobseekers_id}`}>
+      <Link href={`/profile/jobseeker/jobs/${dataUser.jobseekers_id}`}>
         <HStack
           align={'left'}
           mb={0}

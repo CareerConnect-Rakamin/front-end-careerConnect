@@ -6,13 +6,14 @@ import {
   Image,
   Link,
   SimpleGrid,
+  Stack,
   Text
 } from '@chakra-ui/react';
 import {
   FaLocationDot,
   FaInstagram,
   FaLinkedinIn,
-  FaTwitter,
+  FaXTwitter,
   FaFacebook
 } from 'react-icons/fa6';
 
@@ -28,7 +29,7 @@ const HeaderFooter = () => {
         <Image src="/images/logo.png" alt="Logo" boxSize={['10px', '20px']} />
         <Link
           href="/"
-          _hover={{ textDecoration: 'none', color: 'custom.ligth_orange' }}
+          _hover={{ textDecoration: 'none', color: 'custom.light_orange' }}
         >
           <Text fontSize={['sm', '2xl']} fontWeight="semibold">
             CareerConnect
@@ -46,7 +47,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Kontak
         </Text>
-        <Grid rowGap={3}>
+        <Grid rowGap={3} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -89,7 +90,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Pencari Kerja
         </Text>
-        <Grid rowGap={2}>
+        <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -129,7 +130,7 @@ const BodyFooter = () => {
         <Text fontWeight={'semibold'} fontSize={'lg'} marginBottom={3}>
           Perusahaan
         </Text>
-        <Grid rowGap={2}>
+        <Grid rowGap={2} fontWeight={'light'} fontSize={'sm'}>
           <Link
             _hover={{
               color: 'gray.300',
@@ -170,16 +171,16 @@ const BodyFooter = () => {
           Sosial Media
         </Text>
         <Flex alignItems={'center'} gap={3}>
-          <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
+          <Link fontSize={'2xl'} _hover={{ color: 'custom.light_orange' }}>
             <FaInstagram />
           </Link>
-          <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
+          <Link fontSize={'2xl'} _hover={{ color: 'custom.light_orange' }}>
             <FaLinkedinIn />
           </Link>
-          <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
-            <FaTwitter />
+          <Link fontSize={'2xl'} _hover={{ color: 'custom.light_orange' }}>
+            <FaXTwitter />
           </Link>
-          <Link fontSize={'2xl'} _hover={{ color: 'custom.ligth_orange' }}>
+          <Link fontSize={'2xl'} _hover={{ color: 'custom.light_orange' }}>
             <FaFacebook />
           </Link>
         </Flex>
@@ -198,20 +199,18 @@ const BottomFooter = () => {
 
 const Footer = () => {
   return (
-    <Box
+    <Stack
       as="footer"
       w="full"
       bg="custom.dark_blue"
-      position="relative"
       bottom={0}
       fontFamily="lexendDeca"
-      zIndex={1}
       p={5}
     >
       <HeaderFooter />
       <BodyFooter />
       <BottomFooter />
-    </Box>
+    </Stack>
   );
 };
 
