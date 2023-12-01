@@ -157,7 +157,6 @@ export default function CompanyJobs() {
         isClosable: true
       });
     } catch (error) {
-      // Handle error jika terjadi kesalahan saat menutup lowongan
       console.error(error);
     }
   }

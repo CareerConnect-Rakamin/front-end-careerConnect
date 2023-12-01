@@ -146,7 +146,7 @@ const Form1 = () => {
           Form
         </Text>
         <Text fontSize="30px" fontWeight="bold">
-          Update Comapany
+          Update Company
         </Text>
       </Flex>
       <form onSubmit={handleSubmit}>
@@ -157,7 +157,7 @@ const Form1 = () => {
           required={true}
           defaulValue={company.name}
         >
-          Nama Company
+          Nama Perusahaan
         </FormInput>
         <FormControl>
           <FormLabel>Tipe perusahaan</FormLabel>

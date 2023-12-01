@@ -27,7 +27,6 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import jwt from 'jsonwebtoken';
 import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
 
