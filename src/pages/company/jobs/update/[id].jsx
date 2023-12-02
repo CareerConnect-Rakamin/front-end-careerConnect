@@ -30,9 +30,9 @@ export default function UpdateJobCompanyForm() {
 
   const checkToken = async () => {
     const result = await validateToken();
-    const { id, role } = result;
+    const { idUser, role } = result;
     if (result) {
-      setUserId(id);
+      setUserId(idUser);
       setIsTokenValid(true);
     } else {
       setIsTokenValid(false);

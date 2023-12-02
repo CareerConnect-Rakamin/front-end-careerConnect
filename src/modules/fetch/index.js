@@ -20,7 +20,6 @@ async function loginUser(email, password) {
   }
 }
 
-// Function for register user endpoint
 async function registerJobSeeker({
   email,
   password,
@@ -56,7 +55,6 @@ async function registerJobSeeker({
   }
 }
 
-// Function for register user endpoint
 async function registerCompany({
   email,
   password,
@@ -370,18 +368,113 @@ async function editCompany({
   }
 }
 
-async function UpdatePhoto(formData) {
+const GetProfileById = async (id) => {
   try {
-    const response = await instance.put(`/photo`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+    const response = await instance.get(`/jobseekers/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
+  }
+};
+
+const UpdateProfile = async (
+  email,
+  full_name,
+  bio,
+  gender,
+  phone_number,
+  address,
+  place_of_birth,
+  date_of_birth,
+  link_portfolio,
+  on_work
+) => {
+  try {
+    const response = await instance.put(`/jobseekers`, {
+      email,
+      full_name,
+      bio,
+      gender,
+      phone_number,
+      address,
+      place_of_birth,
+      date_of_birth,
+      link_portfolio,
+      on_work
     });
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || 'Something went wrong');
   }
-}
+};
+
+const UploadCV = async (formData) => {
+  try {
+    const response = await instance.put(`/jobseekers/profile/cv`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
+  }
+};
+
+const DeleteCV = async () => {
+  try {
+    const response = await instance.delete(`/jobseekers/profile/cv`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
+  }
+};
+
+const GetApplyJobs = async () => {
+  try {
+    const response = await instance.get(`/apply/seeker`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message || 'Something went wrong');
+  }
+};
+
+const UpdatePhoto = async (formData) => {
+  try {
+    const response = await instance.put(`/photo`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    if (!response.data) {
+      throw new Error('No data returned from the server');
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error('Error in UploadPhoto:', error);
+    throw new Error(error.response?.data?.message || 'Something went wrong');
+  }
+};
+
+const UploadSertif = async (formData) => {
+  try {
+    const response = await instance.post(`/jobseekers/certificates`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error in Upload certificates:', error);
+    throw new Error(error.response?.data?.message || 'Something went wrong');
+  }
+};
+
+const DeleteSertif = async (id) => {
+  try {
+    const response = await instance.delete(`/jobseekers/certificates/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error in Delete Certificates:', error);
+    throw new Error(error.response?.data?.message || 'Something went wrong');
+  }
+};
 
 export {
   loginUser,
@@ -404,5 +497,12 @@ export {
   UpdatePhoto,
   getApllicants,
   updateStatusApplicants,
-  updateJob
+  updateJob,
+  GetProfileById,
+  UploadCV,
+  GetApplyJobs,
+  DeleteCV,
+  UploadSertif,
+  DeleteSertif,
+  UpdateProfile
 };

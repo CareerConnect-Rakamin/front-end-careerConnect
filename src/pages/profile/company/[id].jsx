@@ -258,7 +258,7 @@ const MainCard = (props) => {
                 mt={'-2rem'}
                 ml={'7rem'}
               >
-                <Image src="/company-profile/camera.png" />
+                <Image src="/company-profile/camera.png" alt="Camera picture" />
               </Button>
             </Link>
           </Box>

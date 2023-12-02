@@ -228,7 +228,7 @@ const ImageAndTeksInline = (props) => {
   } = props;
   return (
     <Flex gap={2} alignItems="center">
-      <Image src={image} boxSize={boxSize} />
+      <Image src={image} alt="picture" boxSize={boxSize} />
       <Text fontSize={fontSize} fontWeight={'semibold'} textColor={textColor}>
         {children}
       </Text>

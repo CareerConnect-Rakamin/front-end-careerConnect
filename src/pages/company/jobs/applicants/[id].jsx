@@ -128,6 +128,7 @@ export default function JobById() {
               <Link href={`/company/jobs/${userId}`}>
                 <Image
                   src="/company-profile/job/detail/back.png"
+                  alt="back button"
                   _hover={{ transform: 'scale(1.2)' }}
                 />
               </Link>
@@ -350,7 +351,7 @@ const ImageAndTeksInline = (props) => {
   } = props;
   return (
     <Flex gap={2} alignItems="center">
-      <Image src={image} boxSize={boxSize} />
+      <Image src={image} alt="picture" boxSize={boxSize} />
       <Text fontSize={fontSize} fontWeight={'semibold'} textColor={textColor}>
         {children}
       </Text>
