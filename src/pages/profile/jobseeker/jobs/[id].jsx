@@ -172,7 +172,7 @@ const JobsStatus = () => {
                                 bgColor: '#193a5c'
                               }}
                             >
-                              Detail Perusahaan
+                              Detail Lowongan
                             </Button>
                           </Link>
                           <Popover>
