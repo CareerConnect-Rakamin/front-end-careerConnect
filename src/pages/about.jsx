@@ -321,6 +321,8 @@ export default function about() {
                 src="/images/team/daffa.jpg"
                 size={'xl'}
                 justifyContent={'center'}
+                transition={'all 0.3s'}
+                _hover={{ transform: 'scale(1.1)' }}
               />
             </Flex>
             <Flex
