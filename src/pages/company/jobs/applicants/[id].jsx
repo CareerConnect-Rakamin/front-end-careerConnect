@@ -50,14 +50,12 @@ export default function JobById() {
     } else {
       setIsTokenValid(false);
       localStorage.removeItem('token');
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken();
-    }
+    checkToken();
   }, []);
 
   const handleSelectChange = async (event, applicantId) => {
@@ -87,7 +85,13 @@ export default function JobById() {
     const fetchDataJob = async () => {
       try {
         const companyJob = await getJobById(id);
-        setJob(companyJob.data);
+        if (companyJob && userId) {
+          if (companyJob.data.companies_id == userId) {
+            setJob(companyJob.data);
+          } else {
+            router.push('/');
+          }
+        }
       } catch (e) {
         console.error(e);
         setLoading(false);

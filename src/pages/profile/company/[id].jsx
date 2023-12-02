@@ -301,14 +301,14 @@ const MainCard = (props) => {
               </Link>
             </ImageAndTeksInline>
             {id == userId && (
-              <Link href={`/company/update/${id}`}>
+              <Link href={`/company/update`}>
                 <Button bg="#FFBA79" color={'black'}>
                   Edit Data Perusahaan
                 </Button>
               </Link>
             )}
             {id == userId && (
-              <Link href={`/company/update/account/${id}`}>
+              <Link href={`/company/update/account`}>
                 <Button bg="#FFBA79" color={'black'}>
                   Edit Account
                 </Button>
@@ -325,14 +325,6 @@ const MainCard = (props) => {
               ? 'Jumlah Data Lowongan Pekerjaan yang diupload'
               : 'jumlah pekerjaan yang ada di Company ini'}
           </BoxCountJobs>
-          {id == userId && (
-            <BoxCountJobs
-              image="/company-profile/count-applicants.png"
-              count="250"
-            >
-              Jumlah Data Pelamar Pekerjaan yang Mendaftar
-            </BoxCountJobs>
-          )}
         </Stack>
       </CardBody>
     </Card>

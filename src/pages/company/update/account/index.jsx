@@ -1,5 +1,4 @@
 import { editCompany, getCompanyById } from '@/modules/fetch';
-import customTheme from '@/styles/theme';
 import {
   Button,
   ChakraProvider,
@@ -9,20 +8,19 @@ import {
   Image,
   Input,
   Link,
-  Select,
   Text,
-  Textarea,
   useToast
 } from '@chakra-ui/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function UpdateCompanyForm() {
   return (
-    <ChakraProvider theme={customTheme}>
+    <ChakraProvider>
       <Head>
-        <title>Edit Company Data</title>
+        <title>Edit Company Account</title>
       </Head>
       <Flex>
         <Form1 />
@@ -58,7 +56,7 @@ const FormInput = (props) => {
     placeholder,
     name,
     required = false,
-    defaulValue = '#'
+    defaulValue = ''
   } = props;
   return (
     <FormControl my={3}>
@@ -77,53 +75,68 @@ const FormInput = (props) => {
 
 const Form1 = () => {
   const [company, setCompany] = useState([]);
-  const [user, setUser] = useState([]);
+  const [userId, setUserId] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const toast = useToast();
   const router = useRouter();
-  const { id } = router.query;
+
+  const checkToken = async () => {
+    const user = await validateToken();
+    if (user.role == 'company') {
+      setUserId(user.id);
+    } else {
+      router.push('/');
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   useEffect(() => {
     const fetchCompanyById = async () => {
       try {
-        if (id) {
-          const response = await getCompanyById(id);
-          setCompany(response.data);
-          setLoading(false);
-        }
+        const response = await getCompanyById(userId);
+        setCompany(response.data);
+        setLoading(false);
       } catch (e) {
         console.error(e);
         setLoading(false);
       }
     };
 
-    if (id) {
+    if (userId) {
       fetchCompanyById();
     }
-  }, [id]);
+  }, [userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     if (company) {
+      if (formData.get('password') !== formData.get('confirm_password')) {
+        toast({
+          title: 'Failed',
+          description: 'Password Tidak sesuai',
+          status: 'error',
+          duration: 5000,
+          isClosable: true
+        });
+        return;
+      }
       try {
-        await editCompany(
-          formData.get('name'),
-          formData.get('type'),
-          formData.get('description'),
-          formData.get('website'),
-          formData.get('email_company'),
-          formData.get('phone_number'),
-          formData.get('address')
-        );
+        await editCompany({
+          email: formData.get('email'),
+          password: formData.get('password')
+        });
         toast({
           title: 'Success',
-          description: 'Book edited successfully',
+          description: 'Account edited successfully',
           status: 'success',
           duration: 5000,
           isClosable: true
         });
-        window.location.href = `/company/${id}`;
+        window.location.href = `/profile/company/${userId}`;
       } catch (error) {
         console.error(error);
         toast({
@@ -138,7 +151,7 @@ const Form1 = () => {
   }
   return (
     <Flex minW="50%" flexDirection="column" px="40px" my="10px" minH="100vh">
-      <Link href={`/profile/company/${id}`}>
+      <Link href={`/profile/company/${userId}`}>
         <Image
           src="/company-profile/job/detail/back.png"
           _hover={{ transform: 'scale(1.2)' }}
@@ -150,82 +163,34 @@ const Form1 = () => {
           Form
         </Text>
         <Text fontSize="30px" fontWeight="bold">
-          Update Company
+          Update Account Company
         </Text>
       </Flex>
       <form onSubmit={handleSubmit}>
         <FormInput
           type="text"
-          placeholder="Nama perusahaan"
-          name="name"
+          placeholder="email for login"
+          name="email"
           required={true}
-          defaulValue={company.name}
+          defaulValue={company?.email}
         >
-          Nama Perusahaan
-        </FormInput>
-        <FormControl>
-          <FormLabel>Tipe perusahaan</FormLabel>
-          <Select
-            placeholder="Bergerak dibidang apa perusahaan mu"
-            bg="#D9D9D9"
-            name="type"
-            required
-            defaultValue={company.type}
-          >
-            <option value="Technology">Technology</option>
-            <option value="Healthcare">Healthcare</option>
-            <option value="Finance">Finance</option>
-            <option value="Education">Education</option>
-            <option value="Retail">Retail</option>
-            <option value="Manufacturing">Manufacturing</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Consulting">Consulting</option>
-            <option value="Energy">Energy</option>
-          </Select>
-        </FormControl>
-        <FormInput
-          type="text"
-          placeholder="masukan deskripsi singkat mengenai perusaan mu"
-          name="description"
-          defaulValue={company.description}
-        >
-          Deskripsi
+          Email
         </FormInput>
         <FormInput
-          type="text"
-          placeholder="https://companyofficial.com"
-          name="website"
+          type="password"
+          placeholder="new password"
+          name="password"
           required={true}
-          defaulValue={company.website}
         >
-          Website
+          password
         </FormInput>
         <FormInput
-          type="text"
-          placeholder="company@mail.com"
-          name="email_company"
-          required={true}
-          defaulValue={company.email_company}
-        >
-          Email Perusahaan
-        </FormInput>
-        <FormInput
-          type="text"
-          placeholder="+62888888"
-          name="phone_number"
-          defaulValue={company.phone_number}
+          type="password"
+          placeholder="Confirm password"
+          name="confirm_password"
           required={true}
         >
-          Nomor Telephone
-        </FormInput>
-        <FormInput
-          type="text"
-          placeholder="Jl Seokarno no 000"
-          name="address"
-          defaulValue={company.address}
-          required={true}
-        >
-          Alamat perusahaan
+          Confirm password
         </FormInput>
         <Flex mt={5} mb={10} justifyContent="center">
           <Button type="submit" bg="#2A5C91" color="white" minW="55%">
