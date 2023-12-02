@@ -14,7 +14,6 @@ import {
   Stack,
   Text
 } from '@chakra-ui/react';
-import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -22,6 +21,7 @@ import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
 import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
 import SideBar from '@/components/company/Sidebar';
+import Head from 'next/head';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
@@ -91,6 +91,9 @@ export default function CompanyProfile() {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Profile Company</title>
+      </Head>
       {isLoading ? (
         <Skeleton height="300px" my="6" />
       ) : (

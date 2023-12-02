@@ -7,9 +7,8 @@ import {
   Tooltip,
   Link
 } from '@chakra-ui/react';
-import { FiInfo, FiAlignLeft } from 'react-icons/fi';
+import { FiAlignLeft } from 'react-icons/fi';
 import { BiBuilding } from 'react-icons/bi';
-import { useRouter } from 'next/router';
 
 const CompanyCard = ({
   name,

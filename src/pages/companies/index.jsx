@@ -34,22 +34,11 @@ export default function CompaniesPage() {
 
       toast({
         title: 'Error',
-        description: 'Error fetching companies. Please try again later.',
+        description: 'Perusahaan Tidak Ditemukan!',
         status: 'error',
         duration: 3000,
         isClosable: true,
-        position: 'top-center',
-        render: () => (
-          <Box
-            textAlign={'center'}
-            borderRadius={20}
-            color="white"
-            p={3}
-            bg="red.500"
-          >
-            Company not found
-          </Box>
-        )
+        position: 'top-center'
       });
     }
   };

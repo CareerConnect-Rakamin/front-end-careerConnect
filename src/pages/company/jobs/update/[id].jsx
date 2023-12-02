@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
+import Head from 'next/head';
 
 export default function UpdateJobCompanyForm() {
   const [formData, setFormData] = useState({});
@@ -78,6 +79,9 @@ export default function UpdateJobCompanyForm() {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Update Job Vacancy Data</title>
+      </Head>
       <Flex>
         {currentStep === 1 && (
           <Form1
