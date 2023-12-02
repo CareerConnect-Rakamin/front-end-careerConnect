@@ -211,7 +211,7 @@ const BodyFooter = () => {
             onClick={() => {
               isAuthenticated
                 ? isCompany
-                  ? router.push('/profile/company/add-jobs')
+                  ? router.push('/jobs/add')
                   : toastDeniedJobseeker()
                 : router.push('/auth/login');
             }}
