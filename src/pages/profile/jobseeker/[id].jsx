@@ -22,7 +22,7 @@ import {
   DeleteCV,
   DeleteSertif
 } from '@/modules/fetch';
-import Sidebar from '@/components/sidebar.jobseeker';
+import Sidebar from '@/components/SidebarJobseeker';
 import { validateToken } from '@/hooks/tokenValidation';
 import Head from 'next/head';
 
