@@ -31,6 +31,7 @@ export default function AddJob() {
   const [closeDate, setCloseDate] = useState('');
   const [jobDo, setJobDo] = useState('');
   const [jobNeed, setJobNeed] = useState('');
+  const [userId, setUserId] = useState('');
 
   const toast = useToast();
   const router = useRouter();
@@ -42,6 +43,7 @@ export default function AddJob() {
         if (user.role !== 'company') {
           router.push('/');
         }
+        setUserId(user.id);
       } catch (e) {
         console.log(e);
       }
@@ -122,7 +124,7 @@ export default function AddJob() {
         closing_date: closeDate
       });
       successToast();
-      router.push('/');
+      router.push(`/profile/company/${userId}`);
     } catch (err) {
       errorToast(err);
     }
@@ -137,7 +139,7 @@ export default function AddJob() {
         _hover={{ color: 'white', paddingLeft: '5px' }}
         transition={'0.3s'}
         color={'gray.300'}
-        href={'/'}
+        href={`/profile/company/${userId}`}
       >
         <ArrowBackIcon /> Kembali
       </Link>
