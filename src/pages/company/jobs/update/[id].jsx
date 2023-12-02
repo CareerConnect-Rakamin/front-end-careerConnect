@@ -37,15 +37,13 @@ export default function UpdateJobCompanyForm() {
     } else {
       setIsTokenValid(false);
       localStorage.removeItem('token');
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken();
-    }
-  }, []);
+    checkToken();
+  }, [userId]);
 
   useEffect(() => {
     const fetchJobById = async () => {
@@ -148,8 +146,8 @@ const Form1 = ({ onNext, updateFormData }) => {
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-
   const [userId, setUserId] = useState();
+  const [userRole, setUserRole] = useState();
   const [isTokenValid, setIsTokenValid] = useState(false);
 
   const checkToken = async () => {
@@ -161,31 +159,34 @@ const Form1 = ({ onNext, updateFormData }) => {
     } else {
       setIsTokenValid(false);
       localStorage.removeItem('token');
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken();
-    }
-  }, []);
+    checkToken();
+  }, [id, userId]);
 
   useEffect(() => {
     const fetchJobById = async () => {
       try {
         if (id) {
           const response = await getJobById(id);
-          setJob(response.data);
+          if (response && userId) {
+            if (response.data.companies_id == userId) {
+              setJob(response.data);
+            } else {
+              router.push('/');
+            }
+          }
         }
       } catch (e) {
         console.error(e);
       }
     };
-    if (id) {
-      fetchJobById();
-    }
-  }, [id]);
+
+    fetchJobById();
+  }, [id, userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -251,7 +252,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="email for login"
           name="name"
           required={true}
-          defaulValue={job.name}
+          defaulValue={job?.name}
         >
           Nama pekerjaan
         </FormInput>
@@ -260,7 +261,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="Nama perusahaan"
           name="description"
           required={true}
-          defaulValue={job.description}
+          defaulValue={job?.description}
         >
           Deskripsi singkat
         </FormInput>
@@ -271,7 +272,7 @@ const Form1 = ({ onNext, updateFormData }) => {
             bg="#D9D9D9"
             name="type"
             required
-            defaultValue={job.category}
+            defaultValue={job?.category}
           >
             {jobCategories.map((category) => (
               <option key={category} value={category}>
@@ -284,7 +285,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="text"
           placeholder="Lokasi Pekerjaan"
           name="location"
-          defaulValue={job.location}
+          defaulValue={job?.location}
         >
           Lokasi
         </FormInput>
@@ -295,7 +296,7 @@ const Form1 = ({ onNext, updateFormData }) => {
             bg="#D9D9D9"
             name="job_type"
             required
-            defaultValue={job.type}
+            defaultValue={job?.type}
           >
             <option value="WFH">WFH (Work From Home)</option>
             <option value="WFO">WFO (Work From Office)</option>
@@ -306,7 +307,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="Gaji"
           name="salary"
           required={true}
-          defaulValue={job.salary}
+          defaulValue={job?.salary}
         >
           Salary
         </FormInput>
@@ -314,7 +315,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="number"
           placeholder="Berapa orang yang ingin di Hiring"
           name="capacity"
-          defaulValue={job.capacity}
+          defaulValue={job?.capacity}
           required={true}
         >
           Capacity
@@ -323,7 +324,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="date"
           placeholder="Tanggal di Tutup"
           name="closing_date"
-          defaulValue={job.capacity}
+          defaulValue={job?.capacity}
           required={true}
         >
           Closing Date
