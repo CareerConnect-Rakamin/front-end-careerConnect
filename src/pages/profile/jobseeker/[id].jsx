@@ -92,6 +92,10 @@ const ProfileJobseeker = () => {
       const idUser = id;
       if (idUser) {
         const result = validateToken();
+        if (!result) {
+          localStorage.removeItem('token');
+          router.push('/');
+        }
         const { id, role } = result;
         const idToken = id;
         if (idToken != idUser) {
