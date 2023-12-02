@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function UpdateCompanyForm() {
   return (
@@ -73,53 +74,62 @@ const FormInput = (props) => {
 
 const Form1 = () => {
   const [company, setCompany] = useState([]);
-  const [user, setUser] = useState([]);
+  const [userId, setUserId] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const toast = useToast();
   const router = useRouter();
-  const { id } = router.query;
+
+  const checkToken = async () => {
+    const user = await validateToken();
+    if (user.role == 'company') {
+      setUserId(user.id);
+    } else {
+      router.push('/');
+    }
+  };
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   useEffect(() => {
     const fetchCompanyById = async () => {
       try {
-        if (id) {
-          const response = await getCompanyById(id);
-          setCompany(response.data);
-          setLoading(false);
-        }
+        const response = await getCompanyById(userId);
+        setCompany(response.data);
+        setLoading(false);
       } catch (e) {
         console.error(e);
         setLoading(false);
       }
     };
 
-    if (id) {
+    if (userId) {
       fetchCompanyById();
     }
-  }, [id]);
+  }, [userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData(event.target);
     if (company) {
       try {
-        await editCompany(
-          formData.get('name'),
-          formData.get('type'),
-          formData.get('description'),
-          formData.get('website'),
-          formData.get('email_company'),
-          formData.get('phone_number'),
-          formData.get('address')
-        );
+        await editCompany({
+          compName: formData.get('name'),
+          type: formData.get('type'),
+          description: formData.get('description'),
+          email_company: formData.get('email_company'),
+          website: formData.get('website'),
+          phone_number: formData.get('phone_number'),
+          address: formData.get('address')
+        });
         toast({
           title: 'Success',
-          description: 'Book edited successfully',
+          description: 'Data edited successfully',
           status: 'success',
           duration: 5000,
           isClosable: true
         });
-        window.location.href = `/company/${id}`;
+        window.location.href = `/profile/company/${userId}`;
       } catch (error) {
         console.error(error);
         toast({
@@ -134,7 +144,7 @@ const Form1 = () => {
   }
   return (
     <Flex minW="50%" flexDirection="column" px="40px" my="10px" minH="100vh">
-      <Link href={`/profile/company/${id}`}>
+      <Link href={`/profile/company/${userId}`}>
         <Image
           src="/company-profile/job/detail/back.png"
           _hover={{ transform: 'scale(1.2)' }}
@@ -155,7 +165,7 @@ const Form1 = () => {
           placeholder="Nama perusahaan"
           name="name"
           required={true}
-          defaulValue={company.name}
+          defaulValue={company?.name}
         >
           Nama Perusahaan
         </FormInput>
@@ -166,7 +176,7 @@ const Form1 = () => {
             bg="#D9D9D9"
             name="type"
             required
-            defaultValue={company.type}
+            defaultValue={company?.type}
           >
             <option value="Technology">Technology</option>
             <option value="Healthcare">Healthcare</option>
@@ -183,7 +193,7 @@ const Form1 = () => {
           type="text"
           placeholder="masukan deskripsi singkat mengenai perusaan mu"
           name="description"
-          defaulValue={company.description}
+          defaulValue={company?.description}
         >
           Deskripsi
         </FormInput>
@@ -192,7 +202,7 @@ const Form1 = () => {
           placeholder="https://companyofficial.com"
           name="website"
           required={true}
-          defaulValue={company.website}
+          defaulValue={company?.website}
         >
           Website
         </FormInput>
@@ -201,7 +211,7 @@ const Form1 = () => {
           placeholder="company@mail.com"
           name="email_company"
           required={true}
-          defaulValue={company.email_company}
+          defaulValue={company?.email_company}
         >
           Email Perusahaan
         </FormInput>
@@ -209,7 +219,7 @@ const Form1 = () => {
           type="text"
           placeholder="+62888888"
           name="phone_number"
-          defaulValue={company.phone_number}
+          defaulValue={company?.phone_number}
           required={true}
         >
           Nomor Telephone
@@ -218,7 +228,7 @@ const Form1 = () => {
           type="text"
           placeholder="Jl Seokarno no 000"
           name="address"
-          defaulValue={company.address}
+          defaulValue={company?.address}
           required={true}
         >
           Alamat perusahaan
