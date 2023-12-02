@@ -1,5 +1,3 @@
-import { Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UpdateDataSeekers from '@/components/FormUpdateSeekers';
 import { validateToken } from '@/hooks/tokenValidation';

@@ -1,17 +1,28 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Button, Flex, Input } from '@chakra-ui/react';
+import { Button, Flex, Input, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const SearchBar = () => {
   const searchRef = useRef();
   const router = useRouter();
+  const toast = useToast();
 
   const handleSearch = (event) => {
     const keyword = searchRef.current.value.trim();
 
     if (event.key === 'Enter' || event.type === 'click') {
       event.preventDefault();
+
+      if (keyword.length < 4) {
+        toast({
+          title: 'Error',
+          description: 'Kata kunci minimal 4 karakter',
+          status: 'error',
+          duration: 3000,
+          isClosable: true
+        });
+      }
 
       router.push(`/companies?search=${keyword}`);
     }
@@ -28,7 +39,7 @@ const SearchBar = () => {
       <Input
         bg={'white'}
         width={300}
-        placeholder="Kata Kunci: Posisi, Lokasi"
+        placeholder="Kata Kunci: Perusahaan, Lokasi"
         ref={searchRef}
         onKeyDown={handleSearch}
       />

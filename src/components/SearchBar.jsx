@@ -1,7 +1,7 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Button, Flex, Input, Select, useToast } from '@chakra-ui/react';
+import { Button, Flex, Input, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
 const SearchBar = () => {
   const searchRef = useRef();
@@ -13,6 +13,16 @@ const SearchBar = () => {
 
     if (event.key === 'Enter' || event.type === 'click') {
       event.preventDefault();
+
+      if (keyword.length < 4) {
+        toast({
+          title: 'Error',
+          description: 'Kata kunci minimal 4 karakter',
+          status: 'error',
+          duration: 3000,
+          isClosable: true
+        });
+      }
 
       router.push(`?search=${keyword}`);
     }

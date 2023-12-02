@@ -44,7 +44,21 @@ const ProfileJobseeker = () => {
       try {
         const response = await UpdatePhoto(formData);
         if (response) {
-          router.reload();
+          if (response) {
+            toast({
+              title: 'success',
+              description: 'Foto profile berhasil diupload.',
+              status: 'success',
+              position: 'top',
+              duration: 5000,
+              isClosable: true
+            });
+            setCV(null);
+
+            setTimeout(() => {
+              router.reload();
+            }, 1000);
+          }
         }
       } catch (error) {
         console.error('Error updating photo:', error);
@@ -59,8 +73,19 @@ const ProfileJobseeker = () => {
         formData.append('file', cv);
         const response = await UploadCV(formData);
         if (response) {
+          toast({
+            title: 'success',
+            description: 'CV berhasil ditambahkan.',
+            status: 'success',
+            duration: 5000,
+            position: 'top',
+            isClosable: true
+          });
           setCV(null);
-          router.reload();
+
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
         }
       }
     } catch (error) {
@@ -100,10 +125,16 @@ const ProfileJobseeker = () => {
         }
       }
     };
+    if (cv) {
+      handleCV();
+    }
+    if (image) {
+      handleImageChange();
+    }
     getDataProfile();
     getCertificates();
     checkToken();
-  }, [id]);
+  }, [id, cv, image]);
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -119,7 +150,20 @@ const ProfileJobseeker = () => {
       if (dataProfile.cv_path) {
         const response = await DeleteCV();
         if (response) {
-          router.reload();
+          if (response) {
+            toast({
+              title: 'success',
+              description: 'CV berhasil dihapus.',
+              status: 'success',
+              duration: 5000,
+              position: 'top',
+              isClosable: true
+            });
+
+            setTimeout(() => {
+              router.reload();
+            }, 1000);
+          }
         }
       } else {
         toast({
@@ -127,6 +171,7 @@ const ProfileJobseeker = () => {
           description: 'Upload CV terlebih dahulu.',
           status: 'error',
           duration: 5000,
+          position: 'top',
           isClosable: true
         });
       }
@@ -136,12 +181,22 @@ const ProfileJobseeker = () => {
   };
 
   const deleteCertif = async (id) => {
-    console.log(id);
     try {
       if (id) {
         const response = await DeleteSertif(id);
         if (response) {
-          router.reload();
+          toast({
+            title: 'success',
+            description: 'Sertifikat berhasil dihapus.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: 'top'
+          });
+
+          setTimeout(() => {
+            router.reload();
+          }, 1000);
         }
       }
     } catch (error) {
@@ -149,12 +204,6 @@ const ProfileJobseeker = () => {
     }
   };
 
-  const fetchFile = async () => {
-    const resImg = await handleImageChange();
-    const resCV = await handleCV();
-    return { resImg, resCV };
-  };
-  fetchFile();
   return (
     <>
       <Head>
