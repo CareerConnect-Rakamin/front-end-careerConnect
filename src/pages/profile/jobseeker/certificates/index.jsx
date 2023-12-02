@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { UploadSertif } from '@/modules/fetch';
+import Head from 'next/head';
 
 const AddCertificates = () => {
   const [name, setName] = useState(null);
@@ -57,6 +58,9 @@ const AddCertificates = () => {
 
   return (
     <>
+      <Head>
+        <title>Add Certificates</title>
+      </Head>
       <Box mt={'2em'} fontFamily={'lexendDeca'} as="aside" color="#0B1A2A">
         <VStack align={'center'}>
           <VStack align={'center'}>

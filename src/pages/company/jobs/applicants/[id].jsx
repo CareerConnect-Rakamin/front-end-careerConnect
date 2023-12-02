@@ -29,6 +29,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
+import Head from 'next/head';
 
 export default function JobById() {
   const router = useRouter();
@@ -118,6 +119,9 @@ export default function JobById() {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Applicants Data</title>
+      </Head>
       {isLoading ? (
         <Skeleton height="300px" my="6" />
       ) : (

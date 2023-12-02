@@ -168,7 +168,7 @@ export default function Register() {
       </Link>
       <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
         <Head>
-          <title>Register</title>
+          <title>Register - CareerConnect</title>
         </Head>
         <Flex flex={4} align={'center'} justify={'center'} direction={'column'}>
           <Flex align={'center'} direction={'column'}>

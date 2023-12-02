@@ -274,7 +274,7 @@ export default function DetailsJob() {
   return (
     <VStack spacing={0} bgColor={'gray.200'} minH="100vh" w="100%">
       <Head>
-        <title>Details</title>
+        <title>Details Job - CareerConnect</title>
       </Head>
       <Navbar />
       <AlertDialog

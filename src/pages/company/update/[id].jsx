@@ -14,12 +14,16 @@ import {
   Textarea,
   useToast
 } from '@chakra-ui/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function UpdateCompanyForm() {
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Edit Company Data</title>
+      </Head>
       <Flex>
         <Form1 />
         <Flex

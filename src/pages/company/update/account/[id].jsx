@@ -8,17 +8,19 @@ import {
   Image,
   Input,
   Link,
-  Select,
   Text,
-  Textarea,
   useToast
 } from '@chakra-ui/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export default function UpdateCompanyForm() {
   return (
     <ChakraProvider>
+      <Head>
+        <title>Edit Company Account</title>
+      </Head>
       <Flex>
         <Form1 />
         <Flex
