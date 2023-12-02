@@ -401,9 +401,6 @@ export default function DetailsJob() {
           {isCompany ? (
             isOwner ? (
               <Button
-                onClick={() => {
-                  isAuthenticated ? onOpen() : directHandler();
-                }}
                 size={{ base: 'xs', md: 'sm', lg: 'md' }}
                 borderRadius={10}
                 fontFamily={'lexendDeca'}

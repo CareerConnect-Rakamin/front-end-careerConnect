@@ -60,7 +60,7 @@ export default function SideBar(props) {
               image="/company-profile/add-jobs.png"
               alt="addjobs.png"
             >
-              <Link>Tambah Data Lowongan</Link>
+              <Link href="/jobs/add">Tambah Data Lowongan</Link>
             </ImageAndTeksInline>
           </Stack>
         </CardBody>

@@ -52,9 +52,6 @@ async function registerJobSeeker({
     );
     return response.data;
   } catch (error) {
-    if (error.response.status === 401) {
-      throw new Error('Email atau kata sandi salah!');
-    }
     throw new Error('Internal server error!');
   }
 }
@@ -230,6 +227,46 @@ async function cancelApply(id) {
   }
 }
 
+async function createJob({
+  name,
+  description,
+  what_will_you_do,
+  what_will_you_need,
+  location,
+  category,
+  job_type,
+  salary,
+  capacity,
+  closing_date
+}) {
+  try {
+    console.log('Data', what_will_you_need);
+    const response = await instance.post(
+      '/jobs',
+      {
+        name,
+        description,
+        what_will_you_do,
+        what_will_you_need,
+        location,
+        category,
+        job_type,
+        salary,
+        capacity,
+        closing_date
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error('Internal server error!');
+  }
+}
+
 async function getCompanyById(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -246,14 +283,6 @@ async function getCompanyJobs(id) {
     throw new Error(error.response.data.message || 'Something went wrong');
   }
 }
-// async function getJobById(id) {
-//   try {
-//     const response = await instance.get(`/jobs/${id}`);
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(error.response.data.message || 'Something went wrong');
-//   }
-// }
 
 async function getApllicants(id) {
   try {
@@ -368,6 +397,7 @@ export {
   getUserById,
   getApply,
   cancelApply,
+  createJob,
   getCompanyById,
   getCompanyJobs,
   editCompany,
