@@ -30,9 +30,9 @@ export default function UpdateJobCompanyForm() {
 
   const checkToken = async () => {
     const result = await validateToken();
-    const { idUser, role } = result;
+    const { id, role } = result;
     if (result) {
-      setUserId(idUser);
+      setUserId(id);
       setIsTokenValid(true);
     } else {
       setIsTokenValid(false);
@@ -142,7 +142,9 @@ const FormInput = (props) => {
 };
 
 const Form1 = ({ onNext, updateFormData }) => {
-  const [job, setJob] = useState([]);
+  const [jobDo, setJobDo] = useState('');
+  const [jobNeed, setJobNeed] = useState('');
+  const [job, setJob] = useState({});
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
@@ -174,6 +176,12 @@ const Form1 = ({ onNext, updateFormData }) => {
           const response = await getJobById(id);
           if (response && userId) {
             if (response.data.companies_id == userId) {
+              const arrayDo = JSON.parse(response.data.what_will_you_do);
+              const resultDo = arrayDo.map((item) => ` - ${item}`).join('');
+              const arrayNeed = JSON.parse(response.data.what_will_you_need);
+              const resultNeed = arrayNeed.map((item) => ` - ${item}`).join('');
+              setJobDo(resultDo);
+              setJobNeed(resultNeed);
               setJob(response.data);
             } else {
               router.push('/');
@@ -340,6 +348,8 @@ const Form1 = ({ onNext, updateFormData }) => {
 };
 
 const Form2 = ({ updateFormData }) => {
+  const [jobDo, setJobDo] = useState('');
+  const [jobNeed, setJobNeed] = useState('');
   const [job, setJob] = useState([]);
   const router = useRouter();
   const { id } = router.query;
@@ -349,6 +359,12 @@ const Form2 = ({ updateFormData }) => {
       try {
         if (id) {
           const response = await getJobById(id);
+          const arrayDo = JSON.parse(response.data.what_will_you_do);
+          const resultDo = arrayDo.map((item) => ` - ${item}\n`).join('');
+          const arrayNeed = JSON.parse(response.data.what_will_you_need);
+          const resultNeed = arrayNeed.map((item) => ` - ${item}\n`).join('');
+          setJobDo(resultDo);
+          setJobNeed(resultNeed);
           setJob(response.data);
           setLoading(false);
         }
@@ -371,10 +387,10 @@ const Form2 = ({ updateFormData }) => {
 
         updateFormData({
           what_will_you_do: whatWillYouDo
-            .split('\n')
+            .split(/[-\n]+/)
             .filter((line) => line.trim() !== ''),
           what_will_you_need: whatWillYouNeed
-            .split('\n')
+            .split(/[-\n]+/)
             .filter((line) => line.trim() !== '')
         });
       } catch (error) {
@@ -416,7 +432,7 @@ const Form2 = ({ updateFormData }) => {
             rounded={10}
             minH="10rem"
             name="what_will_you_do"
-            defaultValue={job.what_will_you_do}
+            defaultValue={jobDo}
           />
         </FormControl>
 
@@ -429,7 +445,7 @@ const Form2 = ({ updateFormData }) => {
             bg="#D9D9D9"
             rounded={10}
             minH="10rem"
-            defaultValue={job.what_will_you_need}
+            defaultValue={jobNeed}
           />
         </FormControl>
         <Flex mt={5} mb={10} justifyContent="center">
