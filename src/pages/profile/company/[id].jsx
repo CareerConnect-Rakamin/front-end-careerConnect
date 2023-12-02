@@ -238,14 +238,14 @@ const MainCard = (props) => {
           </Link>
           <Flex mt={3} gap={2}>
             {id == userId && (
-              <Link href={`/company/update/${id}`}>
+              <Link href={`/company/update`}>
                 <Button bg="orange.400" color={'white'}>
                   Edit Data Perusahaan
                 </Button>
               </Link>
             )}
             {id == userId && (
-              <Link href={`/company/update/account/${id}`}>
+              <Link href={`/company/update/account`}>
                 <Button bg="orange.400" color={'white'}>
                   Edit Akun
                 </Button>
@@ -254,12 +254,12 @@ const MainCard = (props) => {
           </Flex>
 
           <Text fontWeight={'bold'} fontSize={'2xl'} mt={5}>
-            Data Lowongan Pekerjaan dan Pelamar
+            Data Lowongan Pekerjaan
           </Text>
 
-          <Box bg={'green.500'} w={'470px'} rounded={'lg'} p={3}>
+          <Box bg={'green.500'} w={'490px'} rounded={'lg'} p={3}>
             <Text color={'white'} fontWeight={'bold'} fontSize={'2xl'}>
-              Jumlah Data Lowongan Pekerjaan Yang Dibuka
+              Jumlah Lowongan Pekerjaan Terbuka
             </Text>
             <Divider borderWidth={3} rounded={'lg'} my={2} />
             <Flex justifyContent={'space-between'} alignItems={'center'}>

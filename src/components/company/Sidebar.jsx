@@ -73,7 +73,7 @@ export default function SideBar(props) {
               <Flex alignItems={'center'} gap={2}>
                 <RiFileAddFill size={'24px'} />
                 <Text fontSize={'0.9rem'} fontWeight={'light'}>
-                  Tambah Data Lowongan
+                  Tambah Lowongan Pekerjaan
                 </Text>
               </Flex>
             </Link>
