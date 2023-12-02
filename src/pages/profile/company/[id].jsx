@@ -243,7 +243,7 @@ const MainCard = (props) => {
             {id == userId && (
               <Link href={`/company/update/account/${id}`}>
                 <Button bg="orange.400" color={'white'}>
-                  Edit Account
+                  Edit Akun
                 </Button>
               </Link>
             )}
