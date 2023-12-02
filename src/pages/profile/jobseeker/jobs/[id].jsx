@@ -29,7 +29,7 @@ const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
 const JobsStatus = () => {
   const router = useRouter();
-  const toast = useToast()
+  const toast = useToast();
   const [dataProfile, setDataProfile] = useState(null);
   const [dataJobs, setDataJobs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
