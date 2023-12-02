@@ -48,7 +48,7 @@ export default function SideBar(props) {
               image="/company-profile/dashboard.png"
               alt="dashboar.png"
             >
-              <Link href={`profile/company/${id}`}>Dashboard Perusahaan</Link>
+              <Link href={`/profile/company/${id}`}>Dashboard Perusahaan</Link>
             </ImageAndTeksInline>
             <ImageAndTeksInline
               image="/company-profile/info-jobs.png"
