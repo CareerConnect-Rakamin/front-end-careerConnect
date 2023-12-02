@@ -10,8 +10,8 @@ const Sidebar = ({ dataUser }) => {
     return <div>Loading...</div>;
   }
 
-  console.log(dataUser)
-  console.log(dataUser.photo_profile)
+  console.log(dataUser);
+  console.log(dataUser.photo_profile);
 
   return (
     <Box

@@ -6,32 +6,32 @@ import { validateToken } from '@/hooks/tokenValidation';
 import { GetProfileById } from '@/modules/fetch';
 
 const EditDataProfile = () => {
-  const [dataProfile, setDataProfile] = useState(null)
-  const [id, setId] = useState(null)
+  const [dataProfile, setDataProfile] = useState(null);
+  const [id, setId] = useState(null);
 
   useEffect(() => {
     const catchId = async () => {
-      const result = validateToken()
+      const result = validateToken();
       const { id, role } = result;
-      setId(id)
-    }
+      setId(id);
+    };
     const catchDataProfile = async () => {
-      if(id) {
+      if (id) {
         try {
-          const response = await GetProfileById(id)
-          setDataProfile(response.data.dataProfile)
-        } catch(error) {
+          const response = await GetProfileById(id);
+          setDataProfile(response.data.dataProfile);
+        } catch (error) {
           console.log(error);
         }
       }
-    }
-    catchId()
-    catchDataProfile()
-  }, [id])
-  
+    };
+    catchId();
+    catchDataProfile();
+  }, [id]);
+
   return (
     <>
-    <UpdateDataSeekers dataProfile={dataProfile}/>
+      <UpdateDataSeekers dataProfile={dataProfile} />
     </>
   );
 };

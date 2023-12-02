@@ -141,7 +141,7 @@ async function getCompanies(page) {
     console.log(error);
   }
 }
-    
+
 async function getPhotoProfileCompany(id) {
   try {
     const response = await instance.get(`/companies/${id}`);
@@ -173,7 +173,7 @@ async function createApply(id) {
     console.log(error);
   }
 }
-    
+
 async function searchCompanies(page, keyword) {
   try {
     const response = await instance.get(
@@ -264,7 +264,7 @@ const UpdateProfile = async (
       link_portfolio,
       on_work
     });
-    return response.data
+    return response.data;
   } catch (error) {
     throw new Error(error.response.data.message || 'Something went wrong');
   }
@@ -298,7 +298,6 @@ const GetApplyJobs = async () => {
     throw new Error(error.response.data.message || 'Something went wrong');
   }
 };
-
 
 const UpdatePhoto = async (formData) => {
   try {
