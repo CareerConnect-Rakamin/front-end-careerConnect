@@ -15,13 +15,13 @@ const CompanyCard = ({
   name,
   address,
   type,
-  company_id,
+  companies_id,
   photo_profile,
   description
 }) => {
   return (
     <Link
-      href={`/companies-detail/${company_id}`}
+      href={`/profile/company/${companies_id}`}
       style={{ textDecoration: 'none' }}
     >
       <Box
