@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 const SearchBar = () => {
-  const [searchParams, setSearchParams] = useState({});
   const searchRef = useRef();
   const router = useRouter();
   const toast = useToast();
@@ -15,18 +14,18 @@ const SearchBar = () => {
     if (event.key === 'Enter' || event.type === 'click') {
       event.preventDefault();
 
-      if (!keyword || keyword.length <= 3) {
-        toast({ title: 'Keyword minimal 4 karakter', status: 'error' });
-        return;
-      }
-
-      setSearchParams({ keyword });
-      router.push({ pathname: `/search/jobs/${keyword}`, query: searchParams });
+      router.push(`?search=${keyword}`);
     }
   };
 
   return (
-    <Flex justifyContent={'center'} alignItems={'center'} gap={2}>
+    <Flex
+      justifyContent={'center'}
+      alignItems={'center'}
+      gap={2}
+      position={'relative'}
+      zIndex={2}
+    >
       <Input
         bg={'white'}
         width={300}

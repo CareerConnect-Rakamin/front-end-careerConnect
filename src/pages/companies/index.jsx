@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Flex, Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { Flex, Box, Stack, Toast, useToast } from '@chakra-ui/react';
 import Head from 'next/head';
 import Wrapper from '@/components/Wrapper';
 import CompanyCard from '@/components/CardCompany';
@@ -8,23 +9,54 @@ import SearchBar from '@/components/SearchCompany';
 import { getCompanies } from '@/modules/fetch';
 
 export default function CompaniesPage() {
+  const router = useRouter();
+  const toast = useToast();
   const [page, setPage] = useState(1);
   const [companies, setCompanies] = useState([]);
   const [lastPage, setLastPage] = useState(0);
+  const [isEmptySearchResult, setIsEmptySearchResult] = useState(false);
 
   const fetchCompanies = async () => {
     try {
-      const response = await getCompanies(page);
+      const search = router.query.search;
+      const response = await getCompanies(page, search);
+
+      if (response.data.length === 0) {
+        setIsEmptySearchResult(true);
+        return;
+      }
+
       setCompanies(response.data);
       setLastPage(response.pagination.totalPages);
+      setIsEmptySearchResult(false);
     } catch (error) {
-      console.log(error);
+      console.error('Error fetching companies:', error);
+
+      toast({
+        title: 'Error',
+        description: 'Error fetching companies. Please try again later.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top-center',
+        render: () => (
+          <Box
+            textAlign={'center'}
+            borderRadius={20}
+            color="white"
+            p={3}
+            bg="red.500"
+          >
+            Company not found
+          </Box>
+        )
+      });
     }
   };
 
   useEffect(() => {
     fetchCompanies();
-  }, [page]);
+  }, [page, router.query.search]);
 
   return (
     <Wrapper>
@@ -34,6 +66,12 @@ export default function CompaniesPage() {
       <Flex justifyContent="center" mb={4} mt={10}>
         <SearchBar />
       </Flex>
+
+      {isEmptySearchResult && (
+        <Flex justifyContent="center" mt={4}>
+          <Toast status="error">No companies found for your search</Toast>
+        </Flex>
+      )}
 
       <Flex justifyContent="center" wrap="wrap" padding={10} gap={8}>
         {companies.map((company) => (
