@@ -53,7 +53,7 @@ export default function SideBar(props) {
               rounded={'lg'}
               w={'90%'}
             />
-            <Link href={`profile/company/${id}`}>
+            <Link href={`/profile/company/${id}`}>
               <Flex alignItems={'center'} gap={2}>
                 <MdDeveloperBoard size={'24px'} />
                 <Text fontSize={'0.9rem'} fontWeight={'light'}>
