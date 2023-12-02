@@ -27,8 +27,9 @@ const AddCertificates = () => {
     if (!certificates) {
       toast({
         title: 'Error',
-        description: 'Please insert file certificates',
+        description: 'Masukkan file sertifikat terlebih dahulu.',
         status: 'error',
+        position: 'top',
         duration: 5000,
         isClosable: true
       });
@@ -39,6 +40,14 @@ const AddCertificates = () => {
       formData.append('name', name);
       const response = await UploadSertif(formData);
       if (response) {
+        toast({
+          title: 'success',
+          description: 'Data sertifikat berhasil ditambahkan.',
+          status: 'success',
+          position: 'top',
+          duration: 5000,
+          isClosable: true
+        });
         router.back();
       }
     } catch (error) {

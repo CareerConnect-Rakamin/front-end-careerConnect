@@ -2,19 +2,15 @@ import {
   Box,
   VStack,
   Text,
-  Image,
   HStack,
-  FormControl,
   FormLabel,
   useToast,
   Input,
-  Flex,
   Button,
   Textarea,
   Select
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 import { UpdateProfile } from '@/modules/fetch';
 
 const UpdateDataSeekers = ({ dataProfile }) => {
@@ -38,12 +34,21 @@ const UpdateDataSeekers = ({ dataProfile }) => {
           formData.get('link_portfolio'),
           formData.get('on_work')
         );
+        toast({
+          title: 'success',
+          description: 'Data berhasil diupdate.',
+          status: 'success',
+          position: 'top',
+          duration: 5000,
+          isClosable: true
+        });
         router.back();
       }
     } catch (error) {
       toast({
         title: 'Error',
         description: error.message || 'Something went wrong',
+        position: 'top',
         status: 'error',
         duration: 5000,
         isClosable: true

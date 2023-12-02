@@ -12,7 +12,8 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger
+  PopoverTrigger,
+  useToast
 } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -21,11 +22,13 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { GetApplyJobs, GetProfileById, cancelApply } from '@/modules/fetch';
 import Sidebar from '@/components/sidebar.jobseeker';
+import { validateToken } from '@/hooks/tokenValidation';
 
 const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
 const JobsStatus = () => {
   const router = useRouter();
+  const toast = useToast()
   const [dataProfile, setDataProfile] = useState(null);
   const [dataJobs, setDataJobs] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -48,8 +51,19 @@ const JobsStatus = () => {
         setIsLoading(false);
       }
     };
-
+    const checkToken = () => {
+      const idUser = id;
+      if (idUser) {
+        const result = validateToken();
+        const { id, role } = result;
+        const idToken = id;
+        if (idToken != idUser) {
+          router.push(`/`);
+        }
+      }
+    };
     fetchData();
+    checkToken();
   }, [id]);
 
   const cancelJob = async (jobId) => {
@@ -57,14 +71,23 @@ const JobsStatus = () => {
     try {
       const response = await cancelApply(jobId);
       if (response) {
-        router.reload();
+        toast({
+          title: 'success',
+          description: 'Data apply pekerjaan berhasil dibatalkan.',
+          status: 'success',
+          position: 'top',
+          duration: 5000,
+          isClosable: true
+        });
+
+        setTimeout(() => {
+          router.reload();
+        }, 1000);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log('data', dataJobs);
-  console.log('data profile', dataProfile);
 
   if (isLoading) {
     return <p>Loading...</p>;
