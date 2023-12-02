@@ -13,12 +13,17 @@ import {
   Textarea,
   useToast
 } from '@chakra-ui/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function UpdateCompanyForm() {
   return (
     <ChakraProvider>
+      <Head>
+        <title>Edit Photo Profile Company</title>
+      </Head>
       <Flex>
         <Form1 />
         <Flex
@@ -48,37 +53,42 @@ export default function UpdateCompanyForm() {
 
 const Form1 = () => {
   const [company, setCompany] = useState([]);
-  const [user, setUser] = useState([]);
+  const [userId, setUserId] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
 
-  // useEffect(() => {
-  //   const fetchCompanyById = async () => {
-  //     try {
-  //       if (id) {
-  //         const response = await getCompanyById(id);
-  //         setCompany(response.data);
-  //         setLoading(false);
-  //       }
-  //     } catch (e) {
-  //       console.error(e);
-  //       setLoading(false);
-  //     }
-  //   };
+  useEffect(() => {
+    const checkToken = async () => {
+      const user = await validateToken();
+      if (user) {
+        if (user.role != 'company') {
+          router.push('/');
+        }
+        setUserId(user.id);
+      } else {
+        localStorage.removeItem('token');
+        router.push('/');
+      }
+    };
 
-  //   if (id) {
-  //     fetchCompanyById();
-  //   }
-  // }, [id]);
+    checkToken();
+  }, [id, userId]);
+
+  useEffect(() => {
+    if (id && userId) {
+      if (userId.toString() != id) {
+        router.push('/');
+      }
+    }
+  }, [id, userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
     const formData = new FormData();
 
-    // Tambahkan gambar ke formData jika ada
     const fileInput = event.target.image;
 
     if (fileInput.files.length > 0) {
@@ -88,7 +98,6 @@ const Form1 = () => {
 
     if (company) {
       try {
-        // Menggunakan formData saat memanggil UpdatePhoto
         await UpdatePhoto(formData);
 
         toast({
@@ -98,7 +107,7 @@ const Form1 = () => {
           duration: 5000,
           isClosable: true
         });
-        window.location.href = `/company/${id}`;
+        window.location.href = `/profile/company/${id}`;
       } catch (error) {
         console.error(error);
         toast({

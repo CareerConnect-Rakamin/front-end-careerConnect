@@ -17,6 +17,7 @@ import {
   useDisclosure,
   Skeleton
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
@@ -274,7 +275,7 @@ export default function DetailsJob() {
   return (
     <VStack spacing={0} bgColor={'gray.200'} minH="100vh" w="100%">
       <Head>
-        <title>Details</title>
+        <title>Details Job - CareerConnect</title>
       </Head>
       <Navbar />
       <AlertDialog
@@ -400,21 +401,23 @@ export default function DetailsJob() {
         <Flex flex={4} align={'center'} justify={'right'} direction={'row'}>
           {isCompany ? (
             isOwner ? (
-              <Button
-                size={{ base: 'xs', md: 'sm', lg: 'md' }}
-                borderRadius={10}
-                fontFamily={'lexendDeca'}
-                m={2}
-                bg={'orange.300'}
-                color={'white'}
-                fontSize={{ base: '16px', md: '16px', lg: '18px' }}
-                _hover={{
-                  bg: '#2a5c91',
-                  transform: 'scale(1.05)'
-                }}
-              >
-                Edit Pekerjaan
-              </Button>
+              <Link href={`/company/jobs/update/${job.id}`}>
+                <Button
+                  size={{ base: 'xs', md: 'sm', lg: 'md' }}
+                  borderRadius={10}
+                  fontFamily={'lexendDeca'}
+                  m={2}
+                  bg={'orange.300'}
+                  color={'white'}
+                  fontSize={{ base: '16px', md: '16px', lg: '18px' }}
+                  _hover={{
+                    bg: '#2a5c91',
+                    transform: 'scale(1.05)'
+                  }}
+                >
+                  Edit Pekerjaan
+                </Button>
+              </Link>
             ) : (
               <Flex
                 flex={4}

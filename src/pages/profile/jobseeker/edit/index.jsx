@@ -1,9 +1,8 @@
-import { Text } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import UpdateDataSeekers from '@/components/FormUpdateSeekers';
 import { validateToken } from '@/hooks/tokenValidation';
 import { GetProfileById } from '@/modules/fetch';
+import Head from 'next/head';
 
 const EditDataProfile = () => {
   const [dataProfile, setDataProfile] = useState(null);
@@ -31,6 +30,9 @@ const EditDataProfile = () => {
 
   return (
     <>
+      <Head>
+        <title>Edit Profile Jobseeker</title>
+      </Head>
       <UpdateDataSeekers dataProfile={dataProfile} />
     </>
   );

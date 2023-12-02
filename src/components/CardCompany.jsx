@@ -7,21 +7,20 @@ import {
   Tooltip,
   Link
 } from '@chakra-ui/react';
-import { FiInfo, FiAlignLeft } from 'react-icons/fi';
+import { FiAlignLeft } from 'react-icons/fi';
 import { BiBuilding } from 'react-icons/bi';
-import { useRouter } from 'next/router';
 
 const CompanyCard = ({
   name,
   address,
   type,
-  company_id,
+  companies_id,
   photo_profile,
   description
 }) => {
   return (
     <Link
-      href={`/companies-detail/${company_id}`}
+      href={`/profile/company/${companies_id}`}
       style={{ textDecoration: 'none' }}
     >
       <Box

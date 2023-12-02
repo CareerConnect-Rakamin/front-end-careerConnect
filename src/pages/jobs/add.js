@@ -145,7 +145,7 @@ export default function AddJob() {
       </Link>
       <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
         <Head>
-          <title>Tambah Lowongan</title>
+          <title>Add Job Vacancy</title>
         </Head>
         <Flex py={5} flex={4} align={'center'} direction={'column'}>
           <Stack

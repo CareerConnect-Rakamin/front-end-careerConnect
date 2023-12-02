@@ -25,6 +25,7 @@ import { PhoneIcon } from '@chakra-ui/icons';
 import { MdLocationOn } from 'react-icons/md';
 import { TbWorld } from 'react-icons/tb';
 import { IoBriefcase } from 'react-icons/io5';
+import Head from 'next/head';
 
 export default function CompanyProfile() {
   const [company, setCompany] = useState();
@@ -94,6 +95,9 @@ export default function CompanyProfile() {
 
   return (
     <>
+      <Head>
+        <title>Profile Company</title>
+      </Head>
       {isLoading ? (
         <Skeleton height="300px" my="6" />
       ) : (
@@ -188,7 +192,7 @@ const MainCard = (props) => {
               objectFit="cover"
               alt="photo.profile"
             />
-            <Link href={`update/photo/${id}`}>
+            <Link href={`/company/update/photo/${id}`}>
               <Button
                 position="absolute"
                 bgColor="#2A5C91"

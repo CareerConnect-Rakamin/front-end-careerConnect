@@ -12,6 +12,7 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { UploadSertif } from '@/modules/fetch';
+import Head from 'next/head';
 
 const AddCertificates = () => {
   const [name, setName] = useState(null);
@@ -27,8 +28,9 @@ const AddCertificates = () => {
     if (!certificates) {
       toast({
         title: 'Error',
-        description: 'Please insert file certificates',
+        description: 'Masukkan file sertifikat terlebih dahulu.',
         status: 'error',
+        position: 'top',
         duration: 5000,
         isClosable: true
       });
@@ -39,6 +41,14 @@ const AddCertificates = () => {
       formData.append('name', name);
       const response = await UploadSertif(formData);
       if (response) {
+        toast({
+          title: 'success',
+          description: 'Data sertifikat berhasil ditambahkan.',
+          status: 'success',
+          position: 'top',
+          duration: 5000,
+          isClosable: true
+        });
         router.back();
       }
     } catch (error) {
@@ -48,6 +58,9 @@ const AddCertificates = () => {
 
   return (
     <>
+      <Head>
+        <title>Add Certificates</title>
+      </Head>
       <Box mt={'2em'} fontFamily={'lexendDeca'} as="aside" color="#0B1A2A">
         <VStack align={'center'}>
           <VStack align={'center'}>

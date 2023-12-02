@@ -8,17 +8,20 @@ import {
   Image,
   Input,
   Link,
-  Select,
   Text,
-  Textarea,
   useToast
 } from '@chakra-ui/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { validateToken } from '@/hooks/tokenValidation';
 
 export default function UpdateCompanyForm() {
   return (
     <ChakraProvider>
+      <Head>
+        <title>Edit Company Account</title>
+      </Head>
       <Flex>
         <Form1 />
         <Flex
@@ -72,30 +75,40 @@ const FormInput = (props) => {
 
 const Form1 = () => {
   const [company, setCompany] = useState([]);
-  const [user, setUser] = useState([]);
+  const [userId, setUserId] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const toast = useToast();
   const router = useRouter();
-  const { id } = router.query;
+
+  const checkToken = async () => {
+    const user = await validateToken();
+    if (user.role == 'company') {
+      setUserId(user.id);
+    } else {
+      router.push('/');
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
 
   useEffect(() => {
     const fetchCompanyById = async () => {
       try {
-        if (id) {
-          const response = await getCompanyById(id);
-          setCompany(response.data);
-          setLoading(false);
-        }
+        const response = await getCompanyById(userId);
+        setCompany(response.data);
+        setLoading(false);
       } catch (e) {
         console.error(e);
         setLoading(false);
       }
     };
 
-    if (id) {
+    if (userId) {
       fetchCompanyById();
     }
-  }, [id]);
+  }, [userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -112,7 +125,10 @@ const Form1 = () => {
         return;
       }
       try {
-        await editCompany(formData.get('email'), formData.get('password'));
+        await editCompany({
+          email: formData.get('email'),
+          password: formData.get('password')
+        });
         toast({
           title: 'Success',
           description: 'Account edited successfully',
@@ -120,7 +136,7 @@ const Form1 = () => {
           duration: 5000,
           isClosable: true
         });
-        window.location.href = `/company/${id}`;
+        window.location.href = `/profile/company/${userId}`;
       } catch (error) {
         console.error(error);
         toast({
@@ -135,7 +151,7 @@ const Form1 = () => {
   }
   return (
     <Flex minW="50%" flexDirection="column" px="40px" my="10px" minH="100vh">
-      <Link href={`/profile/company/${id}`}>
+      <Link href={`/profile/company/${userId}`}>
         <Image
           src="/company-profile/job/detail/back.png"
           _hover={{ transform: 'scale(1.2)' }}
@@ -156,7 +172,7 @@ const Form1 = () => {
           placeholder="email for login"
           name="email"
           required={true}
-          defaulValue={company.email}
+          defaulValue={company?.email}
         >
           Email
         </FormInput>

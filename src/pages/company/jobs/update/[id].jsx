@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
+import Head from 'next/head';
 
 export default function UpdateJobCompanyForm() {
   const [formData, setFormData] = useState({});
@@ -30,22 +31,20 @@ export default function UpdateJobCompanyForm() {
 
   const checkToken = async () => {
     const result = await validateToken();
-    const { idUser, role } = result;
+    const { id, role } = result;
     if (result) {
-      setUserId(idUser);
+      setUserId(id);
       setIsTokenValid(true);
     } else {
       setIsTokenValid(false);
       localStorage.removeItem('token');
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken();
-    }
-  }, []);
+    checkToken();
+  }, [userId]);
 
   useEffect(() => {
     const fetchJobById = async () => {
@@ -80,6 +79,9 @@ export default function UpdateJobCompanyForm() {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Update Job Vacancy Data</title>
+      </Head>
       <Flex>
         {currentStep === 1 && (
           <Form1
@@ -144,12 +146,14 @@ const FormInput = (props) => {
 };
 
 const Form1 = ({ onNext, updateFormData }) => {
-  const [job, setJob] = useState([]);
+  const [jobDo, setJobDo] = useState('');
+  const [jobNeed, setJobNeed] = useState('');
+  const [job, setJob] = useState({});
   const toast = useToast();
   const router = useRouter();
   const { id } = router.query;
-
   const [userId, setUserId] = useState();
+  const [userRole, setUserRole] = useState();
   const [isTokenValid, setIsTokenValid] = useState(false);
 
   const checkToken = async () => {
@@ -161,31 +165,40 @@ const Form1 = ({ onNext, updateFormData }) => {
     } else {
       setIsTokenValid(false);
       localStorage.removeItem('token');
+      router.push('/');
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      checkToken();
-    }
-  }, []);
+    checkToken();
+  }, [id, userId]);
 
   useEffect(() => {
     const fetchJobById = async () => {
       try {
         if (id) {
           const response = await getJobById(id);
-          setJob(response.data);
+          if (response && userId) {
+            if (response.data.companies_id == userId) {
+              const arrayDo = JSON.parse(response.data.what_will_you_do);
+              const resultDo = arrayDo.map((item) => ` - ${item}`).join('');
+              const arrayNeed = JSON.parse(response.data.what_will_you_need);
+              const resultNeed = arrayNeed.map((item) => ` - ${item}`).join('');
+              setJobDo(resultDo);
+              setJobNeed(resultNeed);
+              setJob(response.data);
+            } else {
+              router.push('/');
+            }
+          }
         }
       } catch (e) {
         console.error(e);
       }
     };
-    if (id) {
-      fetchJobById();
-    }
-  }, [id]);
+
+    fetchJobById();
+  }, [id, userId]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -251,7 +264,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="email for login"
           name="name"
           required={true}
-          defaulValue={job.name}
+          defaulValue={job?.name}
         >
           Nama pekerjaan
         </FormInput>
@@ -260,7 +273,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="Nama perusahaan"
           name="description"
           required={true}
-          defaulValue={job.description}
+          defaulValue={job?.description}
         >
           Deskripsi singkat
         </FormInput>
@@ -271,7 +284,7 @@ const Form1 = ({ onNext, updateFormData }) => {
             bg="#D9D9D9"
             name="type"
             required
-            defaultValue={job.category}
+            defaultValue={job?.category}
           >
             {jobCategories.map((category) => (
               <option key={category} value={category}>
@@ -284,7 +297,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="text"
           placeholder="Lokasi Pekerjaan"
           name="location"
-          defaulValue={job.location}
+          defaulValue={job?.location}
         >
           Lokasi
         </FormInput>
@@ -295,7 +308,7 @@ const Form1 = ({ onNext, updateFormData }) => {
             bg="#D9D9D9"
             name="job_type"
             required
-            defaultValue={job.type}
+            defaultValue={job?.type}
           >
             <option value="WFH">WFH (Work From Home)</option>
             <option value="WFO">WFO (Work From Office)</option>
@@ -306,7 +319,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           placeholder="Gaji"
           name="salary"
           required={true}
-          defaulValue={job.salary}
+          defaulValue={job?.salary}
         >
           Salary
         </FormInput>
@@ -314,7 +327,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="number"
           placeholder="Berapa orang yang ingin di Hiring"
           name="capacity"
-          defaulValue={job.capacity}
+          defaulValue={job?.capacity}
           required={true}
         >
           Capacity
@@ -323,7 +336,7 @@ const Form1 = ({ onNext, updateFormData }) => {
           type="date"
           placeholder="Tanggal di Tutup"
           name="closing_date"
-          defaulValue={job.capacity}
+          defaulValue={job?.capacity}
           required={true}
         >
           Closing Date
@@ -339,6 +352,8 @@ const Form1 = ({ onNext, updateFormData }) => {
 };
 
 const Form2 = ({ updateFormData }) => {
+  const [jobDo, setJobDo] = useState('');
+  const [jobNeed, setJobNeed] = useState('');
   const [job, setJob] = useState([]);
   const router = useRouter();
   const { id } = router.query;
@@ -348,6 +363,12 @@ const Form2 = ({ updateFormData }) => {
       try {
         if (id) {
           const response = await getJobById(id);
+          const arrayDo = JSON.parse(response.data.what_will_you_do);
+          const resultDo = arrayDo.map((item) => ` - ${item}\n`).join('');
+          const arrayNeed = JSON.parse(response.data.what_will_you_need);
+          const resultNeed = arrayNeed.map((item) => ` - ${item}\n`).join('');
+          setJobDo(resultDo);
+          setJobNeed(resultNeed);
           setJob(response.data);
           setLoading(false);
         }
@@ -370,10 +391,10 @@ const Form2 = ({ updateFormData }) => {
 
         updateFormData({
           what_will_you_do: whatWillYouDo
-            .split('\n')
+            .split(/[-\n]+/)
             .filter((line) => line.trim() !== ''),
           what_will_you_need: whatWillYouNeed
-            .split('\n')
+            .split(/[-\n]+/)
             .filter((line) => line.trim() !== '')
         });
       } catch (error) {
@@ -415,7 +436,7 @@ const Form2 = ({ updateFormData }) => {
             rounded={10}
             minH="10rem"
             name="what_will_you_do"
-            defaultValue={job.what_will_you_do}
+            defaultValue={jobDo}
           />
         </FormControl>
 
@@ -428,7 +449,7 @@ const Form2 = ({ updateFormData }) => {
             bg="#D9D9D9"
             rounded={10}
             minH="10rem"
-            defaultValue={job.what_will_you_need}
+            defaultValue={jobNeed}
           />
         </FormControl>
         <Flex mt={5} mb={10} justifyContent="center">

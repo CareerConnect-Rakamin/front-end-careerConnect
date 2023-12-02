@@ -27,6 +27,7 @@ import { useEffect, useState } from 'react';
 import customTheme from '@/styles/theme';
 import SideBar from '@/components/company/Sidebar';
 import { validateToken } from '@/hooks/tokenValidation';
+import Head from 'next/head';
 
 export default function CompanyJobs() {
   const router = useRouter();
@@ -163,6 +164,9 @@ export default function CompanyJobs() {
 
   return (
     <ChakraProvider theme={customTheme}>
+      <Head>
+        <title>Job Vacancy Data</title>
+      </Head>
       {isLoading ? (
         <Skeleton height="100%" my="6" />
       ) : (

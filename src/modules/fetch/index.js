@@ -340,7 +340,7 @@ async function updateStatusApplicants(id, status, seekerId) {
 async function editCompany({
   email,
   password,
-  name,
+  compName,
   type,
   description,
   website,
@@ -352,7 +352,7 @@ async function editCompany({
     const response = await instance.put(`/companies`, {
       email,
       password,
-      name,
+      name: compName,
       type,
       description,
       email_company,
