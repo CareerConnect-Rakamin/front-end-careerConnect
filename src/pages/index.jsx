@@ -31,22 +31,11 @@ export default function Home() {
       console.error('Error fetching jobs:', error);
       toast({
         title: 'Error',
-        description: 'Error fetching jobs. Please try again later.',
+        description: 'Pekerjaan Tidak Ditemukan!',
         status: 'error',
         duration: 3000,
         isClosable: true,
-        position: 'top-center',
-        render: () => (
-          <Box
-            textAlign={'center'}
-            borderRadius={20}
-            color="white"
-            p={3}
-            bg="red.500"
-          >
-            No jobs found
-          </Box>
-        )
+        position: 'top'
       });
     }
   };
