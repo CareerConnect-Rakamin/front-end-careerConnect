@@ -4,7 +4,7 @@ import {
   Card,
   CardBody,
   CardHeader,
-  ChakraProvider,
+  Divider,
   Flex,
   Grid,
   GridItem,
@@ -18,9 +18,13 @@ import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { getCompanyById, getCompanyJobs } from '@/modules/fetch';
-import customTheme from '@/styles/theme';
 import { validateToken } from '@/hooks/tokenValidation';
 import SideBar from '@/components/company/Sidebar';
+import { MdAddAPhoto } from 'react-icons/md';
+import { PhoneIcon } from '@chakra-ui/icons';
+import { MdLocationOn } from 'react-icons/md';
+import { TbWorld } from 'react-icons/tb';
+import { IoBriefcase } from 'react-icons/io5';
 import Head from 'next/head';
 
 export default function CompanyProfile() {
@@ -90,7 +94,7 @@ export default function CompanyProfile() {
   }
 
   return (
-    <ChakraProvider theme={customTheme}>
+    <>
       <Head>
         <title>Profile Company</title>
       </Head>
@@ -115,8 +119,7 @@ export default function CompanyProfile() {
             />
           ) : (
             <Grid
-              templateAreas={`
-          "side profile"`}
+              templateAreas={`"side profile"`}
               gridTemplateRows={'full 1fr full'}
               gridTemplateColumns={'350px 1fr'} // Mengatur lebar kolom "side" menjadi sekitar 300
               h="100%"
@@ -154,71 +157,9 @@ export default function CompanyProfile() {
           )}
         </>
       )}
-    </ChakraProvider>
+    </>
   );
 }
-
-const ImageAndTeksInline = (props) => {
-  const {
-    image,
-    children,
-    boxSize = '23px',
-    fontSize = '18px',
-    textColor = 'black',
-    alt = 'image.png'
-  } = props;
-  return (
-    <Flex gap={2} alignItems="center">
-      <Image src={image} boxSize={boxSize} alt={alt} />
-      <Text fontSize={fontSize} fontWeight={'semibold'} textColor={textColor}>
-        {children}
-      </Text>
-    </Flex>
-  );
-};
-
-const TitleTeks = (props) => {
-  const { children } = props;
-  return (
-    <Text mt={2} textAlign="left" fontSize={'25px'} fontWeight={'bold'}>
-      {children}
-    </Text>
-  );
-};
-
-const BoxCountJobs = (props) => {
-  const { image, children, count, href } = props;
-  return (
-    <Box w="60%" bg="#459B72" p="12px" rounded="10px">
-      <Text textColor="white" fontWeight="bold" fontSize="26px">
-        {children}
-      </Text>
-      <hr style={{ width: '100%', borderTop: '3px solid white' }} />
-
-      <Flex justifyContent="space-between" alignItems="center">
-        <ImageAndTeksInline
-          image={image}
-          boxSize="70px"
-          fontSize="69px"
-          textColor="white"
-          alt={`Icon untuk menampilkan jumlah: ${count}`}
-        >
-          {count}
-        </ImageAndTeksInline>
-        <Link href={href}>
-          <Button
-            bg="#557C55"
-            rounded="10"
-            textColor="white"
-            _hover={{ bg: 'white', textColor: 'black' }}
-          >
-            Lihat Data
-          </Button>
-        </Link>
-      </Flex>
-    </Box>
-  );
-};
 
 const MainCard = (props) => {
   const {
@@ -235,14 +176,15 @@ const MainCard = (props) => {
   } = props;
   return (
     <Card
-      bg={'#F5F5F5'}
+      bg={'gray.50'}
       boxShadow="md"
       p="20px"
+      fontFamily={'lexendDeca'}
       {...(id != userId && { my: '6rem', mx: '2rem', rounded: 10 })}
     >
       <CardHeader>
         <Flex gap={4} alignItems="center">
-          <Box>
+          <Box mr={5}>
             <Image
               src={`http://localhost:3000/api/v1/${photoProfile}`}
               boxSize="155px"
@@ -256,18 +198,17 @@ const MainCard = (props) => {
                 bgColor="#2A5C91"
                 color="white"
                 borderRadius="100%"
-                fontSize="sm"
                 p="1"
                 mt={'-2rem'}
                 ml={'7rem'}
               >
-                <Image src="/company-profile/camera.png" alt="Camera picture" />
+                <MdAddAPhoto size={25} />
               </Button>
             </Link>
           </Box>
           <Stack>
-            <Text fontSize={'30px'}>{companyName}</Text>
-            <Text fontSize={'20px'} fontWeight="normal" textColor={'#9DA1A6'}>
+            <Text fontSize={'3xl'}>{companyName}</Text>
+            <Text fontSize={'md'} fontWeight="normal" textColor={'#9DA1A6'}>
               {email}
             </Text>
           </Stack>
@@ -275,56 +216,64 @@ const MainCard = (props) => {
       </CardHeader>
       <CardBody>
         <Stack>
-          <TitleTeks>Profil Perusahaan</TitleTeks>
-          <Text fontSize={'19px'} fontWeight={'normal'}>
+          <Text fontWeight={'bold'} fontSize={'2xl'}>
+            Profil Perusahaan
+          </Text>
+          <Text fontSize={'md'} fontWeight={'light'} mb={1}>
             {description}
           </Text>
-          <ImageAndTeksInline
-            image="/company-profile/phone-call.png"
-            alt="phonecall.png"
-          >
-            {phoneNumber}
-          </ImageAndTeksInline>
-          <ImageAndTeksInline
-            image="/company-profile/location.png"
-            alt="location.png"
-          >
-            {address}
-          </ImageAndTeksInline>
-          <Flex justifyContent="space-between" alignItems="center">
-            <ImageAndTeksInline
-              image="/company-profile/website.png"
-              alt="website.png"
-            >
-              <Link href={`https://${website}`} target="_blank">
-                {website}
-              </Link>
-            </ImageAndTeksInline>
+          <Flex alignItems={'center'} gap={2}>
+            <PhoneIcon />
+            <Text fontWeight={'light'}>{phoneNumber}</Text>
+          </Flex>
+          <Flex alignItems={'center'} gap={2}>
+            <MdLocationOn size={20} />
+            <Text fontWeight={'light'}>{address}</Text>
+          </Flex>
+          <Link href={`https://${website}`} target="_blank" color={'#2A5C91'}>
+            <Flex alignItems={'center'} gap={2}>
+              <TbWorld size={20} color="black" />
+              <Text fontWeight={'light'}>{website}</Text>
+            </Flex>
+          </Link>
+          <Flex mt={3} gap={2}>
             {id == userId && (
-              <Link href={`/company/update`}>
-                <Button bg="#FFBA79" color={'black'}>
+              <Link href={`/company/update/${id}`}>
+                <Button bg="orange.400" color={'white'}>
                   Edit Data Perusahaan
                 </Button>
               </Link>
             )}
             {id == userId && (
-              <Link href={`/company/update/account`}>
-                <Button bg="#FFBA79" color={'black'}>
-                  Edit Account
+              <Link href={`/company/update/account/${id}`}>
+                <Button bg="orange.400" color={'white'}>
+                  Edit Akun
                 </Button>
               </Link>
             )}
           </Flex>
-          <TitleTeks>Data Lowongan Pekerjaan dan Pelamar</TitleTeks>
-          <BoxCountJobs
-            image="/company-profile/cont-jobs.png"
-            count={jobs.length}
-            href={`/company/jobs/${id}`}
-          >
-            {userId == id
-              ? 'Jumlah Data Lowongan Pekerjaan yang diupload'
-              : 'jumlah pekerjaan yang ada di Company ini'}
-          </BoxCountJobs>
+
+          <Text fontWeight={'bold'} fontSize={'2xl'} mt={5}>
+            Data Lowongan Pekerjaan dan Pelamar
+          </Text>
+
+          <Box bg={'green.500'} w={'470px'} rounded={'lg'} p={3}>
+            <Text color={'white'} fontWeight={'bold'} fontSize={'2xl'}>
+              Jumlah Data Lowongan Pekerjaan Yang Dibuka
+            </Text>
+            <Divider borderWidth={3} rounded={'lg'} my={2} />
+            <Flex justifyContent={'space-between'} alignItems={'center'}>
+              <Flex alignItems={'center'} gap={3}>
+                <IoBriefcase color="white" size={'45px'} />
+                <Text fontSize={'4xl'} color={'white'}>
+                  {jobs.length}
+                </Text>
+              </Flex>
+              <Link href={`/company/jobs/${id}`}>
+                <Button>Lihat Data</Button>
+              </Link>
+            </Flex>
+          </Box>
         </Stack>
       </CardBody>
     </Card>
