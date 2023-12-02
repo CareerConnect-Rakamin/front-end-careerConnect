@@ -26,7 +26,7 @@ export default function Home() {
       }
 
       setJobs(response.data);
-      setLastPage(response.pagination.totalPages);
+      setLastPage(response.pagination);
     } catch (error) {
       console.error('Error fetching jobs:', error);
       toast({
