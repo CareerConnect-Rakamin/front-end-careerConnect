@@ -24,6 +24,7 @@ import {
 } from '@/modules/fetch';
 import Sidebar from '@/components/sidebar.jobseeker';
 import { validateToken } from '@/hooks/tokenValidation';
+import Head from 'next/head';
 
 const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
@@ -156,6 +157,9 @@ const ProfileJobseeker = () => {
   fetchFile();
   return (
     <>
+      <Head>
+        <title>Profile Jobseeker</title>
+      </Head>
       <Navbar />
       <Flex mb={10} pt={'5em'}>
         {dataProfile && <Sidebar dataUser={dataProfile} />}

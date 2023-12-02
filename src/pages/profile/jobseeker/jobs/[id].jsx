@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { GetApplyJobs, GetProfileById, cancelApply } from '@/modules/fetch';
 import Sidebar from '@/components/sidebar.jobseeker';
+import Head from 'next/head';
 
 const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
@@ -71,6 +72,9 @@ const JobsStatus = () => {
   }
   return (
     <>
+      <Head>
+        <title>Data Apply Jobs</title>
+      </Head>
       <Navbar />
       <Flex mb={10} pt={'5em'}>
         {dataProfile && <Sidebar dataUser={dataProfile} />}
