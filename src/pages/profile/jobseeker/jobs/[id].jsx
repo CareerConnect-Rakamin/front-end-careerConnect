@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { GetApplyJobs, GetProfileById, cancelApply } from '@/modules/fetch';
-import Sidebar from '@/components/sidebar.jobseeker';
+import Sidebar from '@/components/SidebarJobseeker';
 import Head from 'next/head';
 import { validateToken } from '@/hooks/tokenValidation';
 
