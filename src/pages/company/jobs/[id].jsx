@@ -237,8 +237,8 @@ const ContentRight = (props) => {
 const MainCard = (props) => {
   const { jobs, applicants, statusJob, closeJob, openJob, userId, id } = props;
   return (
-    <Card bg="#F5F5F5" p="20px">
-      <Text fontSize="30px" fontWeight="bold" mb="7">
+    <Card bg="gray.50" p={3}>
+      <Text fontSize="30px" fontWeight="bold" mb={2}>
         {id != userId || validateToken === false
           ? 'Pekerjaan Yang Ada di Company Ini'
           : 'Data Lowongan Pekerjaan yang Terupload'}
