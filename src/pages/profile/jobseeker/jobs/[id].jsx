@@ -103,36 +103,31 @@ const JobsStatus = () => {
         {dataProfile && <Sidebar dataUser={dataProfile} />}
         <Box
           fontFamily={'lexendDeca'}
-          as="aside"
-          mt="21px"
-          ml="40px"
+          m={6}
           w="50.813rem"
-          bg="#F5F5F5"
-          color="#0B1A2A"
-          borderRadius="20px"
-          pos={'static'}
-          h="auto"
-          boxShadow="7px 7px 5px rgba(0, 0, 0, 0.2)"
+          bg="gray.50"
+          borderRadius="lg"
+          boxShadow={'lg'}
         >
-          <VStack align={'center'} mt={'2em'}>
+          <VStack align={'center'} mt={5}>
             <Text fontSize={'2xl'} fontWeight={'bold'}>
               Data Apply Pekerjaan Pengguna
             </Text>
           </VStack>
-          <VStack align={'center'} mt={'3em'} mb={'2em'}>
+          <VStack align={'center'} my={5}>
             {dataJobs?.map((jobs) => {
               console.log(jobs?.jobs_id);
               return (
                 <>
                   <Box
                     key={jobs.jobs_id}
-                    bgColor={'#FFBA79'}
+                    bgColor={'gray.100'}
                     w={'43.75rem'}
-                    borderRadius={'10px'}
-                    boxShadow="5px 5px 4px rgba(0, 0, 0, 0.2)"
-                    border="1px solid #000000"
+                    borderRadius={'xl'}
+                    boxShadow={'xl'}
+                    transition={'0.3s'}
                     _hover={{
-                      bgColor: '#FFA959'
+                      bgColor: 'blue.100'
                     }}
                     mb={'1em'}
                   >
@@ -142,9 +137,7 @@ const JobsStatus = () => {
                         src={`${baseURL}/${jobs.company_photo}`}
                         w={'100px'}
                         borderRadius={'10px'}
-                        ml={'1em'}
-                        mt={'1em'}
-                        mb={'1em'}
+                        mx={4}
                       />
                       <VStack gap={0} align={'left'} w={'40%'}>
                         <Text fontSize={'lg'} fontWeight={'bold'} mt={'0.5em'}>
@@ -165,12 +158,12 @@ const JobsStatus = () => {
                           color={'#F5F5F5'}
                           bgColor={
                             jobs.status === 'pending'
-                              ? '#969093'
+                              ? 'gray.400'
                               : jobs.status === 'interview'
-                                ? '#C7B941'
+                                ? 'yellow.400'
                                 : jobs.status === 'accepted'
-                                  ? '#459B72'
-                                  : '#B72E2E'
+                                  ? 'green.400'
+                                  : 'red.400'
                           }
                           fontWeight={'bold'}
                           fontSize={'sm'}
@@ -208,7 +201,6 @@ const JobsStatus = () => {
                                 size={'sm'}
                                 colorScheme="red"
                                 mt={'2em'}
-                                ml={'1em'}
                                 display={
                                   jobs?.status === 'cancel' ? 'none' : 'block'
                                 }
