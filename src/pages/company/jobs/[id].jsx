@@ -2,8 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardBody,
-  CardHeader,
   ChakraProvider,
   Flex,
   Grid,
@@ -27,6 +25,10 @@ import { useEffect, useState } from 'react';
 import customTheme from '@/styles/theme';
 import SideBar from '@/components/company/Sidebar';
 import { validateToken } from '@/hooks/tokenValidation';
+import { MdOutlineAttachMoney } from 'react-icons/md';
+import { FaLocationDot } from 'react-icons/fa6';
+import { BsPersonWorkspace } from 'react-icons/bs';
+import { IoPeople } from 'react-icons/io5';
 import Head from 'next/head';
 
 export default function CompanyJobs() {
@@ -184,10 +186,9 @@ export default function CompanyJobs() {
             </Flex>
           ) : (
             <Grid
-              templateAreas={`
-          "side profile"`}
+              templateAreas={`"side profile"`}
               gridTemplateRows={'full 1fr full'}
-              gridTemplateColumns={'350px 1fr'} // Mengatur lebar kolom "side" menjadi sekitar 300
+              gridTemplateColumns={'350px 1fr'}
               gap="1"
               color="blackAlpha.700"
               fontWeight="bold"
@@ -222,38 +223,6 @@ export default function CompanyJobs() {
   );
 }
 
-const ImageAndTeksInline = (props) => {
-  const {
-    image,
-    children,
-    boxSize = '23px',
-    fontSize = '18px',
-    textColor = 'black'
-  } = props;
-  return (
-    <Flex gap={2} alignItems="center">
-      <Image src={image} alt="picture" boxSize={boxSize} />
-      <Text fontSize={fontSize} fontWeight={'semibold'} textColor={textColor}>
-        {children}
-      </Text>
-    </Flex>
-  );
-};
-
-const ContentMid = (props) => {
-  const { image, children } = props;
-  return (
-    <ImageAndTeksInline
-      image={image}
-      fontSize="15px"
-      boxSize="25px"
-      textColor="white"
-    >
-      {children}
-    </ImageAndTeksInline>
-  );
-};
-
 const ContentRight = (props) => {
   const { href = '#', children, bg, color } = props;
   return (
@@ -279,57 +248,63 @@ const MainCard = (props) => {
           <Card key={job.id} bg={'#2A5C91'} boxShadow="md" p="20px" my={3}>
             <Flex alignItems="center">
               <Stack w="280px">
-                <Text fontSize="14px" fontWeight="normal" textColor="#C0C0C0">
+                <Text fontSize="14px" fontWeight="normal" textColor="#e7e7e7">
                   Nama Pekerjaan
                 </Text>
-                <Text fontSize="30px" fontWeight="bold" textColor="white">
+                <Text fontSize="xl" fontWeight="bold" textColor="white">
                   {job.name}
                 </Text>
-                <Text fontSize="14px" fontWeight="normal" textColor="#C0C0C0">
+                <Text fontSize="14px" fontWeight="normal" textColor="#e7e7e7">
                   Kategori Pekerjaan
                 </Text>
-                <Text fontSize="17px" fontWeight="bold" textColor="white">
+                <Text fontSize="lg" fontWeight="bold" textColor="white">
                   {job.category}
                 </Text>
               </Stack>
               <Box w="290px" bg="#0B1A2A" rounded="10" px="25px" py="20px">
                 <Flex gap={1}>
                   <Stack>
-                    <ContentMid image="/company-profile/job/lokasi.png">
-                      {job.location}
-                    </ContentMid>
-                    <ContentMid image="/company-profile/job/kuota.png">
-                      {job.capacity} Orang
-                    </ContentMid>
+                    <Flex align={'center'} gap={2} color="white">
+                      <FaLocationDot />
+                      <Text noOfLines={1} fontWeight={'normal'}>
+                        {job.location}
+                      </Text>
+                    </Flex>
+                    <Flex align={'center'} gap={2} color="white">
+                      <IoPeople />
+                      <Text noOfLines={1} fontWeight={'normal'}>
+                        {job.capacity} Lowongan
+                      </Text>
+                    </Flex>
                     {id == userId && (
-                      <>
-                        <Text
-                          fontSize="12px"
-                          fontWeight="normal"
-                          color="#C0C0C0"
-                        >
-                          Data Pelamar Pekerjaan
+                      <Flex align={'center'} gap={3}>
+                        <Text fontSize="sm" fontWeight="normal" color="#C0C0C0">
+                          Data Pelamar
                         </Text>
-                        <Text fontSize="20px" fontWeight="bold" color="white">
+                        <Text fontSize="sm" fontWeight="bold" color="white">
                           {applicants &&
                             applicants[job.id] &&
                             applicants[job.id].length}
                         </Text>
-                      </>
+                      </Flex>
                     )}
                   </Stack>
                   <Stack mr={2}>
-                    <ContentMid image="/company-profile/job/gaji.png">
-                      {new Intl.NumberFormat('id-ID', {
-                        style: 'currency',
-                        currency: 'IDR'
-                      })
-                        .format(parseFloat(job.salary).toFixed(0))
-                        .replace(',00', '')}
-                    </ContentMid>
-                    <ContentMid image="/company-profile/job/type.png">
-                      {job.job_type}
-                    </ContentMid>
+                    <Flex align={'center'} color="white">
+                      <MdOutlineAttachMoney />
+                      <Text noOfLines={1} fontWeight={'normal'}>
+                        {new Intl.NumberFormat('id-ID', {
+                          style: 'currency',
+                          currency: 'IDR'
+                        })
+                          .format(parseFloat(job.salary).toFixed(0))
+                          .replace(',00', '')}
+                      </Text>
+                    </Flex>
+                    <Flex align={'center'} gap={2} color="white">
+                      <BsPersonWorkspace />
+                      <Text fontWeight={'normal'}>{job.job_type}</Text>
+                    </Flex>
                   </Stack>
                 </Flex>
               </Box>
@@ -343,8 +318,8 @@ const MainCard = (props) => {
                     Lihat Data Pelamar
                   </ContentRight>
                   <ContentRight
-                    bg="#FFBA79"
-                    color="black"
+                    bg="orange.300"
+                    color="white"
                     href={`update/${job.id}`}
                   >
                     Ubah Data Lowongan
