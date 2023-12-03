@@ -28,7 +28,7 @@ export default function SideBar(props) {
         my="auto"
         h="400px"
         position="fixed"
-        minW="320px"
+        minW="310px"
       >
         <CardHeader p={'10px'}>
           <Flex flexDirection="column" alignItems="center">
