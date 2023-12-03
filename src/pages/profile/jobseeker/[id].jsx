@@ -8,7 +8,9 @@ import {
   useToast,
   Input,
   Flex,
-  Button
+  Button,
+  Divider,
+  Spacer
 } from '@chakra-ui/react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -25,6 +27,12 @@ import {
 import Sidebar from '@/components/SidebarJobseeker';
 import { validateToken } from '@/hooks/tokenValidation';
 import Head from 'next/head';
+import { MdAddAPhoto } from 'react-icons/md';
+import { CalendarIcon, PhoneIcon } from '@chakra-ui/icons';
+import { BsGenderAmbiguous } from 'react-icons/bs';
+import { TbWorld } from 'react-icons/tb';
+import { IoLocationSharp } from 'react-icons/io5';
+import { FaFilePdf } from 'react-icons/fa6';
 
 const baseURL = process.env.API_URL || 'http://localhost:3000/api/v1';
 
@@ -218,16 +226,13 @@ const ProfileJobseeker = () => {
         {dataProfile && <Sidebar dataUser={dataProfile} />}
         <Box
           fontFamily={'lexendDeca'}
-          as="aside"
-          mt="21px"
-          ml="40px"
           w="50.813rem"
-          bg="#F5F5F5"
-          color="#0B1A2A"
-          borderRadius="20px"
-          pos={'static'}
+          bg={'gray.50'}
+          rounded={'xl'}
+          boxShadow={'xl'}
           h="auto"
-          boxShadow="7px 7px 5px rgba(0, 0, 0, 0.2)"
+          my={7}
+          mx={5}
         >
           <Flex>
             {dataProfile && (
@@ -273,12 +278,7 @@ const ProfileJobseeker = () => {
                       setImage(file);
                     }}
                   />
-                  <Image
-                    src="/images/camera.png"
-                    w={'25px'}
-                    h={'25px'}
-                    filter="invert(1)"
-                  />
+                  <MdAddAPhoto size={25} color="white" />
                 </Box>
               </HStack>
             )}
@@ -305,91 +305,64 @@ const ProfileJobseeker = () => {
                 <Text fontSize={'2xl'} fontWeight={'700'}>
                   Bio Pengguna
                 </Text>
-                <Text
-                  gap={0}
-                  borderBottom="2px solid #2A5C91"
-                  mt={0}
-                  mb={'1em'}
-                  width="46em"
+                <Divider
+                  borderWidth={'1px'}
+                  borderColor={'blue.400'}
+                  rounded={'lg'}
+                  my={1}
                 />
-                <Text fontSize={'md'}>{dataProfile.bio}</Text>
+                <Text fontSize={'md'} fontWeight={'light'}>
+                  {dataProfile.bio}
+                </Text>
                 <Text fontSize={'2xl'} fontWeight={'700'} mt={'24px'}>
                   Data Pengguna
                 </Text>
-                <Text
-                  gap={0}
-                  borderBottom="2px solid #2A5C91"
-                  mt={0}
-                  width="46em"
+                <Divider
+                  borderWidth={'1px'}
+                  borderColor={'blue.400'}
+                  rounded={'lg'}
+                  my={1}
                 />
                 <Box>
-                  <HStack align={'left'}>
-                    <HStack>
-                      <Image
-                        src="/images/phone.png"
-                        alt="nomor telepon"
-                        w={'30px'}
-                        h={'30px'}
-                        mt={'27px'}
-                      />
+                  <Flex justifyContent={'space-between'} width={'500px'} mt={3}>
+                    <Flex alignItems={'center'} gap={3}>
+                      <PhoneIcon fontSize={20} />
                       <Text
-                        mt={'28px'}
-                        ml={'20px'}
                         fontSize={'lg'}
+                        fontWeight={'light'}
                         color={
-                          dataProfile.phone_number == null
+                          dataProfile.phone_number === null
                             ? '#B72E2E'
                             : '#0B1A2A'
                         }
                       >
-                        {dataProfile.phone_number != null
+                        {dataProfile.phone_number !== null
                           ? dataProfile.phone_number
                           : 'Data kosong'}
                       </Text>
-                    </HStack>
-                    <HStack
-                      ml={dataProfile.phone_number == null ? '13.7em' : '12em'}
-                    >
-                      <Image
-                        src="/images/calendar.png"
-                        alt="nomor telepon"
-                        w={'30px'}
-                        h={'30px'}
-                        mt={'27px'}
-                      />
-                      <Text mt={'28px'} ml={'20px'} fontSize={'lg'}>
+                    </Flex>
+                    <Flex alignItems={'center'} gap={3}>
+                      <CalendarIcon />
+                      <Text fontSize={'lg'} fontWeight={'light'}>
                         {dataProfile.place_of_birth !== null
                           ? `${dataProfile.place_of_birth}, `
                           : ''}
                         {formatDate(dataProfile.date_of_birth)}
                       </Text>
-                    </HStack>
-                  </HStack>
-                  <HStack>
-                    <HStack>
-                      <Image
-                        src="/images/gender.png"
-                        alt="nomor telepon"
-                        w={'30px'}
-                        h={'30px'}
-                        mt={'27px'}
-                      />
-                      <Text mt={'28px'} ml={'20px'} fontSize={'lg'}>
+                    </Flex>
+                  </Flex>
+                  <Flex justifyContent={'space-between'} width={'515px'} mt={3}>
+                    <Flex alignItems={'center'} gap={3}>
+                      <BsGenderAmbiguous size={25} />
+                      <Text fontSize={'lg'} fontWeight={'light'}>
                         {dataProfile.gender === 'M' ? 'Pria' : 'Wanita'}
                       </Text>
-                    </HStack>
-                    <HStack ml={'18.55em'}>
-                      <Image
-                        src="/images/www.png"
-                        alt="nomor telepon"
-                        w={'30px'}
-                        h={'30px'}
-                        mt={'27px'}
-                      />
+                    </Flex>
+                    <Flex alignItems={'center'} gap={2}>
+                      <TbWorld size={25} />
                       <Text
-                        mt={'28px'}
-                        ml={'20px'}
                         fontSize={'lg'}
+                        fontWeight={'light'}
                         color={
                           dataProfile.link_portfolio == null
                             ? '#B72E2E'
@@ -400,21 +373,14 @@ const ProfileJobseeker = () => {
                           ? `${dataProfile.link_portfolio}`
                           : 'Data Kosong'}
                       </Text>
-                    </HStack>
-                  </HStack>
-                  <HStack>
-                    <HStack>
-                      <Image
-                        src="/images/location.png"
-                        alt="nomor telepon"
-                        w={'30px'}
-                        h={'30px'}
-                        mt={'27px'}
-                      />
+                    </Flex>
+                  </Flex>
+                  <Flex mt={3}>
+                    <Flex alignItems={'center'} gap={3}>
+                      <IoLocationSharp size={25} />
                       <Text
-                        mt={'28px'}
-                        ml={'20px'}
                         fontSize={'lg'}
+                        fontWeight={'light'}
                         color={
                           dataProfile.address == null ? '#B72E2E' : '#0B1A2A'
                         }
@@ -423,12 +389,12 @@ const ProfileJobseeker = () => {
                           ? dataProfile.address
                           : 'Data Kosong'}
                       </Text>
-                    </HStack>
-                  </HStack>
+                    </Flex>
+                  </Flex>
                   <Link href={`/profile/jobseeker/edit/`}>
                     <Button
-                      bgColor={'#FFBA79'}
-                      color={'#0B1A2A'}
+                      bgColor={'orange.400'}
+                      color={'white'}
                       size={'md'}
                       w={'13.563em'}
                       mt={'1.688rem'}
@@ -443,28 +409,26 @@ const ProfileJobseeker = () => {
                 <Text fontSize={'2xl'} fontWeight={'700'} mt={'24px'}>
                   Resume CV
                 </Text>
-                <Text
-                  gap={0}
-                  borderBottom="2px solid #2A5C91"
-                  mt={0}
-                  width="46em"
+                <Divider
+                  borderWidth={'1px'}
+                  borderColor={'blue.400'}
+                  rounded={'lg'}
+                  my={2}
                 />
                 <HStack>
                   <Box
-                    mt={'27px'}
-                    bgColor={'#FFBA79'}
+                    bgColor={'blue.500'}
                     width={'40vh'}
                     height={'15vh'}
                     borderRadius={'10px'}
                     cursor={'pointer'}
                   >
                     <HStack>
-                      <VStack align={'left'} gap={0}>
+                      <VStack align={'left'} p={4}>
                         <Text
-                          fontSize={'sm'}
-                          ml={'1em'}
-                          mt={'1.5em'}
-                          color={'#0B1A2A'}
+                          fontSize={'md'}
+                          fontWeight={'normal'}
+                          color={'white'}
                           _hover={{
                             textDecoration: 'underline',
                             cursor: 'pointer'
@@ -492,23 +456,17 @@ const ProfileJobseeker = () => {
                         </Text>
                         <Text
                           fontWeight={'bold'}
-                          color={'#0B1A2A'}
-                          ml={'0.7em'}
+                          color={'white'}
                           fontSize={'xl'}
                         >
                           PDF
                         </Text>
                       </VStack>
-                      <Image
-                        src="/images/pdf.png"
-                        h={'3em'}
-                        mt={'1.3em'}
-                        ml={'1.5em'}
-                      />
+                      <FaFilePdf size={45} color={'white'} />
                     </HStack>
                   </Box>
                   <FormControl w={'20%'}>
-                    <VStack mt={'27px'} align={'left'} ml={'1em'}>
+                    <VStack align={'left'} ml={'1em'}>
                       <Button
                         colorScheme="green"
                         onClick={() => {
@@ -544,34 +502,32 @@ const ProfileJobseeker = () => {
                 <Text fontSize={'2xl'} fontWeight={'700'} mt={'1.5em'}>
                   Resume Sertifikat
                 </Text>
-                <Text
-                  gap={0}
-                  borderBottom="2px solid #2A5C91"
-                  mt={0}
-                  width="46em"
+                <Divider
+                  borderWidth={'1px'}
+                  borderColor={'blue.400'}
+                  rounded={'lg'}
+                  my={1}
                 />
                 <VStack align={'left'} mt={'27px'} gap={0} mb={'5em'}>
                   {certificates?.map((sertif) => {
                     return (
                       <Box
                         key={sertif.id}
-                        gap={0}
                         mb={'1em'}
                         h={'5em'}
-                        bgColor={'#FFBA79'}
+                        bgColor={'blue.500'}
                         p={2}
-                        borderRadius={'5px'}
-                        boxShadow="5px 5px 4px rgba(0, 0, 0, 0.2)"
-                        border="1px solid #000000"
+                        borderRadius={'lg'}
+                        boxShadow={'lg'}
                         _hover={{
-                          bgColor: '#FFA959'
+                          bgColor: 'blue.400'
                         }}
                       >
                         <HStack align="center" h="100%">
                           <Text
-                            textDecoration="underline"
                             cursor={'pointer'}
                             fontSize={'xl'}
+                            color={'gray.100'}
                             ml={'1em'}
                             _hover={{
                               color: '#2A5C91'
