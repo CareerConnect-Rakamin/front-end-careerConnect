@@ -38,6 +38,7 @@ const SearchBar = () => {
     >
       <Input
         bg={'white'}
+        type="search"
         width={300}
         placeholder="Kata Kunci: Posisi, Lokasi"
         ref={searchRef}
